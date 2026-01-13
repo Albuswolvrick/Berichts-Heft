@@ -1,0 +1,70 @@
+1. Layout
+2. everithing nescesarry
+	2.0. secide what it is sopose to be capeble 
+		2.0.0. Loging in and out 
+		2.0.1. writing day Reports
+		2.0.2. have a main menu to make manuvering Easy
+		2.0.3. make it downloadebl,
+		2.0.4. make the Reports after a weak make a wek Report.
+	2.0,5. make a git repo
+	2.1. ER Model (check)
++----------------+         +------------------+        +------------------+
+|    Users       |1-------*|  Reports         |1------*|   Attachments     |
++----------------+         +------------------+        +------------------+
+| PK UserId      |         | PK ReportId      |        | PK AttachmentId  |
+| Name           |         | FK UserId        |        | FK ReportId      |
+| Email          |         | WeekId           |        | FileName         |
+| Role           |         | Date             |        | FilePath/URL     |
+| PasswordHash   |         | Title/Text       |        | UploadedAt       |
++----------------+         | CreatedAt        |        +------------------+
+                           | UpdatedAt        |
+                           | Status           |
+                           +------------------+
+                                   *
+                                   |
+                                   |         +------------------+
+                                   +--------1|  Weeks           |
+                                             +------------------+
+                                             | PK WeekId        |
+                                             | StartDate        |
+                                             | EndDate          |
+                                             | FK UserId        |
+                                             +------------------+
+
++-----------------------+-----------+-----------+
+| Relationship          | Type      |Short Hand	|
++-----------------------+-----------+-----------+
+| User → Weeks          | 1 to Many |1 → n	|
+| User → Reports        | 1 to Many |1 → n	|
+| Weeks → Reports       | 1 to Many |1 → n	|
+| Reports → Attachments | 1 to Many |1 → n	|
++-----------------------+-----------+-----------+
+
+
+	2.2. Chose database
++-----------------------+-------------------------------+-------------------------------+
+|DB Name 		|pro				|con				|
++-----------------------+-------------------------------+-------------------------------+
+|PostgreSQL		|Die Datenbank ist scalebel 	|compliziert aufzusetzen	|
++-----------------------+-------------------------------+-------------------------------+
+|LightSQL		|Easy to set up 		|not easy to scale		|
++-----------------------+-------------------------------+-------------------------------+
+|Maria DB		|Locks Simple to use,Opensource	|Slow updaterate 		|
++-----------------------+-------------------------------+-------------------------------+
+	2.3. UI/UX
+	2.4. create the DB
+	2.5. Program the main funktions Like the Reports staking
+	2.6. Login System 
+		2.6.0. ferschlüslung
+		+---------------+-----------------------+-----------------------+
+		|name		|pro			|con			|
+		+---------------+-----------------------+-----------------------+
+		|Asyncrone	|sichere Verbindung 	|Komplizirt aufzusetzen	|
+		|		|Nicht Leicht den 	|
+		|		|schlüssel zu bekommen 	|
+
+		2.6.1 Hashes
+		2.6.2 secure data conection
+		2.6.3. anti Brutforce mechanics
+		2.6.4. sighn up
+		2.6.5

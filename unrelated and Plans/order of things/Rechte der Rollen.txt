@@ -1,0 +1,21 @@
++---------------+---------------------------------------------------------------------------------------------------------------+
+|Rollen		|Rechte														|
++---------------+---------------------------------------------------------------------------------------------------------------+
+|Super_Admin	|Hat volle Kontrolle Über Alles und Jeden 									|*1
++---------------+---------------------------------------------------------------------------------------------------------------+
+|Admin		|hat dass Recht Leute zu Bannen Die Rollen Bis Auf Super_Admin hinzu zu Fügen Kann Passwörter auf den Standard 	|
+|		|zurück Setzen, Kann Account Löschen und Erstellen								|
++---------------+---------------------------------------------------------------------------------------------------------------+
+|Moderator 	|Kann Account Erstellen und Alle Leute Bannen und die Nutzer zu BVB_Teilnemer oder Azubi ändern und kann 	|
+|		|Passwörter auf das Standard zurücksetzen.									|
++---------------+---------------------------------------------------------------------------------------------------------------+
+|Azubi		|Kann Berichte Erstellen und Bearbeiten so wie sie Downloaden, kann sich einlogen hat ui			|
++---------------+---------------------------------------------------------------------------------------------------------------+
+|BVB_Teilnemer	|Kann Berichte Erstellen und Bearbeiten so wie sie Downloaden, kann sich einlogen hat ui			|
++---------------+---------------------------------------------------------------------------------------------------------------+
+|Nutzer 	|Hat UI Kann aber nichts Machen 										|
++---------------+---------------------------------------------------------------------------------------------------------------+
+|Baned		|Kann sich Einlogen komt aber auf die Baned Page und hat sonst keine Möglichkeit dah weg zu kommen 		|
++---------------+---------------------------------------------------------------------------------------------------------------+
+
+*1) Muss bei der Erstellung eingefügt werden dah ansonsten keine Leute Joinen Können heist Paswort Mail Name und alles bei erstellen der DB Machen um Keine Sighn up page machen zu Müssen
