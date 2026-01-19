@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berichts-Heft - Willkommen</title>
+    <title>404 - Seite nicht gefunden</title>
     <style>
         * {
             margin: 0;
@@ -42,6 +42,54 @@
             }
         }
 
+        .error-code {
+            font-size: 120px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(-1px);
+        }
+
         .icon {
             font-size: 80px;
             margin-bottom: 20px;
@@ -56,77 +104,15 @@
                 transform: translateY(-20px);
             }
         }
-
-        h1 {
-            font-size: 42px;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        p {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 50px;
-            line-height: 1.6;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 14px 40px;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .button-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .button-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .button-secondary {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        .button-secondary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
-        }
-
-        .button:active {
-            transform: translateY(-1px);
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="icon">📖</div>
-        <h1>Berichts-Heft</h1>
-        <p>Willkommen! Bitte melden Sie sich an oder erstellen Sie ein neues Konto.</p>
-        <div class="button-group">
-            <a href="/login" class="button button-primary">Anmelden</a>
-            <a href="/register" class="button button-secondary">Registrieren</a>
-        </div>
+        <div class="icon">🔍</div>
+        <div class="error-code">404</div>
+        <h1>Seite nicht gefunden</h1>
+        <p>Die Seite, die Sie suchen, existiert nicht oder wurde verschoben.</p>
+        <a href="/" class="button">Zur Startseite</a>
     </div>
 </body>
 </html>
