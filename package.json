@@ -1,0 +1,25 @@
+{
+  "name": "berichts-heft",
+  "version": "1.0.0",
+  "description": "Ein Berichts Open source Berichts heft web app mit standard Fetures\r ein Simple planung mit zimlich",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Albuswolvrick/Berichts-Heft.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Albuswolvrick/Berichts-Heft/issues"
+  },
+  "homepage": "https://github.com/Albuswolvrick/Berichts-Heft#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "react": "^19.2.3"
+  }
+}
