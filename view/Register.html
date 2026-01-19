@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Registration</title>
     <style>
         * {
             margin: 0;
@@ -80,36 +80,20 @@
             background-color: #764ba2;
         }
 
-        .register-link {
+        .login-link {
             text-align: center;
             margin-top: 20px;
             color: #666;
             font-size: 14px;
         }
 
-        .register-link a {
+        .login-link a {
             color: #667eea;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-
-        .forgot-password {
-            text-align: right;
-            margin-top: 10px;
-        }
-
-        .forgot-password a {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .forgot-password a:hover {
+        .login-link a:hover {
             text-decoration: underline;
         }
 
@@ -123,63 +107,75 @@
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
-        <form id="loginForm">
+        <h1>Register</h1>
+        <form id="registrationForm">
             <div class="form-group">
-                <label for="loginEmailInput">Email</label>
+                <label for="emailInput">Email</label>
                 <input 
                     type="email" 
-                    id="loginEmailInput" 
+                    id="emailInput" 
                     name="email" 
                     placeholder="Enter your email" 
                     required
                 >
-                <div id="loginEmailError" class="error-message">Please enter a valid email</div>
+                <div id="emailError" class="error-message">Please enter a valid email</div>
             </div>
 
             <div class="form-group">
-                <label for="loginPasswordInput">Password</label>
+                <label for="usernameInput">Username</label>
+                <input 
+                    type="text" 
+                    id="usernameInput" 
+                    name="username" 
+                    placeholder="Enter your username" 
+                    required
+                >
+                <div id="usernameError" class="error-message">Username is required</div>
+            </div>
+
+            <div class="form-group">
+                <label for="passwordInput">Password</label>
                 <input 
                     type="password" 
-                    id="loginPasswordInput" 
+                    id="passwordInput" 
                     name="password" 
                     placeholder="Enter your password" 
                     required
                 >
-                <div id="loginPasswordError" class="error-message">Password is required</div>
-                <div class="forgot-password">
-                    <a href="#">Forgot password?</a>
-                </div>
+                <div id="passwordError" class="error-message">Password is required</div>
             </div>
 
-            <button type="submit" id="loginSubmitButton">Login</button>
+            <button type="submit" id="submitButton">Register</button>
         </form>
 
-        <div class="register-link">
-            Don't have an account? <a href="/register">Register here</a>
+        <div class="login-link">
+            Already have an account? <a href="/login">Login here</a>
         </div>
     </div>
 
     <script>
         // Form and input elements
-        const loginForm = document.getElementById('loginForm');
-        const loginEmailInput = document.getElementById('loginEmailInput');
-        const loginPasswordInput = document.getElementById('loginPasswordInput');
-        const loginSubmitButton = document.getElementById('loginSubmitButton');
+        const registrationForm = document.getElementById('registrationForm');
+        const emailInput = document.getElementById('emailInput');
+        const usernameInput = document.getElementById('usernameInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const submitButton = document.getElementById('submitButton');
 
         // Error message elements
-        const loginEmailError = document.getElementById('loginEmailError');
-        const loginPasswordError = document.getElementById('loginPasswordError');
+        const emailError = document.getElementById('emailError');
+        const usernameError = document.getElementById('usernameError');
+        const passwordError = document.getElementById('passwordError');
 
         // Handle form submission
-        loginForm.addEventListener('submit', function(e) {
+        registrationForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Get form values
-            const email = loginEmailInput.value.trim();
-            const password = loginPasswordInput.value.trim();
+            const email = emailInput.value.trim();
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
 
-            console.log('Login submitted:', { email, password });
+            console.log('Form submitted:', { email, username, password });
             
             // You can add validation and form submission logic here
         });
