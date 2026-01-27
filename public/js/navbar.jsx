@@ -17,4 +17,4 @@ const VerticalNavBar=({items})=>{
         </nav>
     )
 };
-export default VerticalNavBar;
+export default VerticalNavBar; 
