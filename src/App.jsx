@@ -1,9 +1,10 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import DevMenu from './pages/DevMenu'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import DevMenu from './pages/DevMenu';
+import NewReport from './pages/NewReport';
 
 const navItems = [
   { label: 'Home', path: '/' },
@@ -11,8 +12,8 @@ const navItems = [
   { label: 'Tagesbericht', path: '/tagesbericht' },
   { label: 'Wochenbericht', path: '/wochenbericht' },
   { label: 'Monatsbericht', path: '/monatsbericht' },
-  { label: 'Dev Menu', path: '/dev' }
-]
+  { label: 'Dev Menu', path: '/dev' },
+];
 
 function App() {
   return (
@@ -27,10 +28,11 @@ function App() {
           <Route path="/wochenbericht" element={<h1>Wochenbericht</h1>} />
           <Route path="/monatsbericht" element={<h1>Monatsbericht</h1>} />
           <Route path="/dev" element={<DevMenu />} />
+          <Route path="/new-report" element={<NewReport />} />
         </Routes>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -19,22 +19,43 @@ app.use(session({
 }));
 
 // TODO: Implement user creation with Prisma
-// app.post('/api/users', (req, res) => {
-//     // Implementation needed
-// });
+app.post('/api/users', (req, res) => {
+    // Implementation needed
+});
 
 // TODO: Implement login with Prisma
-// app.post('/api/login', (req, res) => {
-//     // Implementation needed
-// });
+app.post('/api/login', (req, res) => {
+    // Implementation needed
+});
+
+app.post('/api/reports', async (req, res) => {
+  const { title, content } = req.body;
+  //const authorId = req.session.userId; // Assuming the user is logged in and userId is in the session
+  const authorId = 1; //hardcoded for now
+
+  if (!authorId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    const report = await prisma.report.create({
+      data: {
+        title,
+        content,
+        authorId,
+      },
+    });
+    res.status(201).json(report);
+  } catch (error) {
+    console.error('Failed to create report:', error);
+    res.status(500).json({ error: 'Failed to create report' });
+  }
+});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'index.html'));
 });
 
-<<<<<<< HEAD
-// Das MUSS am Ende bleiben:
-=======
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'Login.html'));
 });
@@ -44,19 +65,14 @@ app.get('/register', (req, res) => {
 
 
 
-
 // Fängt alle get requests ab, die nicht definiert sind
->>>>>>> cb1346998608fa4fa698d0711bf8b922fd6f57db
 app.use((req, res) => {
     // 404 handler
     res.status(404).sendFile(path.join(__dirname, 'view', '404.html'));
-    
+
 })
 
-<<<<<<< HEAD
-=======
 // Startet den Server
->>>>>>> cb1346998608fa4fa698d0711bf8b922fd6f57db
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
