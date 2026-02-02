@@ -5,7 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+<<<<<<< HEAD
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server.js",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:migrate": "prisma migrate dev"
+=======
     "dev": "node server.js"
+>>>>>>> cb1346998608fa4fa698d0711bf8b922fd6f57db
   },
   "repository": {
     "type": "git",
@@ -20,8 +30,23 @@
   },
   "homepage": "https://github.com/Albuswolvrick/Berichts-Heft#readme",
   "dependencies": {
+    "@prisma/client": "^7.3.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.4.7",
     "express": "^5.2.1",
+    "express-session": "^1.18.2",
     "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-router-dom": "^7.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19.2.3",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "prisma": "^6.19.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   }
 }
