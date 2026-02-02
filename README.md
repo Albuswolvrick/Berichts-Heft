@@ -10,5 +10,5 @@ ned to instal in the terminal
 npm install npm
 npm install bcrypt 
 npm install babel
- npm audit fix --force
+npm audit fix --force
 npm install vite
