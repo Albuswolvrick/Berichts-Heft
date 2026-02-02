@@ -4,7 +4,8 @@
   "description": "Ein Berichts Open source Berichts heft web app mit standard Fetures\r ein Simple planung mit zimlich",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -19,16 +20,16 @@
   },
   "homepage": "https://github.com/Albuswolvrick/Berichts-Heft#readme",
   "dependencies": {
-    "babel": "^6.23.0",
-    "bcrypt": "^6.0.0",
-    "express": "^5.2.1",
-    "express-session": "^1.18.2",
-    "mysql": "^2.18.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-router-dom": "^7.13.0"
-  },
-  "devDependencies": {
+    "express": "^5.2.1",           
+    "mysql2": "^3.11.0",           
+    "bcrypt": "^6.0.0",           
+    "express-session": "^1.18.2",  
+    "dotenv": "^16.4.7",            
+    "react": "^19.2.3",            
+    "react-dom": "^19.2.3",        
+  "react-router-dom": "^7.12.0"  
+},
+"devDependencies": {
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
     "@types/react-router-dom": "^5.3.3",
