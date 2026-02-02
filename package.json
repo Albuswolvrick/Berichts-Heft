@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+<<<<<<< HEAD
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -12,6 +13,9 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:migrate": "prisma migrate dev"
+=======
+    "dev": "node server.js"
+>>>>>>> cb1346998608fa4fa698d0711bf8b922fd6f57db
   },
   "repository": {
     "type": "git",
