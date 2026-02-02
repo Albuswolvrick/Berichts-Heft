@@ -12,14 +12,24 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'index.html'));
 });
 
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'view', 'Login.html'));
+});
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'view', 'Register.html'));
+});
 
 
 
-// Das MUSS am Ende bleiben:
-app.get((req, res) => {
+
+// Fängt alle get requests ab, die nicht definiert sind
+app.use((req, res) => {
     // 404 handler
-    res.status(404).send('Ressource nicht gefunden');
+    res.status(404).sendFile(path.join(__dirname, 'view', '404.html'));
+    
 })
+
+// Startet den Server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
