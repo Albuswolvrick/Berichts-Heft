@@ -118,7 +118,7 @@ Das Projekt verwendet TypeScript für Type-Safety. Type-Definitionen für alle w
 ### Neue Migration erstellen
 Bei Änderungen am Datenbankschema:
 ```bash
-npm run prisma:migrate --name <migration_name>
+npm run prisma:migrate -- --name <migration_name>
 ```
 
 ### Frontend & Backend gleichzeitig starten

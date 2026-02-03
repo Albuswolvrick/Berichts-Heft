@@ -28,14 +28,34 @@ app.post('/api/users', async (req, res) => {
 });
 
 // TODO: Implement login
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
     // Implementation needed
 });
 
-// TODO: Implement reports
+// Create a new report
 app.post('/api/reports', async (req, res) => {
-  // Implementation needed
-  res.status(501).json({ error: 'Not implemented yet' });
+  const { title, content, weekId } = req.body;
+  // const userId = req.session.userId; // Assuming the user is logged in and userId is in the session
+  const userId = 1; // hardcoded for now
+
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    const report = await prisma.report.create({
+      data: {
+        title,
+        content,
+        userId,
+        weekId,
+      },
+    });
+    res.status(201).json(report);
+  } catch (error) {
+    console.error('Failed to create report:', error);
+    res.status(500).json({ error: 'Failed to create report' });
+  }
 });
 
 // Fängt alle get requests ab, die nicht definiert sind
