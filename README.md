@@ -23,12 +23,13 @@ cd Berichts-Heft
 npm install
 
 # Datenbankschema initialisieren
-npm run db:push
-# oder mit npx:
-npx prisma db push
+npm run prisma:push
 
-# Entwicklungsserver starten
-npm run dev
+# Entwicklungsserver starten (Frontend)
+npm run client:dev
+
+# Backend-Server starten (in separatem Terminal)
+npm run server:dev
 ```
 
 ---
@@ -37,26 +38,26 @@ npm run dev
 
 ### Frontend Development
 ```bash
-npm run dev          # Startet Vite Dev-Server (http://localhost:5173)
-npm run build        # Production Build erstellen
-npm run preview      # Preview des Production-Builds lokal testen
+npm run client:dev       # Startet Vite Dev-Server (http://localhost:5173)
+npm run client:build     # Production Build erstellen
+npm run client:preview   # Preview des Production-Builds lokal testen
 ```
 
-### Server
+### Backend Server
 ```bash
-npm run server       # Startet Node.js/Express Server
+npm run server:dev       # Startet Node.js/Express Server
 ```
 
 ### Datenbank Management
 ```bash
-npm run db:push      # Synchronisiert Datenbankschema
-npx prisma db push  # Direkter npx Befehl
-
-npm run db:migrate   # Führt neue Migrationen durch
-npx prisma migrate dev  # Direkter npx Befehl
-
-npm run db:studio    # Öffnet Prisma Studio (GUI)
-npx prisma studio   # Direkter npx Befehl
+npm run prisma:push      # Synchronisiert Datenbankschema
+npm run prisma:migrate   # Führt neue Migrationen durch
+npm run prisma:studio    # Öffnet Prisma Studio (GUI)
+npm run prisma:generate  # Generiert Prisma Client
+npm run prisma:format    # Formatiert schema.prisma
+npm run prisma:pull      # Pullt Schema von bestehender Datenbank
+npm run prisma:seed      # Führt Seed-Skript aus
+npm run prisma:reset     # Setzt Datenbank zurück (Entwicklung)
 ```
 
 ## 🛠️ Technologie-Stack
@@ -108,9 +109,7 @@ Berichts-Heft/
 ### Prisma Studio verwenden
 Prisma Studio ist eine GUI zur Datenbankverwaltung:
 ```bash
-npm run db:studio
-# oder
-npx prisma studio
+npm run prisma:studio
 ```
 
 ### TypeScript Type-Checking
@@ -119,10 +118,25 @@ Das Projekt verwendet TypeScript für Type-Safety. Type-Definitionen für alle w
 ### Neue Migration erstellen
 Bei Änderungen am Datenbankschema:
 ```bash
-npm run db:migrate
-# oder
-npx prisma migrate dev --name <migration_name>
+npm run prisma:migrate --name <migration_name>
 ```
+
+### Frontend & Backend gleichzeitig starten
+Öffne zwei separate Terminal-Fenster:
+```bash
+# Terminal 1 - Frontend
+npm run client:dev
+
+# Terminal 2 - Backend
+npm run server:dev
+```
+
+### Aktuelle Entwicklungen
+- ✅ Prisma ORM Integration mit SQLite
+- ✅ Authentifizierung mit bcrypt & express-session
+- ✅ Report-Erstellung implementiert
+- ✅ Responsive UI mit React & Vite
+- 🔄 Weitere Report-Features in Entwicklung
 
 ---
 
