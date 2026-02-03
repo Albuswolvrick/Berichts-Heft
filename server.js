@@ -5,8 +5,6 @@ const port = 3000; //test port
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -18,38 +16,20 @@ app.use(session({
     cookie: { secure: false } // set to true if you're using https
 }));
 
-// TODO: Implement user creation with Prisma
+// TODO: Implement user creation
 app.post('/api/users', (req, res) => {
     // Implementation needed
 });
 
-// TODO: Implement login with Prisma
+// TODO: Implement login
 app.post('/api/login', (req, res) => {
     // Implementation needed
 });
 
+// TODO: Implement reports
 app.post('/api/reports', async (req, res) => {
-  const { title, content } = req.body;
-  //const authorId = req.session.userId; // Assuming the user is logged in and userId is in the session
-  const authorId = 1; //hardcoded for now
-
-  if (!authorId) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  try {
-    const report = await prisma.report.create({
-      data: {
-        title,
-        content,
-        authorId,
-      },
-    });
-    res.status(201).json(report);
-  } catch (error) {
-    console.error('Failed to create report:', error);
-    res.status(500).json({ error: 'Failed to create report' });
-  }
+  // Implementation needed
+  res.status(501).json({ error: 'Not implemented yet' });
 });
 
 app.get('/', (req, res) => {

@@ -8,10 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server": "node server.js",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
-    "db:migrate": "prisma migrate dev"
+    "server": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +23,6 @@
   },
   "homepage": "https://github.com/Albuswolvrick/Berichts-Heft#readme",
   "dependencies": {
-    "@prisma/client": "^7.3.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^16.4.7",
     "express": "^5.2.1",
@@ -41,7 +37,6 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^5.1.2",
-    "prisma": "^6.19.2",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
   }
