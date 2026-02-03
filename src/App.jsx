@@ -5,6 +5,9 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import DevMenu from './pages/DevMenu';
 import NewReport from './pages/NewReport';
+import '../public/css/style.css';
+import '../public/css/navbar.css';
+import '../public/css/report.css';
 
 const navItems = [
   { label: 'Home', path: '/' },
