@@ -5,17 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-<<<<<<< HEAD
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "server": "node server.js",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
-    "db:migrate": "prisma migrate dev"
-=======
-    "dev": "node server.js"
->>>>>>> cb1346998608fa4fa698d0711bf8b922fd6f57db
+    "client:dev": "vite",
+    "client:build": "vite build",
+    "client:preview": "vite preview",
+    "server:dev": "node server.js",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:studio": "npx prisma studio",
+    "prisma:generate": "npx prisma generate",
+    "prisma:format": "npx prisma format",
+    "prisma:push": "npx prisma db push",
+    "prisma:pull": "npx prisma db pull",
+    "prisma:reset": "npx prisma migrate reset"
   },
   "repository": {
     "type": "git",
@@ -30,9 +30,11 @@
   },
   "homepage": "https://github.com/Albuswolvrick/Berichts-Heft#readme",
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "bcrypt": "^6.0.0",
-    "dotenv": "^16.4.7",
+    "better-sqlite3": "^11.10.0",
+    "dotenv": "^16.6.1",
     "express": "^5.2.1",
     "express-session": "^1.18.2",
     "react": "^19.2.3",
@@ -40,12 +42,13 @@
     "react-router-dom": "^7.12.0"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.2.0",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^5.1.2",
-    "prisma": "^6.19.2",
+    "prisma": "^7.3.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
   }
