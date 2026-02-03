@@ -28,3 +28,11 @@ yarn-debug.log*
 yarn-error.log*
 
 /generated/prisma
+
+/src/generated/prisma
+
+/src/generated/prisma
+
+/src/generated/prisma
+
+/generated/prisma

@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+  TRAINEE
+}
+
+enum ReportStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  REJECTED
+  REVISION_REQUIRED
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  name         String
+  role         UserRole   @default(TRAINEE)
+  passwordHash String
+  reports      Report[]
+  weeks        Week[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([email])
+}
+
+model Week {
+  id        Int      @id @default(autoincrement())
+  startDate DateTime
+  endDate   DateTime
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reports   Report[]
+
+  @@index([userId])
+  @@index([startDate, endDate])
+}
+
+model Report {
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekId      Int
+  week        Week         @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  date        DateTime     @default(now())
+  title       String
+  content     String?
+  status      ReportStatus @default(DRAFT)
+  attachments Attachment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([userId])
+  @@index([weekId])
+  @@index([status])
+}
+
+model Attachment {
+  id         Int      @id @default(autoincrement())
+  reportId   Int
+  report     Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  fileName   String
+  filePath   String
+  fileSize   Int?
+  mimeType   String?
+  uploadedAt DateTime @default(now())
+
+  @@index([reportId])
+}
