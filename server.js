@@ -28,7 +28,7 @@ app.post('/api/users', async (req, res) => {
 });
 
 // TODO: Implement login
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
     // Implementation needed
 });
 
