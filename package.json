@@ -15,7 +15,8 @@
     "prisma:format": "npx prisma format",
     "prisma:push": "npx prisma db push",
     "prisma:pull": "npx prisma db pull",
-    "prisma:reset": "npx prisma migrate reset"
+    "prisma:reset": "npx prisma migrate reset",
+    "prisma:seed": "node prisma/seed.js"
   },
   "repository": {
     "type": "git",
