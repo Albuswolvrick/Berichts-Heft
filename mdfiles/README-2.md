@@ -102,6 +102,21 @@ Security matters!
 
 ---
 
+## 🔐 Authentication & Routing (February 3)
+
+**February 3** - A major leap forward with the implementation of a full authentication system and client-side routing.
+
+- **Backend:**
+    - User registration, login, and logout endpoints (`/api/auth/...`).
+    - A protected `/api/users/me` endpoint to fetch user data.
+    - Session management with `express-session` for persistent logins.
+- **Frontend:**
+    - React components for Login and Registration.
+    - Dynamic navbar that reflects the user's authentication state.
+    - Seamless client-side navigation powered by React Router.
+
+---
+
 ## 👥 The Team
 
 ### 🧙 Sindri
@@ -133,6 +148,7 @@ Security matters!
 📅 Week 2: Restructuring & Server Setup
 📅 Week 3: Database Integration
 📅 Week 4: The Prisma Migration
+📅 Week 5: Authentication & Routing
 ```
 
 ---
@@ -145,7 +161,9 @@ Security matters!
 4. ✅ Database integration (MySQL)
 5. ✅ Migration to Prisma + SQLite
 6. ✅ TypeScript support added
-7. ✅ Documentation maintained (mostly!)
+7. ✅ Full User Authentication & Session Management
+8. ✅ Client-Side Routing with React Router
+9. ✅ Documentation maintained (mostly!)
 
 ---
 
@@ -174,10 +192,11 @@ Security matters!
 
 ## 🚀 Current State
 
-As of February 2, 2026, the project has:
+As of February 3, 2026, the project has:
 - ✨ Prisma ORM with SQLite
 - 🎨 Styled pages with navbar
-- 🔐 Authentication setup
+- 🔐 Full user authentication (login, logout, register)
+- 路由 Client-side routing with React Router
 - 📦 Proper Node.js structure
 - 🎯 TypeScript support
 - 📝 This magnificent README
@@ -186,8 +205,8 @@ As of February 2, 2026, the project has:
 
 *Made with ❤️ (and probably too much coffee) by Sindri, Pierre Maurice Hesse, and JackApfel*
 
-**Total Commits:** 35
-**Languages:** JavaScript, HTML, CSS, SQL → Prisma
+**Total Commits:** 42 (and counting!)
+**Languages:** JavaScript, HTML, CSS, Prisma
 **Primary Communication Languages:** English, German, and Creative Typos
 
 ---
