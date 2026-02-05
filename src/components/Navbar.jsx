@@ -23,6 +23,7 @@ const Navbar = ({ items, user, onLogout }) => {
         {user ? (
             <div className="user-info">
                 <span>Welcome, {user.username}</span>
+                <button onClick={() => navigate('/profile')} className="nav-button">Profile</button>
                 <button onClick={onLogout} className="nav-button">Logout</button>
             </div>
         ) : (

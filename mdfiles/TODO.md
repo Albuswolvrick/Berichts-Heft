@@ -20,12 +20,12 @@ _Last updated: 2026-02-05_
 - [x] **Create report**: `POST /api/reports`
 - [x] **List reports**: `GET /api/reports`
 - [x] **View report**: `GET /api/reports/:id`
-- [ ] **Update report**: `PUT /api/reports/:id`
-- [ ] **Delete report**: `DELETE /api/reports/:id`
+- [x] **Update report**: `PUT /api/reports/:id`
+- [x] **Delete report**: `DELETE /api/reports/:id`
 
 ### User profile
-- [ ] **Get profile**: `GET /api/users/me`
-- [ ] **Update profile**: `PATCH /api/users/me`
+- [x] **Get profile**: `GET /api/users/me`
+- [x] **Update profile**: `PATCH /api/users/me`
 
 ### Error handling + loading states
 - [ ] Show loading spinners for all API actions
