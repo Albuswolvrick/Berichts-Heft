@@ -1,4 +1,3 @@
-
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -18,8 +17,11 @@ prisma.$connect()
   .catch(err => console.error('✗ Prisma connection failed:', err.message));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'dist'))); // Serve static files from dist
+app.use(express.static(path.join(__dirname, 'view')));
+
 
 app.use(session({
     store: new SQLiteStore({
