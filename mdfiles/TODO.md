@@ -101,12 +101,15 @@ _Last updated: 2026-02-05_
 
 ## 6) DevOps / Tooling
 
-- [ ] Add `.env.example` and document env vars
+- [ x] Add `.env.example` and document env vars
 - [ ] Configure eslint + prettier
 - [ ] Add API base URL config for dev/prod
 
 ---
-
+## 7) optional
+-[ ] Add mesages beim anmelden ob es geklapt hat oder nicht
+-[ ] give information what is brocken
+---
 ## Priority Order
 
 1. API contracts + backend routes
