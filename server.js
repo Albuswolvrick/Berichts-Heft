@@ -1,3 +1,4 @@
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -6,6 +7,10 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const { prisma } = require('./db.js');
+const SQLiteStore = require('connect-sqlite3')(session);
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = 'your-jwt-secret'; // Replace with a strong secret
 
 // Test Prisma connection
 prisma.$connect()
@@ -17,18 +22,34 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'dist'))); // Serve static files from dist
 
 app.use(session({
+    store: new SQLiteStore({
+      db: 'sessions.db',
+      dir: './'
+    }),
     secret: 'your-secret-key', // replace with a real secret key
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' } // secure in production (HTTPS), false in development
+    saveUninitialized: false,
+    cookie: { 
+        secure: process.env.NODE_ENV === 'production', // secure in production (HTTPS), false in development
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    } 
 }));
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
-    if (req.session.userId) {
-        return next();
+    const token = req.session.token;
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized' });
     }
-    res.status(401).json({ error: 'Unauthorized' });
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
 }
 
 // Register a new user
@@ -43,7 +64,8 @@ app.post('/api/auth/register', async (req, res) => {
                 password: hashedPassword,
             },
         });
-        req.session.userId = user.id;
+        const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1w' });
+        req.session.token = token;
         res.status(201).json({ user: { id: user.id, username: user.username, email: user.email } });
     } catch (error) {
         console.error('Registration failed:', error);
@@ -60,7 +82,8 @@ app.post('/api/auth/login', async (req, res) => {
         });
 
         if (user && await bcrypt.compare(password, user.password)) {
-            req.session.userId = user.id;
+            const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1w' });
+            req.session.token = token;
             res.status(200).json({ user: { id: user.id, username: user.username, email: user.email } });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
@@ -85,7 +108,7 @@ app.post('/api/auth/logout', (req, res) => {
 // Get current user
 app.get('/api/users/me', isAuthenticated, async (req, res) => {
     try {
-        const user = await prisma.user.findUnique({ where: { id: req.session.userId } });
+        const user = await prisma.user.findUnique({ where: { id: req.user.id } });
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -99,7 +122,7 @@ app.get('/api/users/me', isAuthenticated, async (req, res) => {
 // Create a new report
 app.post('/api/reports', isAuthenticated, async (req, res) => {
   const { title, content, weekId } = req.body;
-  const userId = req.session.userId;
+  const userId = req.user.id;
 
   try {
     const report = await prisma.report.create({
@@ -119,7 +142,7 @@ app.post('/api/reports', isAuthenticated, async (req, res) => {
 
 // Get all reports for the current user
 app.get('/api/reports', isAuthenticated, async (req, res) => {
-    const userId = req.session.userId;
+    const userId = req.user.id;
     try {
         const reports = await prisma.report.findMany({
             where: { userId },
@@ -134,7 +157,7 @@ app.get('/api/reports', isAuthenticated, async (req, res) => {
 // Get a single report by ID
 app.get('/api/reports/:id', isAuthenticated, async (req, res) => {
     const { id } = req.params;
-    const userId = req.session.userId;
+    const userId = req.user.id;
     try {
         const report = await prisma.report.findUnique({
             where: { id: parseInt(id) },
@@ -155,7 +178,7 @@ app.get('/api/reports/:id', isAuthenticated, async (req, res) => {
 app.put('/api/reports/:id', isAuthenticated, async (req, res) => {
     const { id } = req.params;
     const { title, content } = req.body;
-    const userId = req.session.userId;
+    const userId = req.user.id;
 
     try {
         const report = await prisma.report.findUnique({
@@ -181,7 +204,7 @@ app.put('/api/reports/:id', isAuthenticated, async (req, res) => {
 // Delete a report
 app.delete('/api/reports/:id', isAuthenticated, async (req, res) => {
     const { id } = req.params;
-    const userId = req.session.userId;
+    const userId = req.user.id;
 
     try {
         const report = await prisma.report.findUnique({

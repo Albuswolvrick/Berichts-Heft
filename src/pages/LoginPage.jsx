@@ -23,7 +23,7 @@ const LoginPage = ({ onLogin }) => {
       if (response.ok) {
         const data = await response.json();
         onLogin(data.user);
-        navigate('/');
+        navigate('/tagesbericht');
       } else {
         const message = await response.text();
         setError(message || 'Login fehlgeschlagen');
