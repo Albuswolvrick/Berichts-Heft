@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Spinner from '../components/Spinner';
+import { useToast } from '../hooks/useToast';
 
 const HomePage = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
 
   useEffect(() => {
     fetchReports();
@@ -16,10 +19,10 @@ const HomePage = () => {
         const data = await response.json();
         setReports(data);
       } else {
-        console.error('Fehler beim Laden der Berichte');
+        showToast('Fehler beim Laden der Berichte', 'error');
       }
     } catch (error) {
-      console.error('Fehler:', error);
+      showToast('Fehler: ' + error.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -31,7 +34,7 @@ const HomePage = () => {
       <h2>Meine Berichte</h2>
       
       {loading ? (
-        <p>Berichte werden geladen...</p>
+        <Spinner />
       ) : reports.length === 0 ? (
         <p>Noch keine Berichte vorhanden.</p>
       ) : (
