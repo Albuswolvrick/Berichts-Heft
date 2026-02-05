@@ -11,7 +11,7 @@ const EditReport = () => {
   const [submitting, setSubmitting] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const { addToast } = useToast();
 
   useEffect(() => {
     fetchReport();
@@ -26,10 +26,10 @@ const EditReport = () => {
         setContent(data.content);
         setWeekId(data.weekId);
       } else {
-        showToast(`Failed to fetch report with id ${id}`, 'error');
+        addToast(`Failed to fetch report with id ${id}`, 'error');
       }
     } catch (error) {
-      showToast('Error: ' + error.message, 'error');
+      addToast('Error: ' + error.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -46,13 +46,13 @@ const EditReport = () => {
       });
 
       if (response.ok) {
-        showToast('Report updated successfully', 'success');
+        addToast('Report updated successfully', 'success');
         navigate(`/reports/${id}`);
       } else {
-        showToast('Failed to update report', 'error');
+        addToast('Failed to update report', 'error');
       }
     } catch (error) {
-      showToast('Error submitting report: ' + error.message, 'error');
+      addToast('Error submitting report: ' + error.message, 'error');
     } finally {
       setSubmitting(false);
     }

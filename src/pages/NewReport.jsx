@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../hooks/useToast';
 
 const NewReport = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [weekId, setWeekId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await fetch('/api/reports', {
         method: 'POST',
@@ -17,13 +21,15 @@ const NewReport = () => {
       });
 
       if (response.ok) {
-        console.log('Report created successfully');
+        addToast('Report created successfully');
         navigate('/');
       } else {
-        console.error('Failed to create report');
+        addToast('Failed to create report', { appearance: 'error' });
       }
     } catch (error) {
-      console.error('Error submitting report:', error);
+      addToast('Error submitting report', { appearance: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -40,6 +46,7 @@ const NewReport = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            disabled={isLoading}
           />
         </div>
         <div className="form-group">
@@ -51,6 +58,7 @@ const NewReport = () => {
             value={weekId}
             onChange={(e) => setWeekId(e.target.value)}
             required
+            disabled={isLoading}
           />
         </div>
         <div className="form-group full-width">
@@ -61,9 +69,12 @@ const NewReport = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
+            disabled={isLoading}
           />
         </div>
-        <button type="submit">Save Report</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Saving...' : 'Save Report'}
+        </button>
       </form>
     </div>
   );

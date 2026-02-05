@@ -3,12 +3,14 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import DevMenu from './pages/DevMenu';
 import NewReport from './pages/NewReport';
 import ReportPage from './pages/ReportPage';
 import EditReport from './pages/EditReport';
 import ProfilePage from './pages/ProfilePage';
 import { ToastProvider } from './hooks/useToast';
+import { ThemeProvider } from './hooks/useTheme';
 import '../public/css/style.css';
 import '../public/css/navbar.css';
 import '../public/css/report.css';
@@ -68,26 +70,29 @@ function App() {
     }
 
   return (
-    <ToastProvider>
-      <div style={{ display: 'flex' }}>
-        <Navbar items={navItems} user={user} onLogout={handleLogout} />
+    <ThemeProvider>
+      <ToastProvider>
+        <div style={{ display: 'flex' }}>
+          <Navbar items={navItems} user={user} onLogout={handleLogout} />
 
-        <main style={{ padding: '20px', flex: 1 }}>
-          <Routes>
-            <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-            <Route path="/login" element={<LoginPage onLogin={setUser} />} />
-            <Route path="/tagesbericht" element={<ProtectedRoute><h1>Tagesbericht</h1></ProtectedRoute>} />
-            <Route path="/wochenbericht" element={<ProtectedRoute><h1>Wochenbericht</h1></ProtectedRoute>} />
-            <Route path="/monatsbericht" element={<ProtectedRoute><h1>Monatsbericht</h1></ProtectedRoute>} />
-            <Route path="/dev" element={<ProtectedRoute><DevMenu /></ProtectedRoute>} />
-            <Route path="/new-report" element={<ProtectedRoute><NewReport /></ProtectedRoute>} />
-            <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-            <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-          </Routes>
-        </main>
-      </div>
-    </ToastProvider>
+          <main style={{ padding: '20px', flex: 1 }}>
+            <Routes>
+              <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+              <Route path="/login" element={<LoginPage onLogin={setUser} />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/tagesbericht" element={<ProtectedRoute><h1>Tagesbericht</h1></ProtectedRoute>} />
+              <Route path="/wochenbericht" element={<ProtectedRoute><h1>Wochenbericht</h1></ProtectedRoute>} />
+              <Route path="/monatsbericht" element={<ProtectedRoute><h1>Monatsbericht</h1></ProtectedRoute>} />
+              <Route path="/dev" element={<ProtectedRoute><DevMenu /></ProtectedRoute>} />
+              <Route path="/new-report" element={<ProtectedRoute><NewReport /></ProtectedRoute>} />
+              <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+              <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            </Routes>
+          </main>
+        </div>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }
 
