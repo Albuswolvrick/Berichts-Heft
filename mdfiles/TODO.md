@@ -1,6 +1,6 @@
 # Berichts-Heft — Todo List
 
-_Last updated: 2026-02-03_
+_Last updated: 2026-02-05_
 
 ## ✅ Goals
 - Build a complete front-to-back (and back-to-front) API integration
@@ -12,13 +12,13 @@ _Last updated: 2026-02-03_
 ## 1) Frontend ➜ Backend API (requests)
 
 ### Core auth flow
-- [ ] **Login**: connect Login UI to `POST /api/auth/login`
-- [ ] **Logout**: add session invalidation call `POST /api/auth/logout`
-- [ ] **Register**: connect Register UI to `POST /api/auth/register`
+- [x] **Login**: connect Login UI to `POST /api/auth/login`
+- [x] **Logout**: add session invalidation call `POST /api/auth/logout`
+- [x] **Register**: connect Register UI to `POST /api/auth/register`
 
 ### Reports
-- [ ] **Create report**: `POST /api/reports`
-- [ ] **List reports**: `GET /api/reports?userId=...`
+- [x] **Create report**: `POST /api/reports`
+- [x] **List reports**: `GET /api/reports`
 - [ ] **View report**: `GET /api/reports/:id`
 - [ ] **Update report**: `PUT /api/reports/:id`
 - [ ] **Delete report**: `DELETE /api/reports/:id`

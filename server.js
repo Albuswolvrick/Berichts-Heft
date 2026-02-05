@@ -117,6 +117,93 @@ app.post('/api/reports', isAuthenticated, async (req, res) => {
   }
 });
 
+// Get all reports for the current user
+app.get('/api/reports', isAuthenticated, async (req, res) => {
+    const userId = req.session.userId;
+    try {
+        const reports = await prisma.report.findMany({
+            where: { userId },
+        });
+        res.status(200).json(reports);
+    } catch (error) {
+        console.error('Failed to get reports:', error);
+        res.status(500).json({ error: 'Failed to get reports' });
+    }
+});
+
+// Get a single report by ID
+app.get('/api/reports/:id', isAuthenticated, async (req, res) => {
+    const { id } = req.params;
+    const userId = req.session.userId;
+    try {
+        const report = await prisma.report.findUnique({
+            where: { id: parseInt(id) },
+        });
+
+        if (!report || report.userId !== userId) {
+            return res.status(404).json({ error: 'Report not found' });
+        }
+
+        res.status(200).json(report);
+    } catch (error) {
+        console.error('Failed to get report:', error);
+        res.status(500).json({ error: 'Failed to get report' });
+    }
+});
+
+// Update a report
+app.put('/api/reports/:id', isAuthenticated, async (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const userId = req.session.userId;
+
+    try {
+        const report = await prisma.report.findUnique({
+            where: { id: parseInt(id) },
+        });
+
+        if (!report || report.userId !== userId) {
+            return res.status(404).json({ error: 'Report not found' });
+        }
+
+        const updatedReport = await prisma.report.update({
+            where: { id: parseInt(id) },
+            data: { title, content },
+        });
+
+        res.status(200).json(updatedReport);
+    } catch (error) {
+        console.error('Failed to update report:', error);
+        res.status(500).json({ error: 'Failed to update report' });
+    }
+});
+
+// Delete a report
+app.delete('/api/reports/:id', isAuthenticated, async (req, res) => {
+    const { id } = req.params;
+    const userId = req.session.userId;
+
+    try {
+        const report = await prisma.report.findUnique({
+            where: { id: parseInt(id) },
+        });
+
+        if (!report || report.userId !== userId) {
+            return res.status(404).json({ error: 'Report not found' });
+        }
+
+        await prisma.report.delete({
+            where: { id: parseInt(id) },
+        });
+
+        res.status(204).send();
+    } catch (error) {
+        console.error('Failed to delete report:', error);
+        res.status(500).json({ error: 'Failed to delete report' });
+    }
+});
+
+
 // Serve the React app for all non-API GET requests
 app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));

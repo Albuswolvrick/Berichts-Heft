@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
 const HomePage = () => {
-  const [reports, setReports] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchReports()
-  }, [])
+    fetchReports();
+  }, []);
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('/api/reports')
+      const response = await fetch('/api/reports');
       if (response.ok) {
-        const data = await response.json()
-        setReports(data)
+        const data = await response.json();
+        setReports(data);
       } else {
-        console.error('Fehler beim Laden der Berichte')
+        console.error('Fehler beim Laden der Berichte');
       }
     } catch (error) {
-      console.error('Fehler:', error)
+      console.error('Fehler:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div>
@@ -37,13 +37,16 @@ const HomePage = () => {
         <ul>
           {reports.map((report) => (
             <li key={report.id}>
-              {report.report_type} - {report.report_date}: {report.content}
+              <h3>{report.title}</h3>
+              <p>{report.content}</p>
+              <p>Week ID: {report.weekId}</p>
+              <p>Status: {report.status}</p>
             </li>
           ))}
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
