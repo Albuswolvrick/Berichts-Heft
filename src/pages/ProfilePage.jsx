@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Spinner from '../components/Spinner';
+import { useToast } from '../hooks/useToast';
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const { addToast } = useToast();
 
   useEffect(() => {
     fetchUser();
@@ -17,10 +19,10 @@ const ProfilePage = () => {
         const data = await response.json();
         setUser(data.user);
       } else {
-        console.error('Failed to fetch user data');
+        addToast('Failed to fetch user data', { appearance: 'error' });
       }
     } catch (error) {
-      console.error('Error:', error);
+      addToast('Error: ' + error.message, { appearance: 'error' });
     } finally {
       setLoading(false);
     }
@@ -37,12 +39,12 @@ const ProfilePage = () => {
       });
 
       if (response.ok) {
-        console.log('Profile updated successfully');
+        addToast('Profile updated successfully', { appearance: 'success' });
       } else {
-        console.error('Failed to update profile');
+        addToast('Failed to update profile', { appearance: 'error' });
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
+      addToast('Error updating profile: ' + error.message, { appearance: 'error' });
     } finally {
       setSubmitting(false);
     }

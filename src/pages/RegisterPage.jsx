@@ -1,38 +1,37 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../public/css/login.css'; // Import the CSS file
+import '../../public/css/login.css'; // Reusing the login CSS for consistency
 
-const LoginPage = ({ onLogin }) => {
+const RegisterPage = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        onLogin(data.user);
-        navigate('/tagesbericht');
+        navigate('/login');
       } else {
         const message = await response.text();
-        setError(message || 'Login fehlgeschlagen');
+        setError(message || 'Registrierung fehlgeschlagen');
       }
     } catch (error) {
-      console.error('Fehler beim Login:', error);
+      console.error('Fehler bei der Registrierung:', error);
       setError('Verbindungsfehler');
     } finally {
       setIsLoading(false);
@@ -41,8 +40,18 @@ const LoginPage = ({ onLogin }) => {
 
   return (
     <div className="login-container">
-      <form onSubmit={handleLogin} className="login-form">
-        <h2>Login</h2>
+      <form onSubmit={handleRegister} className="login-form">
+        <h2>Registrieren</h2>
+        <div className="input-group">
+          <label>Benutzername:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            disabled={isLoading}
+          />
+        </div>
         <div className="input-group">
           <label>Email:</label>
           <input
@@ -65,11 +74,11 @@ const LoginPage = ({ onLogin }) => {
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Anmelden...' : 'Anmelden'}
+          {isLoading ? 'Registrieren...' : 'Registrieren'}
         </button>
       </form>
     </div>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

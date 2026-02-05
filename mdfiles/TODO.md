@@ -28,8 +28,8 @@ _Last updated: 2026-02-05_
 - [x] **Update profile**: `PATCH /api/users/me`
 
 ### Error handling + loading states
-- [ ] Show loading spinners for all API actions
-- [ ] Display friendly errors (toast/snackbar + inline errors)
+- [x] Show loading spinners for all API actions
+- [x] Display friendly errors (toast/snackbar + inline errors)
 - [ ] Standardize API error responses in UI
 
 ---
@@ -83,7 +83,7 @@ _Last updated: 2026-02-05_
 ## 5) UI/UX Improvements
 
 ### Design system
-- [ ] Create a consistent color palette + typography scale
+- [x] Create a consistent color palette + typography scale
 - [ ] Add reusable UI components (Buttons, Inputs, Cards, Alerts)
 
 ### Pages
@@ -101,14 +101,14 @@ _Last updated: 2026-02-05_
 
 ## 6) DevOps / Tooling
 
-- [ x] Add `.env.example` and document env vars
+- [x] Add `.env.example` and document env vars
 - [ ] Configure eslint + prettier
 - [ ] Add API base URL config for dev/prod
 
 ---
 ## 7) optional
--[ ] Add mesages beim anmelden ob es geklapt hat oder nicht
--[ ] give information what is brocken
+-[x] Add mesages beim anmelden ob es geklapt hat oder nicht
+-[x] give information what is brocken
 ---
 ## Priority Order
 

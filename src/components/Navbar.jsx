@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../public/css/navbar.css';
+import { useTheme } from '../hooks/useTheme';
 
 const Navbar = ({ items, user, onLogout }) => {
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <nav className="vertical-nav">
@@ -47,7 +36,7 @@ const Navbar = ({ items, user, onLogout }) => {
         New Report
       </button>
       <button className="nav-button theme-switcher" onClick={toggleTheme}>
-        {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+        {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
       </button>
     </nav>
   );

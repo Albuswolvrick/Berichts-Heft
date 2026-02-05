@@ -5,6 +5,7 @@
   flex-direction: column;
   padding: 10px;
   transition: background-color 0.3s ease;
+  background-color: var(--navbar-background-light);
 }
 
 .nav-button {
@@ -15,31 +16,22 @@
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Light Theme */
-.vertical-nav {
-  background-color: #f4f4f4;
-}
-
-.nav-button {
-  color: #333;
+  color: var(--navbar-text-light);
 }
 
 .nav-button:hover {
   background-color: #ddd;
 }
 
-/* Dark Theme */
-.dark-mode .vertical-nav {
-  background-color: #333;
+[data-theme="dark"] .vertical-nav {
+  background-color: var(--navbar-background-dark);
 }
 
-.dark-mode .nav-button {
-  color: #f4f4f4;
+[data-theme="dark"] .nav-button {
+  color: var(--navbar-text-dark);
 }
 
-.dark-mode .nav-button:hover {
+[data-theme="dark"] .nav-button:hover {
   background-color: #555;
 }
 

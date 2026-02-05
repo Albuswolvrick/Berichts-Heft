@@ -1,0 +1,45 @@
+:root {
+  --background-color-light: #fff;
+  --text-color-light: #333;
+  --navbar-background-light: #f4f4f4;
+  --navbar-text-light: #333;
+  --button-background-light: #ddd;
+  --button-text-light: #333;
+
+  --background-color-dark: #333;
+  --text-color-dark: #fff;
+  --navbar-background-dark: #222;
+  --navbar-text-dark: #fff;
+  --button-background-dark: #555;
+  --button-text-dark: #fff;
+}
+
+body {
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+}
+
+[data-theme="dark"] body {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
+}
+
+.vertical-nav {
+  background-color: var(--navbar-background-light);
+  color: var(--navbar-text-light);
+}
+
+[data-theme="dark"] .vertical-nav {
+  background-color: var(--navbar-background-dark);
+  color: var(--navbar-text-dark);
+}
+
+.nav-button {
+  background-color: var(--button-background-light);
+  color: var(--button-text-light);
+}
+
+[data-theme="dark"] .nav-button {
+  background-color: var(--button-background-dark);
+  color: var(--button-text-dark);
+}
