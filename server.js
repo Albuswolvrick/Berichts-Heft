@@ -20,6 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'dist'))); // Serve static files from dist
+app.use(express.static(path.join(__dirname, 'view')));
+
 
 
 app.use(session({
