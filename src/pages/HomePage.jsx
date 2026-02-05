@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   const [reports, setReports] = useState([]);
@@ -37,7 +38,9 @@ const HomePage = () => {
         <ul>
           {reports.map((report) => (
             <li key={report.id}>
-              <h3>{report.title}</h3>
+              <Link to={`/reports/${report.id}`}>
+                <h3>{report.title}</h3>
+              </Link>
               <p>{report.content}</p>
               <p>Week ID: {report.weekId}</p>
               <p>Status: {report.status}</p>

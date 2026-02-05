@@ -5,6 +5,8 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import DevMenu from './pages/DevMenu';
 import NewReport from './pages/NewReport';
+import ReportPage from './pages/ReportPage';
+import EditReport from './pages/EditReport';
 import '../public/css/style.css';
 import '../public/css/navbar.css';
 import '../public/css/report.css';
@@ -76,6 +78,8 @@ function App() {
           <Route path="/monatsbericht" element={<ProtectedRoute><h1>Monatsbericht</h1></ProtectedRoute>} />
           <Route path="/dev" element={<ProtectedRoute><DevMenu /></ProtectedRoute>} />
           <Route path="/new-report" element={<ProtectedRoute><NewReport /></ProtectedRoute>} />
+          <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+          <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
         </Routes>
       </main>
     </div>
