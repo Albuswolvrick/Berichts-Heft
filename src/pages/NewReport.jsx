@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NewReport = () => {
-  const [formData, setFormData] = useState({
-    traineeName: '',
-    trainingYear: '',
-    reportNumber: '',
-    date: '',
-    activities: '',
-    schoolTopic: '',
-    comments: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [weekId, setWeekId] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,12 +13,12 @@ const NewReport = () => {
       const response = await fetch('/api/reports', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ title, content, weekId: parseInt(weekId) }),
       });
 
       if (response.ok) {
         console.log('Report created successfully');
-        // Reset form or redirect
+        navigate('/');
       } else {
         console.error('Failed to create report');
       }
@@ -38,85 +29,41 @@ const NewReport = () => {
 
   return (
     <div className="report-form-container">
-      <h1>Berichtsheft erstellen</h1>
+      <h1>Create New Report</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="traineeName">Name des Auszubildenden</label>
-            <input
-              type="text"
-              id="traineeName"
-              name="traineeName"
-              value={formData.traineeName}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="trainingYear">Ausbildungsjahr</label>
-            <input
-              type="number"
-              id="trainingYear"
-              name="trainingYear"
-              value={formData.trainingYear}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="reportNumber">Berichtsnummer</label>
-            <input
-              type="text"
-              id="reportNumber"
-              name="reportNumber"
-              value={formData.reportNumber}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="date">Datum</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-
-        <div className="form-group full-width">
-          <label htmlFor="activities">Betriebliche Tätigkeit</label>
-          <textarea
-            id="activities"
-            name="activities"
-            value={formData.activities}
-            onChange={handleChange}
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
           />
         </div>
-
-        <div className="form-group full-width">
-          <label htmlFor="schoolTopic">Thema des Berufsschulunterrichts</label>
-          <textarea
-            id="schoolTopic"
-            name="schoolTopic"
-            value={formData.schoolTopic}
-            onChange={handleChange}
+        <div className="form-group">
+          <label htmlFor="weekId">Week ID</label>
+          <input
+            type="number"
+            id="weekId"
+            name="weekId"
+            value={weekId}
+            onChange={(e) => setWeekId(e.target.value)}
+            required
           />
         </div>
-
         <div className="form-group full-width">
-          <label htmlFor="comments">Bemerkungen/Fragen</label>
+          <label htmlFor="content">Content</label>
           <textarea
-            id="comments"
-            name="comments"
-            value={formData.comments}
-            onChange={handleChange}
+            id="content"
+            name="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
           />
         </div>
-
-        <button type="submit">Bericht speichern</button>
+        <button type="submit">Save Report</button>
       </form>
     </div>
   );

@@ -1,48 +1,49 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const LoginPage = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+const LoginPage = ({ onLogin }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError('');
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
-      })
+        body: JSON.stringify({ email, password }),
+      });
 
       if (response.ok) {
-        console.log('Login erfolgreich')
-        navigate('/')
+        const data = await response.json();
+        onLogin(data.user);
+        navigate('/');
       } else {
-        const message = await response.text()
-        setError(message || 'Login fehlgeschlagen')
+        const message = await response.text();
+        setError(message || 'Login fehlgeschlagen');
       }
     } catch (error) {
-      console.error('Fehler beim Login:', error)
-      setError('Verbindungsfehler')
+      console.error('Fehler beim Login:', error);
+      setError('Verbindungsfehler');
     }
-  }
+  };
 
   return (
     <div>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
-          <label>Benutzername:</label>
+          <label>Email:</label>
           <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -59,7 +60,7 @@ const LoginPage = () => {
         <button type="submit">Anmelden</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
