@@ -7,7 +7,7 @@ async function createTestUsers() {
     const admin = await prisma.user.create({
       data: {
         email: 'admin@test.com',
-        name: 'Admin node cfrTest',
+        name: 'This_sucks',
         role: 'ADMIN',
         passwordHash: await bcrypt.hash('admin123', 10),
       },
@@ -18,7 +18,7 @@ async function createTestUsers() {
     const manager = await prisma.user.create({
       data: {
         email: 'manager@test.com',
-        name: 'Manager Test',
+        name: 'Yes_it_sucks',
         role: 'MANAGER',
         passwordHash: await bcrypt.hash('manager123', 10),
       },
