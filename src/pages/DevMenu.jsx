@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 const DevMenu = () => {
   const [users, setUsers] = useState([])
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('user')
 
@@ -32,12 +32,12 @@ const DevMenu = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, role }),
+        body: JSON.stringify({ email, password, role }),
       })
 
       if (response.ok) {
         console.log('Benutzer erstellt')
-        setUsername('')
+        setEmail('')
         setPassword('')
         setRole('user')
         fetchUsers()
@@ -74,11 +74,11 @@ const DevMenu = () => {
         <form onSubmit={handleCreateUser}>
           <h4>Neuen Benutzer erstellen</h4>
           <div>
-            <label>Benutzername:</label>
+            <label>Email:</label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -95,6 +95,7 @@ const DevMenu = () => {
             <label>Rolle:</label>
             <select value={role} onChange={(e) => setRole(e.target.value)}>
               <option value="user">User</option>
+              <option value="moderator">Moderator</option>
               <option value="admin">Admin</option>
             </select>
           </div>
@@ -108,7 +109,7 @@ const DevMenu = () => {
           <ul>
             {users.map((user) => (
               <li key={user.id}>
-                {user.username} ({user.role})
+                {user.email} ({user.role})
                 <button onClick={() => handleDeleteUser(user.id)}>Löschen</button>
               </li>
             ))}

@@ -15,12 +15,12 @@ import '../public/css/style.css';
 import '../public/css/navbar.css';
 import '../public/css/report.css';
 
-const navItems = [
+const allNavItems = [
   { label: 'Home', path: '/' },
   { label: 'Tagesbericht', path: '/tagesbericht' },
   { label: 'Wochenbericht', path: '/wochenbericht' },
   { label: 'Monatsbericht', path: '/monatsbericht' },
-  { label: 'Dev Menu', path: '/dev' },
+  { label: 'Dev Menu', path: '/dev', roles: ['moderator', 'admin'] },
 ];
 
 const ProtectedRoute = ({ children }) => {
@@ -45,8 +45,16 @@ const ProtectedRoute = ({ children }) => {
     return isAuth ? children : <Navigate to="/login" />;
 };
 
+const AdminRoute = ({ children, user }) => {
+    if (!user || !['moderator', 'admin'].includes(user.role)) {
+        return <Navigate to="/" />;
+    }
+    return children;
+};
+
 function App() {
     const [user, setUser] = useState(null);
+    const [navItems, setNavItems] = useState(allNavItems);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -62,6 +70,19 @@ function App() {
         };
         fetchUser();
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            const filteredNavItems = allNavItems.filter(item => {
+                if (!item.roles) return true;
+                return item.roles.includes(user.role);
+            });
+            setNavItems(filteredNavItems);
+        } else {
+            const filteredNavItems = allNavItems.filter(item => !item.roles);
+            setNavItems(filteredNavItems);
+        }
+    }, [user]);
 
     const handleLogout = async () => {
         await fetch('/api/auth/logout', { method: 'POST' });
@@ -83,7 +104,7 @@ function App() {
               <Route path="/tagesbericht" element={<ProtectedRoute><h1>Tagesbericht</h1></ProtectedRoute>} />
               <Route path="/wochenbericht" element={<ProtectedRoute><h1>Wochenbericht</h1></ProtectedRoute>} />
               <Route path="/monatsbericht" element={<ProtectedRoute><h1>Monatsbericht</h1></ProtectedRoute>} />
-              <Route path="/dev" element={<ProtectedRoute><DevMenu /></ProtectedRoute>} />
+              <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
               <Route path="/new-report" element={<ProtectedRoute><NewReport /></ProtectedRoute>} />
               <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
               <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
