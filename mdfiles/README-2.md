@@ -1,10 +1,10 @@
-# 📖 Berichts-Heft: A Git History Chronicle
+# Berichts-Heft: A Git History Chronicle
 
 *A journey through commits, chaos, and collaboration*
 
 ---
 
-## 🌟 The Origin Story
+## The Origin Story
 
 **January 13, 2026** - In the beginning, there was nothing. Then **Sindri** said, "Let there be code!" and the repository was born.
 
@@ -22,7 +22,7 @@ Hours later, **Pierre Maurice Hesse** emerged with grand visions: A general plan
 
 ---
 
-## 🎉 The Early Days (Mid-January)
+## The Early Days (Mid-January)
 
 **January 15** was a day of great productivity:
 
@@ -35,7 +35,7 @@ Hours later, **Pierre Maurice Hesse** emerged with grand visions: A general plan
 
 ---
 
-## 🏗️ The Great Restructuring (January 19)
+## The Great Restructuring (January 19)
 
 **JackApfel** entered the scene with architectural changes that would reshape the project forever:
 
@@ -55,7 +55,7 @@ Meanwhile, **Sindri** was adding helpful comments to port variables because docu
 
 ---
 
-## 🎨 The Design Era (Late January)
+## The Design Era (Late January)
 
 **Pierre Maurice Hesse** returned with style:
 
@@ -78,7 +78,7 @@ Security matters!
 
 ---
 
-## 🔄 The Modern Era (February 2026)
+## The Modern Era (February 2026)
 
 **February 2** - A day of mysterious changes and major migrations:
 
@@ -102,7 +102,7 @@ Security matters!
 
 ---
 
-## 🔐 Authentication & Routing (February 3)
+## Authentication & Routing (February 3)
 
 **February 3** - A major leap forward with the implementation of a full authentication system and client-side routing.
 
@@ -117,22 +117,22 @@ Security matters!
 
 ---
 
-## 👥 The Team
+## The Team
 
-### 🧙 Sindri
+### Sindri
 *The Foundation Keeper*
 - Created the initial commit
 - Adds thoughtful comments
 - Fixes typos and formatting
 
-### 🎨 Pierre Maurice Hesse
+### Pierre Maurice Hesse
 *The Visionary*
 - Creator of plans and UI concepts
 - Master of CSS and page organization
 - Known for philosophical commit messages
 - Speaks in multiple languages
 
-### ⚙️ JackApfel
+### JackApfel
 *The Architect*
 - Restructured the entire project
 - Brought Node.js into the picture
@@ -141,33 +141,33 @@ Security matters!
 
 ---
 
-## 📊 Project Evolution Timeline
+## Project Evolution Timeline
 
 ```
-📅 Week 1: Genesis & Planning
-📅 Week 2: Restructuring & Server Setup
-📅 Week 3: Database Integration
-📅 Week 4: The Prisma Migration
-📅 Week 5: Authentication & Routing
+Week 1: Genesis & Planning
+Week 2: Restructuring & Server Setup
+Week 3: Database integration (MySQL)
+Week 4: The Prisma Migration
+Week 5: Authentication & Routing
 ```
 
 ---
 
-## 🎯 Key Milestones
+## Key Milestones
 
-1. ✅ Initial structure created
-2. ✅ Frontend pages and styling established
-3. ✅ Backend server with Express
-4. ✅ Database integration (MySQL)
-5. ✅ Migration to Prisma + SQLite
-6. ✅ TypeScript support added
-7. ✅ Full User Authentication & Session Management
-8. ✅ Client-Side Routing with React Router
-9. ✅ Documentation maintained (mostly!)
+1. Initial structure created
+2. Frontend pages and styling established
+3. Backend server with Express
+4. Database integration (MySQL)
+5. Migration to Prisma + SQLite
+6. TypeScript support added
+7. Full User Authentication & Session Management
+8. Client-Side Routing with React Router
+9. Documentation maintained (mostly!)
 
 ---
 
-## 🤔 Memorable Commit Messages
+## Memorable Commit Messages
 
 > "well I do not know what is going on heare since visualy notzhing changed"
 
@@ -179,7 +179,7 @@ Security matters!
 
 ---
 
-## 🎓 Lessons Learned
+## Lessons Learned
 
 - Typos in commit messages add character
 - Sometimes you need to restructure everything
@@ -190,20 +190,20 @@ Security matters!
 
 ---
 
-## 🚀 Current State
+## Current State
 
 As of February 3, 2026, the project has:
-- ✨ Prisma ORM with SQLite
-- 🎨 Styled pages with navbar
-- 🔐 Full user authentication (login, logout, register)
-- 路由 Client-side routing with React Router
-- 📦 Proper Node.js structure
-- 🎯 TypeScript support
-- 📝 This magnificent README
+- Prisma ORM with SQLite
+- Styled pages with navbar
+- Full user authentication (login, logout, register)
+- Client-side routing with React Router
+- Proper Node.js structure
+- TypeScript support
+- This magnificent README
 
 ---
 
-*Made with ❤️ (and probably too much coffee) by Sindri, Pierre Maurice Hesse, and JackApfel*
+*Made with (and probably too much coffee) by Sindri, Pierre Maurice Hesse, and JackApfel*
 
 **Total Commits:** 42 (and counting!)
 **Languages:** JavaScript, HTML, CSS, Prisma
@@ -211,4 +211,4 @@ As of February 3, 2026, the project has:
 
 ---
 
-> "Aded the general plan but a badly desighned Ui" - The project motto 🎨
+> "Aded the general plan but a badly desighned Ui" - The project motto
