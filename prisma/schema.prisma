@@ -59,7 +59,9 @@ model Report {
   week        Week         @relation(fields: [weekId], references: [id], onDelete: Cascade)
   date        DateTime     @default(now())
   title       String
-  content     String?
+  content1    String?
+  content2    String?     
+  content3    String?
   status      ReportStatus @default(DRAFT)
   attachments Attachment[]
   createdAt   DateTime     @default(now())
