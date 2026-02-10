@@ -64,7 +64,7 @@ function isAdmin(req, res, next) {
 
 // Register a new user
 app.post('/api/auth/register', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
     try {
         const userCount = await prisma.user.count();
         const role = userCount === 0 ? 'ADMIN' : 'TRAINEE';
@@ -72,7 +72,7 @@ app.post('/api/auth/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await prisma.user.create({
             data: {
-                name,
+                name: username,
                 email,
                 passwordHash: hashedPassword,
                 role,
@@ -204,6 +204,29 @@ app.put('/api/users/:id', isAuthenticated, isAdmin, async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
         res.status(500).json({ error: 'Failed to update user' });
+    }
+});
+
+// Update a user's password (for admins)
+app.put('/api/users/:id/password', isAuthenticated, isAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        await prisma.user.update({
+            where: { id: parseInt(id) },
+            data: {
+                passwordHash: hashedPassword,
+            },
+        });
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Failed to update password:', error);
+        if (error.code === 'P2025') { // Record to update not found
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(500).json({ error: 'Failed to update password' });
     }
 });
 
