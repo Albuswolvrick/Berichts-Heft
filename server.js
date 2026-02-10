@@ -56,19 +56,32 @@ function isAuthenticated(req, res, next) {
     }
 }
 
+// Middleware to check for admin/manager/moderator roles
+function isAdmin(req, res, next) {
+    if (!req.user || !['ADMIN', 'MANAGER', 'MODERATOR'].includes(req.user.role)) {
+        return res.status(403).json({ error: 'Forbidden' });
+    }
+    next();
+}
+
 // Register a new user
 app.post('/api/auth/register', async (req, res) => {
     const { name, email, password } = req.body;
     try {
+        const userCount = await prisma.user.count();
+        const role = userCount === 0 ? 'ADMIN' : 'TRAINEE';
+
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await prisma.user.create({
             data: {
                 name,
                 email,
                 passwordHash: hashedPassword,
+                role,
             },
         });
-        const token = jwt.sign({ id: user.id, name: user.name }, JWT_SECRET, { expiresIn: '1w' });
+        // why do i Use tokens and no Cockies
+        const token = jwt.sign({ id: user.id, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '1w' });
         req.session.token = token;
         res.status(201).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
     } catch (error) {
@@ -119,6 +132,98 @@ app.get('/api/users/me', isAuthenticated, async (req, res) => {
         res.status(200).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
     } catch (error) {
         res.status(500).json({ error: 'Failed to get user' });
+    }
+});
+
+// Get all users (for admins)
+app.get('/api/users', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+            }
+        });
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Failed to get users:', error);
+        res.status(500).json({ error: 'Failed to get users' });
+    }
+});
+
+// Create a new user (for admins)
+app.post('/api/users', isAuthenticated, isAdmin, async (req, res) => {
+    const { name, email, password, role } = req.body;
+     if (!role) {
+        return res.status(400).json({ error: 'Role is required' });
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const user = await prisma.user.create({
+            data: {
+                name,
+                email,
+                passwordHash: hashedPassword,
+                role, // Make sure role is passed and handled
+            },
+        });
+        res.status(201).json({ id: user.id, name: user.name, email: user.email, role: user.role });
+    } catch (error) {
+        console.error('Failed to create user:', error);
+        if (error.code === 'P2002') { // Unique constraint violation (e.g., email already exists)
+            return res.status(409).json({ error: 'Email already in use' });
+        }
+        res.status(500).json({ error: 'Failed to create user' });
+    }
+});
+
+// Update a user (for admins)
+app.put('/api/users/:id', isAuthenticated, isAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { name, email, role } = req.body;
+
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { id: parseInt(id) },
+            data: {
+                name,
+                email,
+                role,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+            }
+        });
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error('Failed to update user:', error);
+        if (error.code === 'P2025') { // Record to update not found
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(500).json({ error: 'Failed to update user' });
+    }
+});
+
+// Delete a user (for admins)
+app.delete('/api/users/:id', isAuthenticated, isAdmin, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await prisma.user.delete({
+            where: { id: parseInt(id) },
+        });
+        res.status(204).send();
+    } catch (error) {
+        console.error('Failed to delete user:', error);
+        if (error.code === 'P2025') { // Record to delete not found
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(500).json({ error: 'Failed to delete user' });
     }
 });
 

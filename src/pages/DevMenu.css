@@ -1,0 +1,43 @@
+.dev-menu {
+  font-family: sans-serif;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+.error-message {
+  color: red;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+}
+.create-user-form, .user-details, .edit-user-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+}
+.user-list {
+  list-style: none;
+  padding: 0;
+}
+.user-list li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+.user-details {
+  justify-content: space-between;
+}
+input, select, button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+button:hover {
+}
