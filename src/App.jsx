@@ -20,7 +20,7 @@ const allNavItems = [
   { label: 'Tagesbericht', path: '/tagesbericht' },
   { label: 'Wochenbericht', path: '/wochenbericht' },
   { label: 'Monatsbericht', path: '/monatsbericht' },
-  { label: 'Dev Menu', path: '/dev', roles: ['moderator', 'admin'] },
+  { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
 ];
 
 const ProtectedRoute = ({ children }) => {
@@ -46,7 +46,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const AdminRoute = ({ children, user }) => {
-    if (!user || !['moderator', 'admin'].includes(user.role)) {
+    if (!user || !['MODERATOR', 'ADMIN', 'MANAGER'].includes(user.role)) {
         return <Navigate to="/" />;
     }
     return children;
