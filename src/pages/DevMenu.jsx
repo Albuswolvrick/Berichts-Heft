@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useToast } from './../hooks/useToast';
 import './DevMenu.css';
 
 // Inline component for managing a single user row
-const UserRow = ({ user, onUpdate, onDelete }) => {
+const UserRow = ({ user, onUpdate, onDelete, onUpdatePassword }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [role, setRole] = useState(user.role);
+  const [password, setPassword] = useState('');
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const handleUpdate = async () => {
     try {
@@ -14,6 +17,17 @@ const UserRow = ({ user, onUpdate, onDelete }) => {
       setIsEditing(false);
     } catch (error) {
       console.error('Failed to update user', error);
+      // Optionally, show an error message to the user
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    try {
+      await onUpdatePassword(user.id, { password });
+      setIsChangingPassword(false);
+      setPassword('');
+    } catch (error) {
+      console.error('Failed to update password', error);
       // Optionally, show an error message to the user
     }
   };
@@ -38,8 +52,16 @@ const UserRow = ({ user, onUpdate, onDelete }) => {
           <span>{user.name} ({user.email}) - {user.role}</span>
           <div>
             <button onClick={() => setIsEditing(true)} className="btn btn-primary">Edit</button>
+            <button onClick={() => setIsChangingPassword(!isChangingPassword)} className="btn btn-primary">Change Password</button>
             <button onClick={() => onDelete(user.id)} className="btn btn-logout">Delete</button>
           </div>
+        </div>
+      )}
+      {isChangingPassword && (
+        <div className="edit-user-form">
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="New Password" />
+          <button onClick={handlePasswordChange} className="btn btn-ready">Save Password</button>
+          <button onClick={() => setIsChangingPassword(false)} className="btn">Cancel</button>
         </div>
       )}
     </li>
@@ -53,6 +75,8 @@ const DevMenu = () => {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('USER');
   const [error, setError] = useState('');
+  const [creationStatus, setCreationStatus] = useState('idle');
+  const showToast = useToast();
 
   useEffect(() => {
     fetchUsers();
@@ -76,6 +100,7 @@ const DevMenu = () => {
   const handleCreateUser = async (e) => {
     e.preventDefault();
     setError('');
+    setCreationStatus('idle');
     try {
       const response = await fetch('/api/users', { // Changed to /api/users
         method: 'POST',
@@ -89,12 +114,17 @@ const DevMenu = () => {
         setPassword('');
         setRole('USER');
         await fetchUsers();
+        showToast('User created successfully!', { type: 'success' });
       } else {
         const err = await response.json();
         setError(`Failed to create user: ${err.error}`);
+        setCreationStatus('error');
+        setTimeout(() => setCreationStatus('idle'), 1500); // Reset after animation
       }
     } catch (error) {
       setError('An unexpected error occurred.');
+      setCreationStatus('error');
+      setTimeout(() => setCreationStatus('idle'), 1500); // Reset after animation
     }
   };
   
@@ -120,6 +150,29 @@ const DevMenu = () => {
     }
   };
 
+  const handleUpdateUserPassword = async (userId, passwordData) => {
+    setError('');
+    try {
+      const response = await fetch(`/api/users/${userId}/password`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(passwordData),
+      });
+
+      if (response.ok) {
+        await fetchUsers(); // Refresh the user list
+        showToast('Password updated successfully!', { type: 'success' });
+      } else {
+        const err = await response.json();
+        setError(`Failed to update password: ${err.error}`);
+        throw new Error(err.error); // Throw error to be caught in UserRow
+      }
+    } catch (error) {
+      setError('An unexpected error occurred while updating.');
+      throw error; // Re-throw to be caught in UserRow
+    }
+  };
+
   const handleDeleteUser = async (userId) => {
     setError('');
     if (window.confirm('Are you sure you want to delete this user?')) {
@@ -130,6 +183,7 @@ const DevMenu = () => {
 
         if (response.ok) {
           await fetchUsers(); // Refresh the list
+          showToast('User deleted successfully!', { type: 'success' });
         } else {
           const err = await response.json();
           setError(`Failed to delete user: ${err.error}`);
@@ -159,7 +213,9 @@ const DevMenu = () => {
             <option value="MANAGER">Manager</option>
             <option value="ADMIN">Admin</option>
           </select>
-          <button type="submit" className="btn btn-primary">Create User</button>
+          <button type="submit" className={`btn btn-primary ${creationStatus === 'error' ? 'flash-error' : ''}`}>
+            Create User
+          </button>
         </form>
 
         <h4>Existing Users</h4>
@@ -168,7 +224,7 @@ const DevMenu = () => {
         ) : (
           <ul className="user-list">
             {users.map((user) => (
-              <UserRow key={user.id} user={user} onUpdate={handleUpdateUser} onDelete={handleDeleteUser} />
+              <UserRow key={user.id} user={user} onUpdate={handleUpdateUser} onDelete={handleDeleteUser} onUpdatePassword={handleUpdateUserPassword} />
             ))}
           </ul>
         )}
