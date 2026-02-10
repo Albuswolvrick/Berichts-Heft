@@ -6,12 +6,24 @@ import { useToast } from '../hooks/useToast';
 const EditReport = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [reportType, setReportType] = useState('');
   const [weekId, setWeekId] = useState('');
+  const [status, setStatus] = useState('DRAFT');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToast } = useToast();
+
+  // State for detailed weekly report fields
+  const [trainingYear, setTrainingYear] = useState('');
+  const [reportNumber, setReportNumber] = useState('');
+  const [weekStart, setWeekStart] = useState('');
+  const [weekEnd, setWeekEnd] = useState('');
+  const [department, setDepartment] = useState('');
+  const [activities, setActivities] = useState('');
+  const [instructions, setInstructions] = useState('');
+  const [school, setSchool] = useState('');
 
   useEffect(() => {
     fetchReport();
@@ -24,12 +36,25 @@ const EditReport = () => {
         const data = await response.json();
         setTitle(data.title);
         setContent(data.content);
+        setReportType(data.reportType);
         setWeekId(data.weekId);
+        setStatus(data.status);
+
+        if (data.reportType === 'WEEK') {
+            setTrainingYear(data.trainingYear || '');
+            setReportNumber(data.reportNumber || '');
+            setWeekStart(data.weekStart ? new Date(data.weekStart).toISOString().split('T')[0] : '');
+            setWeekEnd(data.weekEnd ? new Date(data.weekEnd).toISOString().split('T')[0] : '');
+            setDepartment(data.department || '');
+            setActivities(data.activities || '');
+            setInstructions(data.instructions || '');
+            setSchool(data.school || '');
+        }
       } else {
-        addToast(`Failed to fetch report with id ${id}`, 'error');
+        addToast(`Failed to fetch report with id ${id}`, { appearance: 'error' });
       }
     } catch (error) {
-      addToast('Error: ' + error.message, 'error');
+      addToast('Error: ' + error.message, { appearance: 'error' });
     } finally {
       setLoading(false);
     }
@@ -38,21 +63,39 @@ const EditReport = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+
+    const reportData = {
+        title,
+        content,
+        status,
+        ...(reportType === 'WEEK' && { 
+          trainingYear,
+          reportNumber,
+          weekStart,
+          weekEnd,
+          department,
+          activities,
+          instructions,
+          school,
+        }),
+      };
+
     try {
       const response = await fetch(`/api/reports/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content, weekId: parseInt(weekId) }),
+        body: JSON.stringify(reportData),
       });
 
       if (response.ok) {
-        addToast('Report updated successfully', 'success');
+        addToast('Report updated successfully', { appearance: 'success' });
         navigate(`/reports/${id}`);
       } else {
-        addToast('Failed to update report', 'error');
+        const errorData = await response.json();
+        addToast(errorData.error || 'Failed to update report', { appearance: 'error' });
       }
     } catch (error) {
-      addToast('Error submitting report: ' + error.message, 'error');
+      addToast('Error submitting report: ' + error.message, { appearance: 'error' });
     } finally {
       setSubmitting(false);
     }
@@ -67,41 +110,86 @@ const EditReport = () => {
       <h1>Edit Report</h1>
       <form onSubmit={handleSubmit}>
         <fieldset disabled={submitting}>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="weekId">Week ID</label>
-            <input
-              type="number"
-              id="weekId"
-              name="weekId"
-              value={weekId}
-              onChange={(e) => setWeekId(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group full-width">
-            <label htmlFor="content">Content</label>
-            <textarea
-              id="content"
-              name="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" disabled={submitting}>
-            {submitting ? 'Saving...' : 'Save Report'}
-          </button>
+            <div className="form-group">
+                <label>Report Type: {reportType}</label>
+            </div>
+            {reportType === 'WEEK' && weekId && (
+                <div className="form-group">
+                <label>Week ID: {weekId}</label>
+                </div>
+            )}
+            <div className="form-group">
+                <label htmlFor="title">Title</label>
+                <input
+                type="text"
+                id="title"
+                name="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="status">Status</label>
+                <select id="status" value={status} onChange={(e) => setStatus(e.target.value)} required>
+                <option value="DRAFT">Draft</option>
+                <option value="SUBMITTED">Submitted</option>
+                <option value="APPROVED">Approved</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="REVISION_REQUIRED">Revision Required</option>
+                </select>
+            </div>
+
+            {reportType === 'WEEK' && (
+            <>
+                <div className="form-group">
+                    <label htmlFor="trainingYear">Ausbildungsjahr</label>
+                    <input type="number" id="trainingYear" value={trainingYear} onChange={(e) => setTrainingYear(e.target.value)} disabled={submitting} />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="reportNumber">Berichts-Nr.</label>
+                    <input type="number" id="reportNumber" value={reportNumber} onChange={(e) => setReportNumber(e.target.value)} disabled={submitting} />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="weekStart">für die Woche vom</label>
+                    <input type="date" id="weekStart" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} disabled={submitting} />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="weekEnd">bis</label>
+                    <input type="date" id="weekEnd" value={weekEnd} onChange={(e) => setWeekEnd(e.target.value)} disabled={submitting} />
+                </div>
+                <div className="form-group full-width">
+                    <label htmlFor="department">Ausbildungsabteilung</label>
+                    <input type="text" id="department" value={department} onChange={(e) => setDepartment(e.target.value)} disabled={submitting} />
+                </div>
+                <div className="form-group full-width">
+                    <label htmlFor="activities">Betriebliche Tätigkeiten</label>
+                    <textarea id="activities" value={activities} onChange={(e) => setActivities(e.target.value)} disabled={submitting} />
+                </div>
+                <div className="form-group full-width">
+                    <label htmlFor="instructions">Unterweisungen, betrieblicher Unterricht, sonstige Schulungen</label>
+                    <textarea id="instructions" value={instructions} onChange={(e) => setInstructions(e.target.value)} disabled={submitting} />
+                </div>
+                <div className="form-group full-width">
+                    <label htmlFor="school">Berufsschule</label>
+                    <textarea id="school" value={school} onChange={(e) => setSchool(e.target.value)} disabled={submitting} />
+                </div>
+            </>
+            )}
+
+            <div className="form-group full-width">
+                <label htmlFor="content">Content</label>
+                <textarea
+                id="content"
+                name="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
+                />
+            </div>
+            <button type="submit" disabled={submitting}>
+                {submitting ? 'Saving...' : 'Save Report'}
+            </button>
         </fieldset>
       </form>
     </div>

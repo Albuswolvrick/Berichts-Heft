@@ -253,24 +253,43 @@ app.delete('/api/users/:id', isAuthenticated, isAdmin, async (req, res) => {
 
 // Create a new report
 app.post('/api/reports', isAuthenticated, async (req, res) => {
-  const { title, content, weekId } = req.body;
-  const userId = req.user.id;
-
-  try {
-    const report = await prisma.report.create({
-      data: {
+    const { title, content, reportType, weekId, trainingYear, reportNumber, weekStart, weekEnd, department, activities, instructions, school } = req.body;
+    const userId = req.user.id;
+  
+    // Basic validation
+    if (!title || !content || !reportType) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+  
+    try {
+      const reportData = {
         title,
         content,
+        reportType,
         userId,
-        weekId,
-      },
-    });
-    res.status(201).json(report);
-  } catch (error) {
-    console.error('Failed to create report:', error);
-    res.status(500).json({ error: 'Failed to create report' });
-  }
-});
+      };
+  
+      if (reportType === 'WEEK') {
+        reportData.weekId = weekId ? parseInt(weekId) : null;
+        reportData.trainingYear = trainingYear;
+        reportData.reportNumber = reportNumber;
+        reportData.weekStart = weekStart ? new Date(weekStart) : null;
+        reportData.weekEnd = weekEnd ? new Date(weekEnd) : null;
+        reportData.department = department;
+        reportData.activities = activities;
+        reportData.instructions = instructions;
+        reportData.school = school;
+      }
+  
+      const report = await prisma.report.create({
+        data: reportData,
+      });
+      res.status(201).json(report);
+    } catch (error) {
+      console.error('Failed to create report:', error);
+      res.status(500).json({ error: 'Failed to create report' });
+    }
+  });
 
 // Get all reports for the current user
 app.get('/api/reports', isAuthenticated, async (req, res) => {
@@ -309,7 +328,7 @@ app.get('/api/reports/:id', isAuthenticated, async (req, res) => {
 // Update a report
 app.put('/api/reports/:id', isAuthenticated, async (req, res) => {
     const { id } = req.params;
-    const { title, content } = req.body;
+    const { title, content, status, trainingYear, reportNumber, weekStart, weekEnd, department, activities, instructions, school } = req.body;
     const userId = req.user.id;
 
     try {
@@ -317,13 +336,35 @@ app.put('/api/reports/:id', isAuthenticated, async (req, res) => {
             where: { id: parseInt(id) },
         });
 
-        if (!report || report.userId !== userId) {
+        if (!report) {
             return res.status(404).json({ error: 'Report not found' });
         }
 
+        if (report.userId !== userId && !['ADMIN', 'MANAGER'].includes(req.user.role)) {
+            return res.status(403).json({ error: 'You are not authorized to edit this report' });
+        }
+        
+        const dataToUpdate = {
+            title,
+            content,
+            status,
+        };
+
+        if (report.reportType === 'WEEK') {
+            dataToUpdate.trainingYear = trainingYear;
+            dataToUpdate.reportNumber = reportNumber;
+            dataToUpdate.weekStart = weekStart ? new Date(weekStart) : null;
+            dataToUpdate.weekEnd = weekEnd ? new Date(weekEnd) : null;
+            dataToUpdate.department = department;
+            dataToUpdate.activities = activities;
+            dataToUpdate.instructions = instructions;
+            dataToUpdate.school = school;
+        }
+
+
         const updatedReport = await prisma.report.update({
             where: { id: parseInt(id) },
-            data: { title, content },
+            data: dataToUpdate,
         });
 
         res.status(200).json(updatedReport);
