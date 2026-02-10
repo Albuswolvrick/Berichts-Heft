@@ -25,6 +25,13 @@ enum ReportStatus {
   REVISION_REQUIRED
 }
 
+enum ReportType {
+  DAY
+  WEEK
+  MONTH
+  YEAR
+}
+
 model User {
   id           Int        @id @default(autoincrement())
   email        String     @unique
@@ -52,20 +59,29 @@ model Week {
 }
 
 model Report {
-  id          Int          @id @default(autoincrement())
-  userId      Int
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  weekId      Int
-  week        Week         @relation(fields: [weekId], references: [id], onDelete: Cascade)
-  date        DateTime     @default(now())
-  title       String
-  content1    String?
-  content2    String?     
-  content3    String?
-  status      ReportStatus @default(DRAFT)
-  attachments Attachment[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id             Int          @id @default(autoincrement())
+  userId         Int
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekId         Int?
+  week           Week?        @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  reportType     ReportType   @default(WEEK)
+  date           DateTime     @default(now())
+  title          String
+  content        String
+  status         ReportStatus @default(DRAFT)
+  attachments    Attachment[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Detailed fields for weekly reports
+  trainingYear   Int?
+  reportNumber   Int?
+  weekStart      DateTime?
+  weekEnd        DateTime?
+  department     String?
+  activities     String?
+  instructions   String?
+  school         String?
 
   @@index([userId])
   @@index([weekId])
