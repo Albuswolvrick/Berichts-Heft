@@ -5,7 +5,7 @@ import { useTheme } from '../hooks/useTheme';
 
 const Navbar = ({ items, user, onLogout }) => {
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, setCustomTheme } = useTheme();
 
   return (
     <nav className="vertical-nav">
@@ -37,6 +37,9 @@ const Navbar = ({ items, user, onLogout }) => {
       </button>
       <button className="nav-button theme-switcher" onClick={toggleTheme}>
         {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+      </button>
+      <button className="nav-button theme-switcher" onClick={() => setCustomTheme('doom')}>
+        Doom Mode
       </button>
     </nav>
   );
