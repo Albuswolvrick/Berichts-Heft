@@ -11,8 +11,16 @@ const MonthlyReportPage = () => {
   const [keyAchievements, setKeyAchievements] = useState('');
   const [goals, setGoals] = useState('');
   const [totalHours, setTotalHours] = useState('');
+  const [status, setStatus] = useState('DRAFT');
 
-  const handleSave = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!month || !year || !monthStart || !monthEnd || !summary || !keyAchievements || !goals || !totalHours) {
+        alert('Please fill out all fields.');
+        return;
+    }
+
     try {
       const response = await fetch('/api/monthly-reports', {
         method: 'POST',
@@ -28,11 +36,22 @@ const MonthlyReportPage = () => {
           keyAchievements,
           goals,
           totalHours: parseFloat(totalHours),
+          status,
         }),
       });
 
       if (response.ok) {
         alert('Monthly report saved successfully!');
+        // Optionally, clear the form
+        setMonth('');
+        setYear('');
+        setMonthStart('');
+        setMonthEnd('');
+        setSummary('');
+        setKeyAchievements('');
+        setGoals('');
+        setTotalHours('');
+        setStatus('DRAFT');
       } else {
         const errorData = await response.json();
         alert(`Failed to save monthly report: ${errorData.error}`);
@@ -59,76 +78,56 @@ const MonthlyReportPage = () => {
   };
 
   return (
-    <div>
+    <div className="report-form-container">
       <h1>Monthly Report</h1>
-      <form>
-        <div>
-          <label>Month:</label>
-          <input
-            type="number"
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-          />
+      <form onSubmit={handleSubmit}>
+        <div className="form-row">
+            <div className="form-group">
+                <label>Month:</label>
+                <input type="number" value={month} onChange={(e) => setMonth(e.target.value)} required />
+            </div>
+            <div className="form-group">
+                <label>Year:</label>
+                <input type="number" value={year} onChange={(e) => setYear(e.target.value)} required />
+            </div>
         </div>
-        <div>
-          <label>Year:</label>
-          <input
-            type="number"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-          />
+        <div className="form-row">
+            <div className="form-group">
+                <label>Month Start:</label>
+                <input type="date" value={monthStart} onChange={(e) => setMonthStart(e.target.value)} required />
+            </div>
+            <div className="form-group">
+                <label>Month End:</label>
+                <input type="date" value={monthEnd} onChange={(e) => setMonthEnd(e.target.value)} required />
+            </div>
         </div>
-        <div>
-          <label>Month Start:</label>
-          <input
-            type="date"
-            value={monthStart}
-            onChange={(e) => setMonthStart(e.target.value)}
-          />
+        <div className="form-group full-width">
+            <label>Total Hours:</label>
+            <input type="number" value={totalHours} onChange={(e) => setTotalHours(e.target.value)} required />
         </div>
-        <div>
-          <label>Month End:</label>
-          <input
-            type="date"
-            value={monthEnd}
-            onChange={(e) => setMonthEnd(e.target.value)}
-          />
+        <div className="form-group full-width">
+            <label>Summary:</label>
+            <textarea value={summary} onChange={(e) => setSummary(e.target.value)} required />
         </div>
-        <div>
-          <label>Total Hours:</label>
-          <input
-            type="number"
-            value={totalHours}
-            onChange={(e) => setTotalHours(e.target.value)}
-          />
+        <div className="form-group full-width">
+            <label>Key Achievements:</label>
+            <textarea value={keyAchievements} onChange={(e) => setKeyAchievements(e.target.value)} required />
         </div>
-        <div>
-          <label>Summary:</label>
-          <textarea
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-          />
+        <div className="form-group full-width">
+            <label>Goals:</label>
+            <textarea value={goals} onChange={(e) => setGoals(e.target.value)} required />
         </div>
-        <div>
-          <label>Key Achievements:</label>
-          <textarea
-            value={keyAchievements}
-            onChange={(e) => setKeyAchievements(e.target.value)}
-          />
+        <div className="form-group full-width">
+            <label>Status:</label>
+            <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                <option value="DRAFT">Draft</option>
+                <option value="SUBMITTED">Submitted</option>
+            </select>
         </div>
-        <div>
-          <label>Goals:</label>
-          <textarea
-            value={goals}
-            onChange={(e) => setGoals(e.target.value)}
-          />
+        <div className="button-group">
+            <button type="submit">Save Report</button>
+            <button type="button" className="download-btn" onClick={handleDownloadPDF}>Download as PDF</button>
         </div>
-        <button type="button" onClick={handleSave}>
-          Save Report
-        </button>
-        <button type="button" onClick={handleDownloadPDF}>
-          Download as PDF
-        </button>
       </form>
     </div>
   );
