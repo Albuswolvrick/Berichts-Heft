@@ -32,7 +32,7 @@ const Navbar = ({ items, user, onLogout }) => {
           {item.label}
         </button>
       ))}
-      <button className="nav-button" onClick={() => navigate('/new-report')}>
+      <button className="nav-button" onClick={() => navigate('/reports/new')}>
         New Report
       </button>
       <button className="nav-button theme-switcher" onClick={toggleTheme}>

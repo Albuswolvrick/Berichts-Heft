@@ -13,6 +13,7 @@ import DailyReportPage from './pages/DailyReportPage';
 import WeeklyReportPage from './pages/WeeklyReportPage';
 import MonthlyReportPage from './pages/MonthlyReportPage';
 import YearlyReportPage from './pages/YearlyReportPage';
+import NewReportPage from './pages/NewReportPage';
 import AdminPage from './pages/AdminPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
@@ -22,10 +23,7 @@ import '../public/css/report.css';
 
 const allNavItems = [
   { label: 'Home', path: '/' },
-  { label: 'Daily Report', path: '/daily-reports' },
-  { label: 'Weekly Report', path: '/weekly-reports' },
-  { label: 'Monthly Report', path: '/monthly-reports' },
-  { label: 'Yearly Report', path: '/yearly-reports' },
+  { label: 'New Report', path: '/reports/new' },
   { label: 'Admin Dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
   { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
 ];
@@ -108,10 +106,11 @@ function App() {
               <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
               <Route path="/login" element={<LoginPage onLogin={setUser} />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/daily-reports" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
-              <Route path="/weekly-reports" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
-              <Route path="/monthly-reports" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
-              <Route path="/yearly-reports" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
+              <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
+              <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
+              <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
+              <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
+              <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
               <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
               <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
               <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
