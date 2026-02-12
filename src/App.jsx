@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -5,7 +6,6 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DevMenu from './pages/DevMenu';
-import NewReport from './pages/NewReport';
 import ReportPage from './pages/ReportPage';
 import EditReport from './pages/EditReport';
 import ProfilePage from './pages/ProfilePage';
@@ -22,10 +22,10 @@ import '../public/css/report.css';
 
 const allNavItems = [
   { label: 'Home', path: '/' },
-  { label: 'Tagesbericht', path: '/daily-reports' },
-  { label: 'Wochenbericht', path: '/weekly-reports' },
-  { label: 'Monatsbericht', path: '/monthly-reports' },
-  { label: 'Jahresbericht', path: '/yearly-reports' },
+  { label: 'Daily Report', path: '/daily-reports' },
+  { label: 'Weekly Report', path: '/weekly-reports' },
+  { label: 'Monthly Report', path: '/monthly-reports' },
+  { label: 'Yearly Report', path: '/yearly-reports' },
   { label: 'Admin Dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
   { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
 ];
@@ -112,9 +112,8 @@ function App() {
               <Route path="/weekly-reports" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
               <Route path="/monthly-reports" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
               <Route path="/yearly-reports" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-              <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
+              <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminPage>} />
               <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
-              <Route path="/new-report" element={<ProtectedRoute><NewReport /></ProtectedRoute>} />
               <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
               <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
