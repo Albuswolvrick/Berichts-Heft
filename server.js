@@ -7,9 +7,11 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const { prisma } = require('./db.js');
 const SQLiteStore = require('connect-sqlite3')(session);
-const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = 'your-jwt-secret'; // Replace with a strong secret
+const { isAuthenticated } = require('./middleware/auth');
+const dailyReportsRouter = require('./routes/dailyReports');
+const weeklyReportsRouter = require('./routes/weeklyReports');
+const monthlyReportsRouter = require('./routes/monthlyReports');
+const yearlyReportsRouter = require('./routes/yearlyReports');
 
 // Test Prisma connection
 prisma.$connect()
@@ -40,28 +42,14 @@ app.use(session({
     } 
 }));
 
-// Middleware to check if the user is authenticated
-function isAuthenticated(req, res, next) {
-    const token = req.session.token;
-    if (!token) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        req.user = decoded;
+// Middleware to check for specific roles
+function hasRole(roles) {
+    return function(req, res, next) {
+        if (!req.user || !roles.includes(req.user.role)) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
         next();
-    } catch (error) {
-        return res.status(401).json({ error: 'Unauthorized' });
     }
-}
-
-// Middleware to check for admin/manager/moderator roles
-function isAdmin(req, res, next) {
-    if (!req.user || !['ADMIN', 'MANAGER', 'MODERATOR'].includes(req.user.role)) {
-        return res.status(403).json({ error: 'Forbidden' });
-    }
-    next();
 }
 
 // Register a new user
@@ -80,9 +68,8 @@ app.post('/api/auth/register', async (req, res) => {
                 role,
             },
         });
-        // why do i Use tokens and no Cockies
-        const token = jwt.sign({ id: user.id, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '1w' });
-        req.session.token = token;
+
+        req.session.user = { id: user.id, name: user.name, role: user.role };
         res.status(201).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
     } catch (error) {
         console.error('Registration failed:', error);
@@ -99,8 +86,7 @@ app.post('/api/auth/login', async (req, res) => {
         });
 
         if (user && await bcrypt.compare(password, user.passwordHash)) {
-            const token = jwt.sign({ id: user.id, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '1w' });
-            req.session.token = token;
+            req.session.user = { id: user.id, name: user.name, role: user.role };
             res.status(200).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
@@ -129,14 +115,14 @@ app.get('/api/users/me', isAuthenticated, async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.status(200).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+        res.status(200).json({ user: { id: user.id, name: user.name, email:.email, role: user.role } });
     } catch (error) {
         res.status(500).json({ error: 'Failed to get user' });
     }
 });
 
 // Get all users (for admins)
-app.get('/api/users', isAuthenticated, isAdmin, async (req, res) => {
+app.get('/api/users', isAuthenticated, hasRole(['ADMIN']), async (req, res) => {
     try {
         const users = await prisma.user.findMany({
             select: {
@@ -154,7 +140,7 @@ app.get('/api/users', isAuthenticated, isAdmin, async (req, res) => {
 });
 
 // Create a new user (for admins)
-app.post('/api/users', isAuthenticated, isAdmin, async (req, res) => {
+app.post('/api/users', isAuthenticated, hasRole(['ADMIN']), async (req, res) => {
     const { name, email, password, role } = req.body;
      if (!role) {
         return res.status(400).json({ error: 'Role is required' });
@@ -180,7 +166,7 @@ app.post('/api/users', isAuthenticated, isAdmin, async (req, res) => {
 });
 
 // Update a user (for admins)
-app.put('/api/users/:id', isAuthenticated, isAdmin, async (req, res) => {
+app.put('/api/users/:id', isAuthenticated, hasRole(['ADMIN']), async (req, res) => {
     const { id } = req.params;
     const { name, email, role } = req.body;
 
@@ -210,7 +196,7 @@ app.put('/api/users/:id', isAuthenticated, isAdmin, async (req, res) => {
 });
 
 // Update a user's password (for admins)
-app.put('/api/users/:id/password', isAuthenticated, isAdmin, async (req, res) => {
+app.put('/api/users/:id/password', isAuthenticated, hasRole(['ADMIN']), async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;
 
@@ -233,7 +219,7 @@ app.put('/api/users/:id/password', isAuthenticated, isAdmin, async (req, res) =>
 });
 
 // Delete a user (for admins)
-app.delete('/api/users/:id', isAuthenticated, isAdmin, async (req, res) => {
+app.delete('/api/users/:id', isAuthenticated, hasRole(['ADMIN']), async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -244,160 +230,16 @@ app.delete('/api/users/:id', isAuthenticated, isAdmin, async (req, res) => {
     } catch (error) {
         console.error('Failed to delete user:', error);
         if (error.code === 'P2025') { // Record to delete not found
-            return res.status(404).json({ error: 'User not found' });
-        }
-        res.status(500).json({ error: 'Failed to delete user' });
+            return res.status(404).json({ error: 'User not.json({ error: 'Failed to delete user' });
     }
 });
 
+// Report routes
+app.use('/api/daily-reports', dailyReportsRouter);
+app.use('/api/weekly-reports', weeklyReportsRouter);
+app.use('/api/monthly-reports', monthlyReportsRouter);
+app.use('/api/yearly-reports', yearlyReportsRouter);
 
-// Create a new report
-app.post('/api/reports', isAuthenticated, async (req, res) => {
-    const { title, content, reportType, weekId, trainingYear, reportNumber, weekStart, weekEnd, department, activities, instructions, school } = req.body;
-    const userId = req.user.id;
-  
-    // Basic validation
-    if (!title || !content || !reportType) {
-      return res.status(400).json({ error: 'Missing required fields' });
-    }
-  
-    try {
-      const reportData = {
-        title,
-        content,
-        reportType,
-        userId,
-      };
-  
-      if (reportType === 'WEEK') {
-        reportData.weekId = weekId ? parseInt(weekId) : null;
-        reportData.trainingYear = trainingYear;
-        reportData.reportNumber = reportNumber;
-        reportData.weekStart = weekStart ? new Date(weekStart) : null;
-        reportData.weekEnd = weekEnd ? new Date(weekEnd) : null;
-        reportData.department = department;
-        reportData.activities = activities;
-        reportData.instructions = instructions;
-        reportData.school = school;
-      }
-  
-      const report = await prisma.report.create({
-        data: reportData,
-      });
-      res.status(201).json(report);
-    } catch (error) {
-      console.error('Failed to create report:', error);
-      res.status(500).json({ error: 'Failed to create report' });
-    }
-  });
-
-// Get all reports for the current user
-app.get('/api/reports', isAuthenticated, async (req, res) => {
-    const userId = req.user.id;
-    try {
-        const reports = await prisma.report.findMany({
-            where: { userId },
-        });
-        res.status(200).json(reports);
-    } catch (error) {
-        console.error('Failed to get reports:', error);
-        res.status(500).json({ error: 'Failed to get reports' });
-    }
-});
-
-// Get a single report by ID
-app.get('/api/reports/:id', isAuthenticated, async (req, res) => {
-    const { id } = req.params;
-    const userId = req.user.id;
-    try {
-        const report = await prisma.report.findUnique({
-            where: { id: parseInt(id) },
-        });
-
-        if (!report || report.userId !== userId) {
-            return res.status(404).json({ error: 'Report not found' });
-        }
-
-        res.status(200).json(report);
-    } catch (error) {
-        console.error('Failed to get report:', error);
-        res.status(500).json({ error: 'Failed to get report' });
-    }
-});
-
-// Update a report
-app.put('/api/reports/:id', isAuthenticated, async (req, res) => {
-    const { id } = req.params;
-    const { title, content, status, trainingYear, reportNumber, weekStart, weekEnd, department, activities, instructions, school } = req.body;
-    const userId = req.user.id;
-
-    try {
-        const report = await prisma.report.findUnique({
-            where: { id: parseInt(id) },
-        });
-
-        if (!report) {
-            return res.status(404).json({ error: 'Report not found' });
-        }
-
-        if (report.userId !== userId && !['ADMIN', 'MANAGER'].includes(req.user.role)) {
-            return res.status(403).json({ error: 'You are not authorized to edit this report' });
-        }
-        
-        const dataToUpdate = {
-            title,
-            content,
-            status,
-        };
-
-        if (report.reportType === 'WEEK') {
-            dataToUpdate.trainingYear = trainingYear;
-            dataToUpdate.reportNumber = reportNumber;
-            dataToUpdate.weekStart = weekStart ? new Date(weekStart) : null;
-            dataToUpdate.weekEnd = weekEnd ? new Date(weekEnd) : null;
-            dataToUpdate.department = department;
-            dataToUpdate.activities = activities;
-            dataToUpdate.instructions = instructions;
-            dataToUpdate.school = school;
-        }
-
-
-        const updatedReport = await prisma.report.update({
-            where: { id: parseInt(id) },
-            data: dataToUpdate,
-        });
-
-        res.status(200).json(updatedReport);
-    } catch (error) {
-        console.error('Failed to update report:', error);
-        res.status(500).json({ error: 'Failed to update report' });
-    }
-});
-
-// Delete a report
-app.delete('/api/reports/:id', isAuthenticated, async (req, res) => {
-    const { id } = req.params;
-    const userId = req.user.id;
-
-    try {
-        const report = await prisma.report.findUnique({
-            where: { id: parseInt(id) },
-        });
-
-        if (!report || report.userId !== userId) {
-            return res.status(404).json({ error: 'Report not found' });
-        }
-
-        await prisma.report.delete({
-            where: { id: parseInt(id) },
-        });
-
-        res.status(204).send();
-    } catch (error) {
-        console.error('Failed to delete report:', error);
-        res.status(500).json({ error: 'Failed to delete report' });
-    }
-});
 
 
 // Serve the React app for all non-API GET requests

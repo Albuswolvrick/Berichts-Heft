@@ -9,6 +9,11 @@ import NewReport from './pages/NewReport';
 import ReportPage from './pages/ReportPage';
 import EditReport from './pages/EditReport';
 import ProfilePage from './pages/ProfilePage';
+import DailyReportPage from './pages/DailyReportPage';
+import WeeklyReportPage from './pages/WeeklyReportPage';
+import MonthlyReportPage from './pages/MonthlyReportPage';
+import YearlyReportPage from './pages/YearlyReportPage';
+import AdminPage from './pages/AdminPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
 import '../public/css/style.css';
@@ -17,9 +22,11 @@ import '../public/css/report.css';
 
 const allNavItems = [
   { label: 'Home', path: '/' },
-  { label: 'Tagesbericht', path: '/tagesbericht' },
-  { label: 'Wochenbericht', path: '/wochenbericht' },
-  { label: 'Monatsbericht', path: '/monatsbericht' },
+  { label: 'Tagesbericht', path: '/daily-reports' },
+  { label: 'Wochenbericht', path: '/weekly-reports' },
+  { label: 'Monatsbericht', path: '/monthly-reports' },
+  { label: 'Jahresbericht', path: '/yearly-reports' },
+  { label: 'Admin Dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
   { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
 ];
 
@@ -101,9 +108,11 @@ function App() {
               <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
               <Route path="/login" element={<LoginPage onLogin={setUser} />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/tagesbericht" element={<ProtectedRoute><h1>Tagesbericht</h1></ProtectedRoute>} />
-              <Route path="/wochenbericht" element={<ProtectedRoute><h1>Wochenbericht</h1></ProtectedRoute>} />
-              <Route path="/monatsbericht" element={<ProtectedRoute><h1>Monatsbericht</h1></ProtectedRoute>} />
+              <Route path="/daily-reports" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
+              <Route path="/weekly-reports" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
+              <Route path="/monthly-reports" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
+              <Route path="/yearly-reports" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
+              <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
               <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
               <Route path="/new-report" element={<ProtectedRoute><NewReport /></ProtectedRoute>} />
               <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
