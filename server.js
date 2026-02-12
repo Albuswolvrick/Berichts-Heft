@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'dist'))); // Serve static files from dist
 
-
+// I hope that the cockie system is god and works as intended what is the problem? when it does not work
 app.use(session({
     store: new SQLiteStore({
       db: 'sessions.db',
@@ -45,7 +45,7 @@ app.use(session({
     cookie: { 
         secure: process.env.NODE_ENV === 'production', // secure in production (HTTPS), false in development
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+        maxAge: 1000 * 60 * 60 * 24  // 1 day
     } 
 }));
 

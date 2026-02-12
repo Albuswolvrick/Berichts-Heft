@@ -5,19 +5,20 @@ const { isAuthenticated, isAdminOrManager } = require('../middleware/auth');
 
 // Create a new daily report
 router.post('/', isAuthenticated, async (req, res) => {
-  const { title, activities, learnings, challenges, hoursWorked, reportDate } = req.body;
+  const { reportDate, title, activities, learnings, challenges, hoursWorked, status } = req.body;
   const userId = req.user.id;
 
   try {
     const report = await prisma.dailyReport.create({
       data: {
+        userId,
+        reportDate: new Date(reportDate),
         title,
         activities,
         learnings,
         challenges,
         hoursWorked,
-        reportDate: new Date(reportDate),
-        userId,
+        status,
       },
     });
     res.status(201).json(report);
@@ -33,6 +34,7 @@ router.get('/', isAuthenticated, async (req, res) => {
   try {
     const reports = await prisma.dailyReport.findMany({
       where: { userId },
+      orderBy: { reportDate: 'desc' },
     });
     res.status(200).json(reports);
   } catch (error) {
@@ -44,31 +46,31 @@ router.get('/', isAuthenticated, async (req, res) => {
 // Get all daily reports for a given date range (for admins/managers)
 router.get('/all', isAuthenticated, isAdminOrManager, async (req, res) => {
   const { startDate, endDate } = req.query;
+  const where = {};
 
-  if (!startDate || !endDate) {
-    return res.status(400).json({ error: 'startDate and endDate are required' });
+  if (startDate && endDate) {
+    where.reportDate = {
+      gte: new Date(startDate),
+      lte: new Date(endDate),
+    };
   }
 
   try {
     const reports = await prisma.dailyReport.findMany({
-      where: {
-        reportDate: {
-          gte: new Date(startDate),
-          lte: new Date(endDate),
-        },
-      },
+      where,
       include: {
         user: {
           select: {
-            username: true,
-          }
-        }
-      }
+            name: true,
+          },
+        },
+      },
+      orderBy: { reportDate: 'desc' },
     });
     res.status(200).json(reports);
   } catch (error) {
-    console.error('Failed to get daily reports:', error);
-    res.status(500).json({ error: 'Failed to get daily reports' });
+    console.error('Failed to get all daily reports:', error);
+    res.status(500).json({ error: 'Failed to get all daily reports' });
   }
 });
 
@@ -130,12 +132,15 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     res.status(200).json(updatedReport);
   } catch (error) {
     console.error('Failed to update daily report:', error);
+    if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Report not found' });
+    }
     res.status(500).json({ error: 'Failed to update daily report' });
   }
 });
 
 // Delete a daily report
-router.delete('/:id', isAuthenticated, async (req, res) => {
+delete router.delete('/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
 
@@ -159,6 +164,9 @@ router.delete('/:id', isAuthenticated, async (req, res) => {
     res.status(204).send();
   } catch (error) {
     console.error('Failed to delete daily report:', error);
+    if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Report not found' });
+    }
     res.status(500).json({ error: 'Failed to delete daily report' });
   }
 });

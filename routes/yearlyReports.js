@@ -5,20 +5,23 @@ const { isAuthenticated, isAdminOrManager } = require('../middleware/auth');
 
 // Create a new yearly report
 router.post('/', isAuthenticated, async (req, res) => {
-  const { title, summary, goals, learnings, challenges, year, reportDate } = req.body;
+  const { year, trainingYear, yearStart, yearEnd, summary, achievements, skillsImproved, goals, totalHours, status } = req.body;
   const userId = req.user.id;
 
   try {
     const report = await prisma.yearlyReport.create({
       data: {
-        title,
-        summary,
-        goals,
-        learnings,
-        challenges,
-        year,
-        reportDate: new Date(reportDate),
         userId,
+        year,
+        trainingYear,
+        yearStart: new Date(yearStart),
+        yearEnd: new Date(yearEnd),
+        summary,
+        achievements,
+        skillsImproved,
+        goals,
+        totalHours,
+        status,
       },
     });
     res.status(201).json(report);
@@ -34,6 +37,7 @@ router.get('/', isAuthenticated, async (req, res) => {
   try {
     const reports = await prisma.yearlyReport.findMany({
       where: { userId },
+      orderBy: { year: 'desc' },
     });
     res.status(200).json(reports);
   } catch (error) {
@@ -42,35 +46,33 @@ router.get('/', isAuthenticated, async (req, res) => {
   }
 });
 
-// Get all yearly reports for a given date range (for admins/managers)
+// Get all yearly reports for all users (for admins/managers)
 router.get('/all', isAuthenticated, isAdminOrManager, async (req, res) => {
-  const { startDate, endDate } = req.query;
+    const { startDate, endDate } = req.query;
+    const where = {};
 
-  if (!startDate || !endDate) {
-    return res.status(400).json({ error: 'startDate and endDate are required' });
-  }
+    if (startDate && endDate) {
+        where.yearStart = { gte: new Date(startDate) };
+        where.yearEnd = { lte: new Date(endDate) };
+    }
 
-  try {
-    const reports = await prisma.yearlyReport.findMany({
-      where: {
-        reportDate: {
-          gte: new Date(startDate),
-          lte: new Date(endDate),
-        },
-      },
-      include: {
-        user: {
-          select: {
-            username: true,
-          }
-        }
-      }
-    });
-    res.status(200).json(reports);
-  } catch (error) {
-    console.error('Failed to get yearly reports:', error);
-    res.status(500).json({ error: 'Failed to get yearly reports' });
-  }
+    try {
+        const reports = await prisma.yearlyReport.findMany({
+            where,
+            include: {
+                user: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+            orderBy: { year: 'desc' },
+        });
+        res.status(200).json(reports);
+    } catch (error) {
+        console.error('Failed to get all yearly reports:', error);
+        res.status(500).json({ error: 'Failed to get all yearly reports' });
+    }
 });
 
 // Get a single yearly report by ID
@@ -100,7 +102,7 @@ router.get('/:id', isAuthenticated, async (req, res) => {
 // Update a yearly report
 router.put('/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
-  const { title, summary, goals, learnings, challenges, status } = req.body;
+  const { summary, achievements, skillsImproved, goals, status } = req.body;
   const userId = req.user.id;
 
   try {
@@ -119,11 +121,10 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     const updatedReport = await prisma.yearlyReport.update({
       where: { id: parseInt(id) },
       data: {
-        title,
         summary,
+        achievements,
+        skillsImproved,
         goals,
-        learnings,
-        challenges,
         status,
       },
     });
@@ -131,6 +132,9 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     res.status(200).json(updatedReport);
   } catch (error) {
     console.error('Failed to update yearly report:', error);
+    if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Report not found' });
+    }
     res.status(500).json({ error: 'Failed to update yearly report' });
   }
 });
@@ -160,6 +164,9 @@ router.delete('/:id', isAuthenticated, async (req, res) => {
     res.status(204).send();
   } catch (error) {
     console.error('Failed to delete yearly report:', error);
+    if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Report not found' });
+    }
     res.status(500).json({ error: 'Failed to delete yearly report' });
   }
 });
