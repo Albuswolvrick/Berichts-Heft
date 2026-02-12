@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 3000;
@@ -28,8 +29,27 @@ prisma.$connect()
       process.exit(1);
   });
 
+  // CORS configuration
+const corsOptions = {
+    origin: 'http://localhost:5173', // Your frontend URL
+    credentials: true, // Allow cookies to be sent
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Logging middleware to inspect requests
+app.use((req, res, next) => {
+    console.log('--- Incoming Request ---');
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    console.log('Headers:', JSON.stringify(req.headers, null, 2));
+    if (req.session) {
+        console.log('Session data:', JSON.stringify(req.session, null, 2));
+    }
+    next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'dist'))); // Serve static files from dist
 app.use(express.static(path.join(__dirname, 'view')));
