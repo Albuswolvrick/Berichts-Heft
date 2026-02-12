@@ -8,6 +8,8 @@ router.post('/', isAuthenticated, async (req, res) => {
   const { reportDate, title, activities, learnings, challenges, hoursWorked, status } = req.body;
   const userId = req.user.id;
 
+  const parsedHoursWorked = parseFloat(hoursWorked);
+
   try {
     const report = await prisma.dailyReport.create({
       data: {
@@ -17,7 +19,7 @@ router.post('/', isAuthenticated, async (req, res) => {
         activities,
         learnings,
         challenges,
-        hoursWorked,
+        hoursWorked: !isNaN(parsedHoursWorked) ? parsedHoursWorked : 0,
         status,
       },
     });
@@ -117,16 +119,24 @@ router.put('/:id', isAuthenticated, async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to edit this report' });
     }
 
-    const updatedReport = await prisma.dailyReport.update({
-      where: { id: parseInt(id) },
-      data: {
+    const parsedHoursWorked = parseFloat(hoursWorked);
+
+    const dataToUpdate = {
         title,
         activities,
         learnings,
         challenges,
-        hoursWorked,
         status,
-      },
+    };
+
+    if (hoursWorked !== undefined) {
+        dataToUpdate.hoursWorked = !isNaN(parsedHoursWorked) ? parsedHoursWorked : report.hoursWorked;
+    }
+
+
+    const updatedReport = await prisma.dailyReport.update({
+      where: { id: parseInt(id) },
+      data: dataToUpdate,
     });
 
     res.status(200).json(updatedReport);
@@ -140,7 +150,7 @@ router.put('/:id', isAuthenticated, async (req, res) => {
 });
 
 // Delete a daily report
-delete router.delete('/:id', isAuthenticated, async (req, res) => {
+router.delete('/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
 

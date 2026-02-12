@@ -8,11 +8,13 @@ router.post('/', isAuthenticated, async (req, res) => {
   const { year, trainingYear, yearStart, yearEnd, summary, achievements, skillsImproved, goals, totalHours, status } = req.body;
   const userId = req.user.id;
 
+  const parsedTotalHours = parseFloat(totalHours);
+
   try {
     const report = await prisma.yearlyReport.create({
       data: {
         userId,
-        year,
+        year: parseInt(year),
         trainingYear,
         yearStart: new Date(yearStart),
         yearEnd: new Date(yearEnd),
@@ -20,7 +22,7 @@ router.post('/', isAuthenticated, async (req, res) => {
         achievements,
         skillsImproved,
         goals,
-        totalHours,
+        totalHours: !isNaN(parsedTotalHours) ? parsedTotalHours : 0,
         status,
       },
     });
@@ -102,7 +104,7 @@ router.get('/:id', isAuthenticated, async (req, res) => {
 // Update a yearly report
 router.put('/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
-  const { summary, achievements, skillsImproved, goals, status } = req.body;
+  const { summary, achievements, skillsImproved, goals, totalHours, status } = req.body;
   const userId = req.user.id;
 
   try {
@@ -118,15 +120,23 @@ router.put('/:id', isAuthenticated, async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to edit this report' });
     }
 
-    const updatedReport = await prisma.yearlyReport.update({
-      where: { id: parseInt(id) },
-      data: {
+    const parsedTotalHours = parseFloat(totalHours);
+
+    const dataToUpdate = {
         summary,
         achievements,
         skillsImproved,
         goals,
         status,
-      },
+    };
+
+    if (totalHours !== undefined) {
+        dataToUpdate.totalHours = !isNaN(parsedTotalHours) ? parsedTotalHours : report.totalHours;
+    }
+
+    const updatedReport = await prisma.yearlyReport.update({
+      where: { id: parseInt(id) },
+      data: dataToUpdate,
     });
 
     res.status(200).json(updatedReport);

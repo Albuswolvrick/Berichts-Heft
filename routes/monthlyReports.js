@@ -8,18 +8,20 @@ router.post('/', isAuthenticated, async (req, res) => {
   const { month, year, monthStart, monthEnd, summary, keyAchievements, goals, totalHours, status } = req.body;
   const userId = req.user.id;
 
+  const parsedTotalHours = parseFloat(totalHours);
+
   try {
     const report = await prisma.monthlyReport.create({
       data: {
         userId,
-        month,
-        year,
+        month: parseInt(month),
+        year: parseInt(year),
         monthStart: new Date(monthStart),
         monthEnd: new Date(monthEnd),
         summary,
         keyAchievements,
         goals,
-        totalHours,
+        totalHours: !isNaN(parsedTotalHours) ? parsedTotalHours : 0,
         status,
       },
     });
@@ -117,16 +119,24 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     if (report.userId !== userId && !['ADMIN', 'MANAGER'].includes(req.user.role)) {
       return res.status(403).json({ error: 'You are not authorized to edit this report' });
     }
+    
+    const parsedTotalHours = parseFloat(totalHours);
 
-    const updatedReport = await prisma.monthlyReport.update({
-      where: { id: parseInt(id) },
-      data: {
+    const dataToUpdate = {
         summary,
         keyAchievements,
         goals,
-        totalHours,
         status,
-      },
+    };
+
+    if (totalHours !== undefined) {
+        dataToUpdate.totalHours = !isNaN(parsedTotalHours) ? parsedTotalHours : report.totalHours;
+    }
+
+
+    const updatedReport = await prisma.monthlyReport.update({
+      where: { id: parseInt(id) },
+      data: dataToUpdate,
     });
 
     res.status(200).json(updatedReport);
