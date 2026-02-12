@@ -112,7 +112,7 @@ function App() {
               <Route path="/weekly-reports" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
               <Route path="/monthly-reports" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
               <Route path="/yearly-reports" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-              <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminPage>} />
+              <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
               <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
               <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
               <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
