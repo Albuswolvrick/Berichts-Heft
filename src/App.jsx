@@ -20,6 +20,7 @@ import { ThemeProvider } from './hooks/useTheme';
 import '../public/css/style.css';
 import '../public/css/navbar.css';
 import '../public/css/report.css';
+import '../public/css/doom.css';
 
 const allNavItems = [
   { label: 'Home', path: '/' },
