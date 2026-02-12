@@ -1,7 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
-const port = 3000;
+const port = process.env.PORT || 3000;
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -13,10 +14,19 @@ const weeklyReportsRouter = require('./routes/weeklyReports');
 const monthlyReportsRouter = require('./routes/monthlyReports');
 const yearlyReportsRouter = require('./routes/yearlyReports');
 
+// Check for session secret
+if (!process.env.SESSION_SECRET) {
+    console.error('✗ SESSION_SECRET is not set in the environment variables.');
+    process.exit(1);
+}
+
 // Test Prisma connection
 prisma.$connect()
   .then(() => console.log('✓ Prisma connected successfully'))
-  .catch(err => console.error('✗ Prisma connection failed:', err.message));
+  .catch(err => {
+      console.error('✗ Prisma connection failed:', err.message);
+      process.exit(1);
+  });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,8 +39,7 @@ app.use(session({
       db: 'sessions.db',
       dir: './'
     }),
-    secret: 'your-secret-key', // replace with a real secret key when exist
-
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { 
@@ -52,7 +61,12 @@ function hasRole(roles) {
 
 // Register a new user
 app.post('/api/auth/register', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+        return res.status(400).json({ error: 'Name, email, and password are required' });
+    }
+
     try {
         const userCount = await prisma.user.count();
         const role = userCount === 0 ? 'ADMIN' : 'TRAINEE';
@@ -60,7 +74,7 @@ app.post('/api/auth/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await prisma.user.create({
             data: {
-                name: username,
+                name,
                 email,
                 passwordHash: hashedPassword,
                 role,
@@ -71,6 +85,9 @@ app.post('/api/auth/register', async (req, res) => {
         res.status(201).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
     } catch (error) {
         console.error('Registration failed:', error);
+        if (error.code === 'P2002') { // Unique constraint violation (e.g., email already exists)
+            return res.status(409).json({ error: 'Email already in use' });
+        }
         res.status(500).json({ error: 'Registration failed' });
     }
 });
@@ -113,7 +130,7 @@ app.get('/api/users/me', isAuthenticated, async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.status(200).json({ user: { id: user.id, name: user.name, email:.email, role: user.role } });
+        res.status(200).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
     } catch (error) {
         res.status(500).json({ error: 'Failed to get user' });
     }
@@ -140,8 +157,8 @@ app.get('/api/users', isAuthenticated, hasRole(['ADMIN']), async (req, res) => {
 // Create a new user (for admins)
 app.post('/api/users', isAuthenticated, hasRole(['ADMIN']), async (req, res) => {
     const { name, email, password, role } = req.body;
-     if (!role) {
-        return res.status(400).json({ error: 'Role is required' });
+     if (!name || !email || !password || !role) {
+        return res.status(400).json({ error: 'Name, email, password, and role are required' });
     }
     try {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -150,10 +167,10 @@ app.post('/api/users', isAuthenticated, hasRole(['ADMIN']), async (req, res) => 
                 name,
                 email,
                 passwordHash: hashedPassword,
-                role, // Make sure role is passed and handled
+                role,
             },
         });
-        res.status(201).json({ id: user.id, name: user.name, email: user.email, role: user.role });
+        res.status(201).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
     } catch (error) {
         console.error('Failed to create user:', error);
         if (error.code === 'P2002') { // Unique constraint violation (e.g., email already exists)
@@ -167,6 +184,10 @@ app.post('/api/users', isAuthenticated, hasRole(['ADMIN']), async (req, res) => 
 app.put('/api/users/:id', isAuthenticated, hasRole(['ADMIN']), async (req, res) => {
     const { id } = req.params;
     const { name, email, role } = req.body;
+
+    if (req.user.id === parseInt(id) && req.user.role === 'ADMIN' && role !== 'ADMIN') {
+        return res.status(400).json({ error: 'Admins cannot change their own role.' });
+    }
 
     try {
         const updatedUser = await prisma.user.update({
@@ -198,6 +219,10 @@ app.put('/api/users/:id/password', isAuthenticated, hasRole(['ADMIN']), async (r
     const { id } = req.params;
     const { password } = req.body;
 
+    if (!password) {
+        return res.status(400).json({ error: 'Password is required' });
+    }
+
     try {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         await prisma.user.update({
@@ -228,7 +253,9 @@ app.delete('/api/users/:id', isAuthenticated, hasRole(['ADMIN']), async (req, re
     } catch (error) {
         console.error('Failed to delete user:', error);
         if (error.code === 'P2025') { // Record to delete not found
-            return res.status(404).json({ error: 'User not.json({ error: 'Failed to delete user' });
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(500).json({ error: 'Failed to delete user' });
     }
 });
 

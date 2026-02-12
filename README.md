@@ -22,6 +22,12 @@ cd Berichts-Heft
 # Dependencies installieren
 npm install
 
+# .env Datei erstellen
+cp .env.example .env
+
+# Session Secret in .env Datei eintragen
+# SESSION_SECRET=dein-super-geheimes-secret
+
 # Datenbankschema initialisieren
 npm run prisma:push
 
@@ -106,6 +112,29 @@ Berichts-Heft/
 
 ## 💡 Development Tipps
 
+### Server-Stabilität: Die große `server.js`-Sanierung
+
+Unser `server.js` war ein Tollhaus – jetzt ist es eine Festung. Wir haben 10 kritische Probleme behoben, die von Sicherheitslücken bis zu fiesen Absturzursachen reichten:
+
+1.  **Sicherer Logout:** Die Fehlerbehandlung beim Löschen von Benutzern wurde repariert. Kein Absturz mehr bei Fehlern.
+2.  **Typo-Teufel ausgetrieben:** Ein fieser Tippfehler in der `GET /api/users/me` Route wurde eliminiert.
+3.  **Geheime Geheimnisse:** Der Session-Secret wird jetzt sicher über Umgebungsvariablen geladen.
+4.  **Einheitliche API:** Inkonsistente Feldnamen bei der Benutzerregistrierung wurden korrigiert.
+5.  **Konsistente Antworten:** Die API liefert jetzt einheitliche JSON-Antworten.
+6.  **Validierung für alle:** Die Endpunkte für die Benutzerregistrierung und -erstellung validieren jetzt die Eingaben.
+7.  **Stabile Datenbankverbindung:** Der Server beendet sich jetzt anmutig, wenn die Datenbankverbindung fehlschlägt.
+8.  **Passwort-Panzer:** Leere Passwörter sind nicht mehr erlaubt.
+9.  **Admin-Schutz:** Admins können ihre eigene Rolle nicht mehr versehentlich ändern.
+10. **Robuste Löschfunktion:** Die `DELETE /api/users/:id` Route ist jetzt widerstandsfähiger gegen Fehler.
+
+### Das neue Admin-Dashboard
+
+Admins und Manager haben jetzt ihr eigenes Reich! Über die neue `/admin` Route können sie:
+
+-   Berichte nach Typ filtern (täglich, wöchentlich, monatlich, jährlich).
+-   Einen Datumsbereich für die gewünschten Berichte festlegen.
+-   Alle Berichte von allen Benutzern einsehen.
+
 ### Prisma Studio verwenden
 Prisma Studio ist eine GUI zur Datenbankverwaltung:
 ```bash
@@ -136,6 +165,8 @@ npm run server:dev
 - ✅ Authentifizierung mit bcrypt & express-session
 - ✅ Report-Erstellung implementiert
 - ✅ Responsive UI mit React & Vite
+- ✅ **NEU:** Admin-Dashboard zum Anzeigen aller Berichte
+- ✅ **NEU:** `server.js` umfassend stabilisiert und abgesichert
 - 🔄 Weitere Report-Features in Entwicklung
 
 ---
