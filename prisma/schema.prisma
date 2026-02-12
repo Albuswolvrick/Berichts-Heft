@@ -25,78 +25,168 @@ enum ReportStatus {
   REVISION_REQUIRED
 }
 
-enum ReportType {
-  DAY
-  WEEK
-  MONTH
-  YEAR
-}
-
 model User {
   id           Int        @id @default(autoincrement())
   email        String     @unique
   name         String
   role         UserRole   @default(TRAINEE)
   passwordHash String
-  reports      Report[]
-  weeks        Week[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+
+  dailyReports   DailyReport[]
+  weeklyReports  WeeklyReport[]
+  monthlyReports MonthlyReport[]
+  yearlyReports  YearlyReport[]
+  comments       Comment[]
 
   @@index([email])
 }
 
-model Week {
-  id        Int      @id @default(autoincrement())
-  startDate DateTime
-  endDate   DateTime
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reports   Report[]
+model DailyReport {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weeklyReportId Int?
+  weeklyReport   WeeklyReport? @relation(fields: [weeklyReportId], references: [id], onDelete: SetNull)
+  reportDate     DateTime
+  title          String
+  activities     String
+  learnings      String
+  challenges     String
+  hoursWorked    Float
+  status         ReportStatus @default(DRAFT)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  attachments    Attachment[]
+  comments       Comment[]
 
   @@index([userId])
-  @@index([startDate, endDate])
+  @@index([weeklyReportId])
+  @@index([reportDate])
+  @@index([status])
 }
 
-model Report {
-  id             Int          @id @default(autoincrement())
-  userId         Int
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  weekId         Int?
-  week           Week?        @relation(fields: [weekId], references: [id], onDelete: Cascade)
-  reportType     ReportType   @default(WEEK)
-  date           DateTime     @default(now())
-  title          String
-  content        String
-  status         ReportStatus @default(DRAFT)
-  attachments    Attachment[]
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-
-  // Detailed fields for weekly reports
-  trainingYear   Int?
-  reportNumber   Int?
-  weekStart      DateTime?
-  weekEnd        DateTime?
-  department     String?
-  activities     String?
-  instructions   String?
-  school         String?
+model WeeklyReport {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  monthlyReportId Int?
+  monthlyReport   MonthlyReport? @relation(fields: [monthlyReportId], references: [id], onDelete: SetNull)
+  weekStart       DateTime
+  weekEnd         DateTime
+  weekNumber      Int
+  summary         String
+  activities      String
+  instructions    String
+  school          String
+  department      String
+  totalHours      Float
+  status          ReportStatus @default(DRAFT)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  dailyReports    DailyReport[]
+  attachments     Attachment[]
+  comments        Comment[]
 
   @@index([userId])
-  @@index([weekId])
+  @@index([monthlyReportId])
+  @@index([weekStart, weekEnd])
+  @@index([status])
+}
+
+model MonthlyReport {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  yearlyReportId  Int?
+  yearlyReport    YearlyReport? @relation(fields: [yearlyReportId], references: [id], onDelete: SetNull)
+  month           Int
+  year            Int
+  monthStart      DateTime
+  monthEnd        DateTime
+  summary         String
+  keyAchievements String
+  goals           String
+  totalHours      Float
+  status          ReportStatus @default(DRAFT)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  weeklyReports   WeeklyReport[]
+  attachments     Attachment[]
+  comments        Comment[]
+
+  @@index([userId])
+  @@index([yearlyReportId])
+  @@index([month, year])
+  @@index([status])
+}
+
+model YearlyReport {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  year           Int
+  trainingYear   String
+  yearStart      DateTime
+  yearEnd        DateTime
+  summary        String
+  achievements   String
+  skillsImprofed String
+  goals          String
+  totalHours     Float
+  status         ReportStatus @default(DRAFT)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  monthlyReports MonthlyReport[]
+  attachments    Attachment[]
+  comments       Comment[]
+
+  @@index([userId])
+  @@index([year])
   @@index([status])
 }
 
 model Attachment {
-  id         Int      @id @default(autoincrement())
-  reportId   Int
-  report     Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
-  fileName   String
-  filePath   String
-  fileSize   Int?
-  mimeType   String?
-  uploadedAt DateTime @default(now())
+  id              Int      @id @default(autoincrement())
+  dailyReportId   Int?
+  dailyReport     DailyReport?  @relation(fields: [dailyReportId], references: [id], onDelete: Cascade)
+  weeklyReportId  Int?
+  weeklyReport    WeeklyReport? @relation(fields: [weeklyReportId], references: [id], onDelete: Cascade)
+  monthlyReportId Int?
+  monthlyReport   MonthlyReport? @relation(fields: [monthlyReportId], references: [id], onDelete: Cascade)
+  yearlyReportId  Int?
+  yearlyReport    YearlyReport? @relation(fields: [yearlyReportId], references: [id], onDelete: Cascade)
+  fileName        String
+  filePath        String
+  fileSize        Int?
+  mimeType        String?
+  uploadedAt      DateTime @default(now())
 
-  @@index([reportId])
+  @@index([dailyReportId])
+  @@index([weeklyReportId])
+  @@index([monthlyReportId])
+  @@index([yearlyReportId])
+}
+
+model Comment {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dailyReportId   Int?
+  dailyReport     DailyReport?  @relation(fields: [dailyReportId], references: [id], onDelete: Cascade)
+  weeklyReportId  Int?
+  weeklyReport    WeeklyReport? @relation(fields: [weeklyReportId], references: [id], onDelete: Cascade)
+  monthlyReportId Int?
+  monthlyReport   MonthlyReport? @relation(fields: [monthlyReportId], references: [id], onDelete: Cascade)
+  yearlyReportId  Int?
+  yearlyReport    YearlyReport? @relation(fields: [yearlyReportId], references: [id], onDelete: Cascade)
+  content         String
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
+  @@index([dailyReportId])
+  @@index([weeklyReportId])
+  @@index([monthlyReportId])
+  @@index([yearlyReportId])
 }
