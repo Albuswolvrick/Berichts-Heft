@@ -5,21 +5,23 @@ const { isAuthenticated, isAdminOrManager } = require('../middleware/auth');
 
 // Create a new weekly report
 router.post('/', isAuthenticated, async (req, res) => {
-  const { title, summary, goals, learnings, challenges, weekNumber, year, reportDate } = req.body;
+  const { weekStart, weekEnd, weekNumber, summary, activities, instructions, school, department, totalHours, status } = req.body;
   const userId = req.user.id;
 
   try {
     const report = await prisma.weeklyReport.create({
       data: {
-        title,
-        summary,
-        goals,
-        learnings,
-        challenges,
-        weekNumber,
-        year,
-        reportDate: new Date(reportDate),
         userId,
+        weekStart: new Date(weekStart),
+        weekEnd: new Date(weekEnd),
+        weekNumber,
+        summary,
+        activities,
+        instructions,
+        school,
+        department,
+        totalHours,
+        status,
       },
     });
     res.status(201).json(report);
@@ -35,6 +37,7 @@ router.get('/', isAuthenticated, async (req, res) => {
   try {
     const reports = await prisma.weeklyReport.findMany({
       where: { userId },
+      orderBy: { weekStart: 'desc' },
     });
     res.status(200).json(reports);
   } catch (error) {
@@ -46,31 +49,29 @@ router.get('/', isAuthenticated, async (req, res) => {
 // Get all weekly reports for a given date range (for admins/managers)
 router.get('/all', isAuthenticated, isAdminOrManager, async (req, res) => {
   const { startDate, endDate } = req.query;
+  const where = {};
 
-  if (!startDate || !endDate) {
-    return res.status(400).json({ error: 'startDate and endDate are required' });
+  if (startDate && endDate) {
+      where.weekStart = { gte: new Date(startDate) };
+      where.weekEnd = { lte: new Date(endDate) };
   }
 
   try {
-    const reports = await prisma.weeklyReport.findMany({
-      where: {
-        reportDate: {
-          gte: new Date(startDate),
-          lte: new Date(endDate),
-        },
-      },
-      include: {
-        user: {
-          select: {
-            username: true,
-          }
-        }
-      }
-    });
-    res.status(200).json(reports);
+      const reports = await prisma.weeklyReport.findMany({
+          where,
+          include: {
+              user: {
+                  select: {
+                      name: true,
+                  },
+              },
+          },
+          orderBy: { weekStart: 'desc' },
+      });
+      res.status(200).json(reports);
   } catch (error) {
-    console.error('Failed to get weekly reports:', error);
-    res.status(500).json({ error: 'Failed to get weekly reports' });
+      console.error('Failed to get all weekly reports:', error);
+      res.status(500).json({ error: 'Failed to get all weekly reports' });
   }
 });
 
@@ -101,7 +102,7 @@ router.get('/:id', isAuthenticated, async (req, res) => {
 // Update a weekly report
 router.put('/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
-  const { title, summary, goals, learnings, challenges, status } = req.body;
+  const { summary, activities, instructions, school, department, totalHours, status } = req.body;
   const userId = req.user.id;
 
   try {
@@ -120,11 +121,12 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     const updatedReport = await prisma.weeklyReport.update({
       where: { id: parseInt(id) },
       data: {
-        title,
         summary,
-        goals,
-        learnings,
-        challenges,
+        activities,
+        instructions,
+        school,
+        department,
+        totalHours,
         status,
       },
     });
@@ -132,6 +134,9 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     res.status(200).json(updatedReport);
   } catch (error) {
     console.error('Failed to update weekly report:', error);
+    if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Report not found' });
+    }
     res.status(500).json({ error: 'Failed to update weekly report' });
   }
 });
@@ -161,6 +166,9 @@ router.delete('/:id', isAuthenticated, async (req, res) => {
     res.status(204).send();
   } catch (error) {
     console.error('Failed to delete weekly report:', error);
+    if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Report not found' });
+    }
     res.status(500).json({ error: 'Failed to delete weekly report' });
   }
 });

@@ -132,7 +132,7 @@ model YearlyReport {
   yearEnd        DateTime
   summary        String
   achievements   String
-  skillsImprofed String
+  skillsImproved String
   goals          String
   totalHours     Float
   status         ReportStatus @default(DRAFT)

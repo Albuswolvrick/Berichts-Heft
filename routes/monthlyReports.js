@@ -5,21 +5,22 @@ const { isAuthenticated, isAdminOrManager } = require('../middleware/auth');
 
 // Create a new monthly report
 router.post('/', isAuthenticated, async (req, res) => {
-  const { title, summary, goals, learnings, challenges, month, year, reportDate } = req.body;
+  const { month, year, monthStart, monthEnd, summary, keyAchievements, goals, totalHours, status } = req.body;
   const userId = req.user.id;
 
   try {
     const report = await prisma.monthlyReport.create({
       data: {
-        title,
-        summary,
-        goals,
-        learnings,
-        challenges,
+        userId,
         month,
         year,
-        reportDate: new Date(reportDate),
-        userId,
+        monthStart: new Date(monthStart),
+        monthEnd: new Date(monthEnd),
+        summary,
+        keyAchievements,
+        goals,
+        totalHours,
+        status,
       },
     });
     res.status(201).json(report);
@@ -35,6 +36,7 @@ router.get('/', isAuthenticated, async (req, res) => {
   try {
     const reports = await prisma.monthlyReport.findMany({
       where: { userId },
+      orderBy: { monthStart: 'desc' },
     });
     res.status(200).json(reports);
   } catch (error) {
@@ -46,33 +48,32 @@ router.get('/', isAuthenticated, async (req, res) => {
 // Get all monthly reports for a given date range (for admins/managers)
 router.get('/all', isAuthenticated, isAdminOrManager, async (req, res) => {
   const { startDate, endDate } = req.query;
+  const where = {};
 
-  if (!startDate || !endDate) {
-    return res.status(400).json({ error: 'startDate and endDate are required' });
+  if (startDate && endDate) {
+      where.monthStart = { gte: new Date(startDate) };
+      where.monthEnd = { lte: new Date(endDate) };
   }
 
   try {
-    const reports = await prisma.monthlyReport.findMany({
-      where: {
-        reportDate: {
-          gte: new Date(startDate),
-          lte: new Date(endDate),
-        },
-      },
-      include: {
-        user: {
-          select: {
-            username: true,
-          }
-        }
-      }
-    });
-    res.status(200).json(reports);
+      const reports = await prisma.monthlyReport.findMany({
+          where,
+          include: {
+              user: {
+                  select: {
+                      name: true,
+                  },
+              },
+          },
+          orderBy: { monthStart: 'desc' },
+      });
+      res.status(200).json(reports);
   } catch (error) {
-    console.error('Failed to get monthly reports:', error);
-    res.status(500).json({ error: 'Failed to get monthly reports' });
+      console.error('Failed to get all monthly reports:', error);
+      res.status(500).json({ error: 'Failed to get all monthly reports' });
   }
 });
+
 
 // Get a single monthly report by ID
 router.get('/:id', isAuthenticated, async (req, res) => {
@@ -101,7 +102,7 @@ router.get('/:id', isAuthenticated, async (req, res) => {
 // Update a monthly report
 router.put('/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
-  const { title, summary, goals, learnings, challenges, status } = req.body;
+  const { summary, keyAchievements, goals, totalHours, status } = req.body;
   const userId = req.user.id;
 
   try {
@@ -120,11 +121,10 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     const updatedReport = await prisma.monthlyReport.update({
       where: { id: parseInt(id) },
       data: {
-        title,
         summary,
+        keyAchievements,
         goals,
-        learnings,
-        challenges,
+        totalHours,
         status,
       },
     });
@@ -132,6 +132,9 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     res.status(200).json(updatedReport);
   } catch (error) {
     console.error('Failed to update monthly report:', error);
+    if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Report not found' });
+    }
     res.status(500).json({ error: 'Failed to update monthly report' });
   }
 });
@@ -161,6 +164,9 @@ router.delete('/:id', isAuthenticated, async (req, res) => {
     res.status(204).send();
   } catch (error) {
     console.error('Failed to delete monthly report:', error);
+    if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Report not found' });
+    }
     res.status(500).json({ error: 'Failed to delete monthly report' });
   }
 });
