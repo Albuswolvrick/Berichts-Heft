@@ -1,10 +1,11 @@
+
 :root {
   /* Light Theme (Default) */
-  --background-color: #fff;
-  --text-color: #333;
-  --nav-background-color: #f4f4f4;
-  --nav-text-color: #333;
-  --nav-button-hover-background-color: #6d6a6a;
+  --background-color: #FDFDFA;
+  --text-color: #3C3C3C;
+  --nav-background-color: #EAEAEA;
+  --nav-text-color: #3C3C3C;
+  --nav-button-hover-background-color: #DCDCDC;
   --button-background-color: #4CAF50;
   --button-text-color: white;
   --button-hover-background-color: #45a049;
@@ -12,10 +13,11 @@
   --input-background-color: #fff;
   --input-border-color: #ccc;
   --input-text-color: #333;
-  --report-background-color: #f9f9f9;
-  --report-border-color: #eee;
+  --report-background-color: #F5F5F5;
+  --report-border-color: #D3D3D3;
   --report-header-color: #333;
   --report-text-color: #555;
+  --accent-color: #007bff;
 }
 
 [data-theme="dark"] {
@@ -37,32 +39,53 @@
   --report-text-color: #f1f1f1;
   --container-background-color: #010700;
   --container-border-color: #363333;
+  --accent-color: #58a6ff;
 }
 
 [data-theme="doom"] {
-  --background-color: #000000;
-  --text-color: #ff0000;
-  --nav-background-color: #1a0000;
-  --nav-text-color: #ff4500;
-  --nav-button-hover-background-color: #600000;
-  --button-background-color: #cc0000;
-  --button-text-color: #ffffff;
-  --button-hover-background-color: #990000;
-  --button-disabled-background-color: #600000;
-  --input-background-color: #1a0000;
-  --input-border-color: #ff0000;
-  --input-text-color: #ff0000;
-  --report-background-color: #2a0f0f;
-  --report-border-color: #8b0000;
-  --report-header-color: #dc143c;
-  --report-text-color: #f5f5f5;
-  --container-background-color: #0a5c03;
-  --container-border-color: #363333;
+  --background-color: #1f1f1f;
+  --text-color: #e06c75;
+  --nav-background-color: #282c34;
+  --nav-text-color: #e06c75;
+  --nav-button-hover-background-color: #3e4451;
+  --button-background-color: #d19a66;
+  --button-text-color: #1f1f1f;
+  --button-hover-background-color: #e5c07b;
+  --button-disabled-background-color: #5c6370;
+  --input-background-color: #21252b;
+  --input-border-color: #3e4451;
+  --input-text-color: #abb2bf;
+  --report-background-color: #21252b;
+  --report-border-color: #3e4451;
+  --report-header-color: #e06c75;
+  --report-text-color: #abb2bf;
+  --container-background-color: #1f1f1f;
+  --container-border-color: #3e4451;
+  --accent-color: #c678dd;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   background-color: var(--background-color);
   color: var(--text-color);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.app {
+  display: flex;
+  width: 100%;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
 }
