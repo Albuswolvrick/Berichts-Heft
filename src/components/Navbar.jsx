@@ -32,9 +32,6 @@ const Navbar = ({ items, user, onLogout }) => {
           {item.label}
         </button>
       ))}
-      <button className="nav-button" onClick={() => navigate('/reports/new')}>
-        New Report
-      </button>
       <div className="theme-buttons">
         <button className="nav-button" onClick={() => setCustomTheme('light')}>
           Light Mode

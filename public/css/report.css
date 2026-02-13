@@ -1,6 +1,5 @@
 
 .report-form-container {
-    max-width: 900px;
     margin: 2rem auto;
     padding: 2.5rem;
     background-color: var(--report-background-color);
@@ -105,4 +104,3 @@ button[type="submit"]:hover,
         margin-bottom: 0;
     }
 }
-
