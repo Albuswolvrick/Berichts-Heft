@@ -2,8 +2,8 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    background-color: var(--report-background-color);
+    border: 1px solid var(--report-border-color);
     border-radius: 8px;
 }
 
@@ -35,7 +35,9 @@
 .form-group input,
 .form-group textarea {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border-color);
+    background-color: var(--input-background-color);
+    color: var(--input-text-color);
     border-radius: 4px;
     font-size: 16px;
 }
@@ -52,8 +54,8 @@
 
 .form-actions button {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
     border: none;
     border-radius: 4px;
     font-size: 16px;
@@ -62,10 +64,10 @@
 }
 
 .form-actions button:disabled {
-    background-color: #ccc;
+    background-color: var(--button-disabled-background-color);
     cursor: not-allowed;
 }
 
 .form-actions button:hover:not(:disabled) {
-    background-color: #0056b3;
+    background-color: var(--button-hover-background-color);
 }

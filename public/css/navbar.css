@@ -1,28 +1,47 @@
 .vertical-nav {
-  width: 200px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  transition: background-color 0.3s ease;
-  background-color: var(--nav-background-color);
+    width: 200px;
+    background-color: var(--nav-background-color);
+    height: 100vh;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--report-border-color);
 }
 
 .nav-button {
-  background: none;
-  border: none;
-  padding: 15px;
-  text-align: left;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  color: var(--nav-text-color);
+    background-color: transparent;
+    border: none;
+    color: var(--nav-text-color);
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 .nav-button:hover {
-  background-color: var(--nav-button-hover-background-color);
+    background-color: var(--nav-button-hover-background-color);
 }
 
-.theme-switcher {
-  margin-top: auto;
+.user-info {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--report-border-color);
+}
+
+.user-info span {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.theme-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.theme-buttons .nav-button {
+    width: 30%;
+    text-align: center;
 }
