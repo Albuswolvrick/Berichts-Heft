@@ -76,13 +76,4 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-.app {
-  display: flex;
-  width: 100%;
-}
 
-.content {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto;
-}
