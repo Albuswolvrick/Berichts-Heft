@@ -17,6 +17,7 @@ import NewReportPage from './pages/NewReportPage';
 import AdminPage from './pages/AdminPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
+import { authApi, userApi } from './services/api';
 import '../../public/css/style.css';
 import '../../public/css/navbar.css';
 import '../../public/css/report.css';
@@ -35,8 +36,8 @@ const ProtectedRoute = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await fetch('/api/users/me');
-                setIsAuth(res.ok);
+                await userApi.getMe();
+                setIsAuth(true);
             } catch (error) {
                 setIsAuth(false);
             }
@@ -65,11 +66,8 @@ function App() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await fetch('/api/users/me');
-                if(res.ok) {
-                    const data = await res.json();
-                    setUser(data.user);
-                }
+                const data = await userApi.getMe();
+                setUser(data.user);
             } catch (error) {
                 console.error('Failed to fetch user', error);
             }
@@ -91,10 +89,14 @@ function App() {
     }, [user]);
 
     const handleLogout = async () => {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        setUser(null);
-        window.location.href = '/login';
-    }
+        try {
+            await authApi.logout();
+            setUser(null);
+            window.location.href = '/login';
+        } catch (error) {
+            console.error('Failed to logout', error);
+        }
+    };
 
   return (
     <ErrorBoundary>
