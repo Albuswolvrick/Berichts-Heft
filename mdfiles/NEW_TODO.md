@@ -2,7 +2,10 @@
 
 - [x] Update the database schema according to the new ER model.
 - [x] Migrate existing data to the new schema without data loss.
-- [ ] Implement functionality to create, read, update, and delete daily, weekly, monthly, and 
+- [ ] Implement functionality to create, read, update, and delete daily, weekly, monthly, and yearly reports
+- [ ] make the server.js modular 
+- [ ] ad a worckchart to the prokjeckt
+- [ ] refaktor  to have it better maintinance.
 - [x] update the api conections to work with the newe Database
 - [x] Make it posible to download the reports as pdf files
 - [x] ad a stable log in
