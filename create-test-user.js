@@ -1,4 +1,4 @@
-const { prisma } = require('./db');
+const { prisma } = require('./src/server/config/database');
 const bcrypt = require('bcrypt');
 
 async function createTestUsers() {

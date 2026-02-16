@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
-import '../../public/css/report.css';
+import '../../../public/css/report.css';
 
 const DailyReportPage = () => {
   const [reportDate, setReportDate] = useState('');

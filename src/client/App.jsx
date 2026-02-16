@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
@@ -17,10 +17,10 @@ import NewReportPage from './pages/NewReportPage';
 import AdminPage from './pages/AdminPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
-import '../public/css/style.css';
-import '../public/css/navbar.css';
-import '../public/css/report.css';
-import '../public/css/doom.css';
+import '../../public/css/style.css';
+import '../../public/css/navbar.css';
+import '../../public/css/report.css';
+import '../../public/css/doom.css';
 
 const allNavItems = [
   { label: 'Home', path: '/' },
@@ -97,31 +97,33 @@ function App() {
     }
 
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <div style={{ display: 'flex' }}>
-          <Navbar items={navItems} user={user} onLogout={handleLogout} />
+    <ErrorBoundary>
+      <ThemeProvider>
+        <ToastProvider>
+          <div style={{ display: 'flex' }}>
+            <Navbar items={navItems} user={user} onLogout={handleLogout} />
 
-          <main style={{ padding: '20px', flex: 1 }}>
-            <Routes>
-              <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-              <Route path="/login" element={<LoginPage onLogin={setUser} />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
-              <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
-              <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
-              <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
-              <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-              <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
-              <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
-              <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-              <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-            </Routes>
-          </main>
-        </div>
-      </ToastProvider>
-    </ThemeProvider>
+            <main style={{ padding: '20px', flex: 1 }}>
+              <Routes>
+                <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+                <Route path="/login" element={<LoginPage onLogin={setUser} />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
+                <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
+                <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
+                <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
+                <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
+                <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
+                <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
+                <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+                <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
+                <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              </Routes>
+            </main>
+          </div>
+        </ToastProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

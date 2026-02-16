@@ -27,12 +27,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/generated/prisma
+# Database files
+*.db
 
-/src/generated/prisma
-
-/src/generated/prisma
-
-/src/generated/prisma
-
+# Generated Prisma client
 /generated/prisma
