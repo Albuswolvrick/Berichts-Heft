@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../public/css/navbar.css';
+import '../../../public/css/navbar.css';
 import { useTheme } from '../hooks/useTheme';
 
 const Navbar = ({ items, user, onLogout }) => {

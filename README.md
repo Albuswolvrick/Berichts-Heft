@@ -24,34 +24,39 @@ npm install
 
 # .env Datei erstellen
 cp .env.example .env
+# SESSION_SECRET in .env Datei anpassen!
 
-# Session Secret in .env Datei eintragen
-# SESSION_SECRET=dein-super-geheimes-secret
+# Prisma Client generieren
+npm run prisma:generate
 
 # Datenbankschema initialisieren
 npm run prisma:push
 
-# Entwicklungsserver starten (Frontend)
-npm run client:dev
-
-# Backend-Server starten (in separatem Terminal)
-npm run server:dev
+# Frontend & Backend gleichzeitig starten
+npm run client:dev     # Terminal 1 (http://localhost:5173)
+npm run server:dev     # Terminal 2 (http://localhost:3000)
 ```
 
 ---
 
 ## 📋 Verfügbare Commands
 
-### Frontend Development
+### Development
 ```bash
 npm run client:dev       # Startet Vite Dev-Server (http://localhost:5173)
 npm run client:build     # Production Build erstellen
-npm run client:preview   # Preview des Production-Builds lokal testen
+npm run client:preview   # Preview des Production-Builds
+npm run server:dev       # Startet Express Server (http://localhost:3000)
 ```
 
-### Backend Server
+### Testing & Code Quality
 ```bash
-npm run server:dev       # Startet Node.js/Express Server
+npm test                 # Tests ausführen (Vitest)
+npm run test:watch       # Tests im Watch-Modus
+npm run test:coverage    # Test-Coverage Report
+npm run lint             # ESLint prüfen
+npm run lint:fix         # ESLint auto-fix
+npm run format           # Code mit Prettier formatieren
 ```
 
 ### Datenbank Management
@@ -61,24 +66,23 @@ npm run prisma:migrate   # Führt neue Migrationen durch
 npm run prisma:studio    # Öffnet Prisma Studio (GUI)
 npm run prisma:generate  # Generiert Prisma Client
 npm run prisma:format    # Formatiert schema.prisma
-npm run prisma:pull      # Pullt Schema von bestehender Datenbank
 npm run prisma:seed      # Führt Seed-Skript aus
 npm run prisma:reset     # Setzt Datenbank zurück (Entwicklung)
 ```
 
+---
+
 ## 🛠️ Technologie-Stack
 
-| Kategorie | Technologie | Version |
-|-----------|-------------|---------|
-| **Frontend** | React | ^19.2.3 |
-| | React Router DOM | ^7.12.0 |
-| | Vite | ^7.3.1 |
-| | TypeScript | ^5.9.3 |
-| **Backend** | Express.js | ^5.2.1 |
-| **Datenbank** | Prisma ORM | ^7.3.0 |
-| | SQLite | - |
-| **Sicherheit** | bcrypt | ^6.0.0 |
-| | express-session | ^1.18.2 |
+| Kategorie | Technologie |
+|-----------|-------------|
+| **Frontend** | React 19, React Router 7, Vite 7 |
+| **Backend** | Express.js 5, Node.js |
+| **Datenbank** | Prisma ORM 7, SQLite |
+| **Sicherheit** | bcrypt, express-session, helmet |
+| **Logging** | Winston |
+| **Testing** | Vitest, React Testing Library |
+| **Code Quality** | ESLint, Prettier |
 
 ---
 
@@ -86,99 +90,98 @@ npm run prisma:reset     # Setzt Datenbank zurück (Entwicklung)
 
 ```
 Berichts-Heft/
-├── src/                          # React Komponenten & Pages
-│   ├── App.jsx
-│   ├── main.jsx
-│   ├── components/
-│   │   └── Navbar.jsx
-│   └── pages/
-│       ├── HomePage.jsx
-│       ├── LoginPage.jsx
-│       └── DevMenu.jsx
-├── prisma/
-│   ├── schema.prisma            # Datenbankschema
-│   └── migrations/              # Datenbankmigrationen
-├── public/                       # Statische Assets
-│   ├── css/                     # Stylesheets
-│   └── imgs/                    # Bilder & Icons
-├── server.js                     # Express Server
-├── vite.config.ts               # Vite Konfiguration
-├── prisma.config.ts             # Prisma Konfiguration
-├── package.json
-└── README.md
+├── src/
+│   ├── server/                    # Backend (Express.js)
+│   │   ├── config/                # Konfiguration (DB, Session, Env)
+│   │   ├── controllers/           # Request-Handler
+│   │   ├── middleware/            # Auth, Error Handler, Logging
+│   │   ├── routes/                # API Route-Definitionen
+│   │   ├── services/              # Business-Logik
+│   │   ├── utils/                 # Hilfsfunktionen & Error-Klassen
+│   │   ├── app.js                 # Express App Setup
+│   │   └── index.js               # Server Entry Point
+│   │
+│   └── client/                    # Frontend (React)
+│       ├── components/            # Wiederverwendbare Komponenten
+│       ├── pages/                 # Seiten-Komponenten
+│       ├── hooks/                 # Custom React Hooks
+│       └── services/              # API Service Layer
+│
+├── __tests__/                     # Test-Dateien
+│   ├── server/                    # Backend Tests
+│   └── client/                    # Frontend Tests
+├── prisma/                        # Datenbankschema & Migrationen
+├── public/                        # Statische Assets (CSS, Bilder)
+├── .eslintrc.json                 # ESLint Konfiguration
+├── .prettierrc                    # Prettier Konfiguration
+├── .env.example                   # Umgebungsvariablen Vorlage
+├── vitest.config.js               # Test Konfiguration
+└── vite.config.ts                 # Vite Konfiguration
 ```
+
+---
+
+## 🏗️ Architektur
+
+Das Backend folgt einem **Service/Controller/Middleware** Pattern:
+
+- **Routes** → definieren API-Endpunkte und verknüpfen Middleware
+- **Controllers** → verarbeiten HTTP-Requests und senden Responses
+- **Services** → enthalten die Business-Logik und Datenbankoperationen
+- **Middleware** → Auth, Logging, Error-Handling
+
+### API Endpunkte
+
+| Methode | Pfad | Beschreibung |
+|---------|------|-------------|
+| POST | `/api/auth/register` | Benutzer registrieren |
+| POST | `/api/auth/login` | Benutzer anmelden |
+| POST | `/api/auth/logout` | Benutzer abmelden |
+| GET | `/api/users/me` | Aktueller Benutzer |
+| GET | `/api/users` | Alle Benutzer (Admin) |
+| GET | `/api/health` | Health Check |
+| CRUD | `/api/daily-reports` | Tägliche Berichte |
+| CRUD | `/api/weekly-reports` | Wöchentliche Berichte |
+| CRUD | `/api/monthly-reports` | Monatliche Berichte |
+| CRUD | `/api/yearly-reports` | Jährliche Berichte |
 
 ---
 
 ## 💡 Development Tipps
 
-### Server-Stabilität: Die große `server.js`-Sanierung
-
-Unser `server.js` war ein Tollhaus – jetzt ist es eine Festung. Wir haben 10 kritische Probleme behoben, die von Sicherheitslücken bis zu fiesen Absturzursachen reichten:
-
-1.  **Sicherer Logout:** Die Fehlerbehandlung beim Löschen von Benutzern wurde repariert. Kein Absturz mehr bei Fehlern.
-2.  **Typo-Teufel ausgetrieben:** Ein fieser Tippfehler in der `GET /api/users/me` Route wurde eliminiert.
-3.  **Geheime Geheimnisse:** Der Session-Secret wird jetzt sicher über Umgebungsvariablen geladen.
-4.  **Einheitliche API:** Inkonsistente Feldnamen bei der Benutzerregistrierung wurden korrigiert.
-5.  **Konsistente Antworten:** Die API liefert jetzt einheitliche JSON-Antworten.
-6.  **Validierung für alle:** Die Endpunkte für die Benutzerregistrierung und -erstellung validieren jetzt die Eingaben.
-7.  **Stabile Datenbankverbindung:** Der Server beendet sich jetzt anmutig, wenn die Datenbankverbindung fehlschlägt.
-8.  **Passwort-Panzer:** Leere Passwörter sind nicht mehr erlaubt.
-9.  **Admin-Schutz:** Admins können ihre eigene Rolle nicht mehr versehentlich ändern.
-10. **Robuste Löschfunktion:** Die `DELETE /api/users/:id` Route ist jetzt widerstandsfähiger gegen Fehler.
-
-### Das neue Admin-Dashboard
-
-Admins und Manager haben jetzt ihr eigenes Reich! Über die neue `/admin` Route können sie:
-
--   Berichte nach Typ filtern (täglich, wöchentlich, monatlich, jährlich).
--   Einen Datumsbereich für die gewünschten Berichte festlegen.
--   Alle Berichte von allen Benutzern einsehen.
-
 ### Prisma Studio verwenden
-Prisma Studio ist eine GUI zur Datenbankverwaltung:
 ```bash
 npm run prisma:studio
 ```
 
-### TypeScript Type-Checking
-Das Projekt verwendet TypeScript für Type-Safety. Type-Definitionen für alle wichtigen Packages sind installiert.
-
 ### Neue Migration erstellen
-Bei Änderungen am Datenbankschema:
 ```bash
 npm run prisma:migrate -- --name <migration_name>
 ```
 
-### Frontend & Backend gleichzeitig starten
-Öffne zwei separate Terminal-Fenster:
+### Tests schreiben
+Tests liegen in `__tests__/server/` und `__tests__/client/`. Vitest wird als Test-Runner verwendet:
 ```bash
-# Terminal 1 - Frontend
-npm run client:dev
-
-# Terminal 2 - Backend
-npm run server:dev
+npm test               # Einmal ausführen
+npm run test:watch     # Im Watch-Modus
 ```
-
-### Aktuelle Entwicklungen
-- ✅ Prisma ORM Integration mit SQLite
-- ✅ Authentifizierung mit bcrypt & express-session
-- ✅ Report-Erstellung implementiert
-- ✅ Responsive UI mit React & Vite
-- ✅ **NEU:** Admin-Dashboard zum Anzeigen aller Berichte
-- ✅ **NEU:** `server.js` umfassend stabilisiert und abgesichert
-- 🔄 Weitere Report-Features in Entwicklung
 
 ---
 
 ## 📝 Lizenz
-                    GNU AFFERO GENERAL PUBLIC LICENSE
-                       Version 3, 19 November 2007
+
+GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
 
 ---
 
 ## 🤝 Contributing
 
 Beiträge sind willkommen! Bitte erstelle einen Pull Request oder öffne ein Issue.
+
+1. Fork das Repository
+2. Erstelle einen Feature-Branch (`git checkout -b feature/mein-feature`)
+3. Committe deine Änderungen (`git commit -m 'feat: Beschreibung'`)
+4. Pushe den Branch (`git push origin feature/mein-feature`)
+5. Öffne einen Pull Request
 
 **GitHub Repository:** [Albuswolvrick/Berichts-Heft](https://github.com/Albuswolvrick/Berichts-Heft)
