@@ -2,11 +2,11 @@
 
 Ein Open-Source Berichtsheft Web-App mit modernem Tech-Stack für effiziente Berichtsverwaltung.
 
-**[🔗 Live Demo](#) • [📚 Dokumentation](#) • [🐛 Issues](https://github.com/Albuswolvrick/Berichts-Heft/issues)**
+**[Live Demo](#) • [ Dokumentation](#) • [ Issues](https://github.com/Albuswolvrick/Berichts-Heft/issues)**
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Voraussetzungen
 - Node.js >= 18.x
@@ -39,7 +39,7 @@ npm run server:dev     # Terminal 2 (http://localhost:3000)
 
 ---
 
-## 📋 Verfügbare Commands
+## Verfügbare Commands
 
 ### Development
 ```bash
@@ -72,7 +72,7 @@ npm run prisma:reset     # Setzt Datenbank zurück (Entwicklung)
 
 ---
 
-## 🛠️ Technologie-Stack
+## Technologie-Stack
 
 | Kategorie | Technologie |
 |-----------|-------------|
@@ -86,7 +86,7 @@ npm run prisma:reset     # Setzt Datenbank zurück (Entwicklung)
 
 ---
 
-## 📁 Projektstruktur
+## Projektstruktur
 
 ```
 Berichts-Heft/
@@ -121,7 +121,7 @@ Berichts-Heft/
 
 ---
 
-## 🏗️ Architektur
+## Architektur
 
 Das Backend folgt einem **Service/Controller/Middleware** Pattern:
 
@@ -147,7 +147,7 @@ Das Backend folgt einem **Service/Controller/Middleware** Pattern:
 
 ---
 
-## 💡 Development Tipps
+## Development Tipps
 
 ### Prisma Studio verwenden
 ```bash
@@ -168,13 +168,13 @@ npm run test:watch     # Im Watch-Modus
 
 ---
 
-## 📝 Lizenz
+## Lizenz
 
 GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Beiträge sind willkommen! Bitte erstelle einen Pull Request oder öffne ein Issue.
 
