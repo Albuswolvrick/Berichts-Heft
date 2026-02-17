@@ -5,13 +5,16 @@
 - [ ] Implement functionality to create, read, update, and delete daily, weekly, monthly, and yearly reports
 - [ ] make the server.js modular
 - [ ] ad a worckchart to the prokjeckt
-- [x] refaktor  to have it better maintinance.
+- [x] refaktor to have it better maintinance.
 - [x] update the api conections to work with the newe Database
 - [x] Make it posible to download the reports as pdf files
-- [x] ad a stable log in
-yearly reports.
+- [x] ad a stable log in yearly reports.
 - [ ] Implement the functionality to upload and associate attachments (like PDFs) with reports.
 - [x] Implement the commenting feature for all report types.
 - [x] Update the UI to reflect the new hierarchical report structure.
 - [x] Ensure the authentication and authorization system works correctly with the new report structure.
 - [ ] Test all new features thoroughly.
+- [ ] Updating daily report page to look fit in with the weekly report page
+- [ ] Updating monthly report page to look fit in with the weekly report page
+- [ ] Updating yearly report page to look fit in with the weekly report page
+- [ ] Improve PDF formatting
