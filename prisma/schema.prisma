@@ -26,13 +26,13 @@ enum ReportStatus {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  email        String     @unique
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
   name         String
-  role         UserRole   @default(TRAINEE)
+  role         UserRole @default(TRAINEE)
   passwordHash String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   dailyReports   DailyReport[]
   weeklyReports  WeeklyReport[]
@@ -44,9 +44,9 @@ model User {
 }
 
 model DailyReport {
-  id             Int      @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   userId         Int
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   weeklyReportId Int?
   weeklyReport   WeeklyReport? @relation(fields: [weeklyReportId], references: [id], onDelete: SetNull)
   reportDate     DateTime
@@ -55,9 +55,9 @@ model DailyReport {
   learnings      String
   challenges     String
   hoursWorked    Float
-  status         ReportStatus @default(DRAFT)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  status         ReportStatus  @default(DRAFT)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
   attachments    Attachment[]
   comments       Comment[]
 
@@ -68,23 +68,25 @@ model DailyReport {
 }
 
 model WeeklyReport {
-  id              Int      @id @default(autoincrement())
+  id              Int            @id @default(autoincrement())
   userId          Int
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   monthlyReportId Int?
   monthlyReport   MonthlyReport? @relation(fields: [monthlyReportId], references: [id], onDelete: SetNull)
-  weekStart       DateTime
-  weekEnd         DateTime
-  weekNumber      Int
-  summary         String
-  activities      String
-  instructions    String
-  school          String
-  department      String
-  totalHours      Float
-  status          ReportStatus @default(DRAFT)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  name            String?
+  weekStart       DateTime?
+  weekEnd         DateTime?
+  weekNumber      Int?
+  department      String?
+  yearOfTraining  Int?
+  summary         String?
+  activities      String?
+  school          String?
+  totalHours      Float?
+  remarks         String?
+  status          ReportStatus   @default(DRAFT)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
   dailyReports    DailyReport[]
   attachments     Attachment[]
   comments        Comment[]
@@ -96,11 +98,11 @@ model WeeklyReport {
 }
 
 model MonthlyReport {
-  id              Int      @id @default(autoincrement())
+  id              Int            @id @default(autoincrement())
   userId          Int
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   yearlyReportId  Int?
-  yearlyReport    YearlyReport? @relation(fields: [yearlyReportId], references: [id], onDelete: SetNull)
+  yearlyReport    YearlyReport?  @relation(fields: [yearlyReportId], references: [id], onDelete: SetNull)
   month           Int
   year            Int
   monthStart      DateTime
@@ -109,9 +111,13 @@ model MonthlyReport {
   keyAchievements String
   goals           String
   totalHours      Float
-  status          ReportStatus @default(DRAFT)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  yearOfTraining  Int?
+  name            String
+  instructions    String
+  remarks         String
+  status          ReportStatus   @default(DRAFT)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
   weeklyReports   WeeklyReport[]
   attachments     Attachment[]
   comments        Comment[]
@@ -123,9 +129,9 @@ model MonthlyReport {
 }
 
 model YearlyReport {
-  id             Int      @id @default(autoincrement())
+  id             Int             @id @default(autoincrement())
   userId         Int
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   year           Int
   trainingYear   String
   yearStart      DateTime
@@ -135,9 +141,9 @@ model YearlyReport {
   skillsImproved String
   goals          String
   totalHours     Float
-  status         ReportStatus @default(DRAFT)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  status         ReportStatus    @default(DRAFT)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   monthlyReports MonthlyReport[]
   attachments    Attachment[]
   comments       Comment[]
@@ -148,20 +154,20 @@ model YearlyReport {
 }
 
 model Attachment {
-  id              Int      @id @default(autoincrement())
+  id              Int            @id @default(autoincrement())
   dailyReportId   Int?
-  dailyReport     DailyReport?  @relation(fields: [dailyReportId], references: [id], onDelete: Cascade)
+  dailyReport     DailyReport?   @relation(fields: [dailyReportId], references: [id], onDelete: Cascade)
   weeklyReportId  Int?
-  weeklyReport    WeeklyReport? @relation(fields: [weeklyReportId], references: [id], onDelete: Cascade)
+  weeklyReport    WeeklyReport?  @relation(fields: [weeklyReportId], references: [id], onDelete: Cascade)
   monthlyReportId Int?
   monthlyReport   MonthlyReport? @relation(fields: [monthlyReportId], references: [id], onDelete: Cascade)
   yearlyReportId  Int?
-  yearlyReport    YearlyReport? @relation(fields: [yearlyReportId], references: [id], onDelete: Cascade)
+  yearlyReport    YearlyReport?  @relation(fields: [yearlyReportId], references: [id], onDelete: Cascade)
   fileName        String
   filePath        String
   fileSize        Int?
   mimeType        String?
-  uploadedAt      DateTime @default(now())
+  uploadedAt      DateTime       @default(now())
 
   @@index([dailyReportId])
   @@index([weeklyReportId])
@@ -170,19 +176,19 @@ model Attachment {
 }
 
 model Comment {
-  id              Int      @id @default(autoincrement())
+  id              Int            @id @default(autoincrement())
   userId          Int
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   dailyReportId   Int?
-  dailyReport     DailyReport?  @relation(fields: [dailyReportId], references: [id], onDelete: Cascade)
+  dailyReport     DailyReport?   @relation(fields: [dailyReportId], references: [id], onDelete: Cascade)
   weeklyReportId  Int?
-  weeklyReport    WeeklyReport? @relation(fields: [weeklyReportId], references: [id], onDelete: Cascade)
+  weeklyReport    WeeklyReport?  @relation(fields: [weeklyReportId], references: [id], onDelete: Cascade)
   monthlyReportId Int?
   monthlyReport   MonthlyReport? @relation(fields: [monthlyReportId], references: [id], onDelete: Cascade)
   yearlyReportId  Int?
-  yearlyReport    YearlyReport? @relation(fields: [yearlyReportId], references: [id], onDelete: Cascade)
+  yearlyReport    YearlyReport?  @relation(fields: [yearlyReportId], references: [id], onDelete: Cascade)
   content         String
-  createdAt       DateTime @default(now())
+  createdAt       DateTime       @default(now())
 
   @@index([userId])
   @@index([dailyReportId])

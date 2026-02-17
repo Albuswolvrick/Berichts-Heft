@@ -50,6 +50,7 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "jspdf": "^4.1.0",
+    "jspdf-autotable": "^5.0.7",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-router-dom": "^7.12.0",
