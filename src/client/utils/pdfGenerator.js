@@ -18,7 +18,7 @@ export function downloadReportPdf({ title, fileName, metadata, sections }) {
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(22);
-  doc.text('Wochenbericht', margin, 18);
+  doc.text(title, margin, 18);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);

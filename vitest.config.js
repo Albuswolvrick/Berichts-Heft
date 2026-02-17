@@ -8,7 +8,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
-      include: ['src/server/**/*.js'],
+      include: ['src/server/**/*.js', 'src/client/**/*.{js,jsx}'],
     },
   },
 });
