@@ -32,3 +32,4 @@ yarn-error.log*
 
 # Generated Prisma client
 /generated/prisma
+sessions.db
