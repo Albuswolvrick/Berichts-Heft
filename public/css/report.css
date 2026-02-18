@@ -1,106 +1,115 @@
-
 .report-form-container {
-    margin: 2rem auto;
-    padding: 2.5rem;
-    background-color: var(--report-background-color);
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    transition: background-color 0.3s ease;
-    border: 1px solid var(--report-border-color);
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: var(--report-background-color);
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s ease;
+  border: 1px solid var(--report-border-color);
 }
 
 .report-form-container h1 {
-    text-align: center;
-    color: var(--report-header-color);
-    margin-bottom: 2.5rem;
-    font-size: 2.2rem;
+  text-align: center;
+  color: var(--report-header-color);
+  margin-bottom: 2.5rem;
+  font-size: 2.2rem;
 }
 
 .form-row {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 1.8rem;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    width: 48%;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  margin-bottom: 1rem;
+}
+.form-group.full-width {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .form-group label {
-    margin-bottom: 0.6rem;
-    color: var(--text-color);
-    font-weight: bold;
-    font-size: 1rem;
+  margin-bottom: 0.6rem;
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: 1rem;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--input-border-color);
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: var(--input-background-color);
-    color: var(--input-text-color);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-    outline: none;
-    border-color: var(--report-header-color);
-    box-shadow: 0 0 5px var(--report-header-color);
+  outline: none;
+  border-color: var(--report-header-color);
+  box-shadow: 0 0 5px var(--report-header-color);
 }
 
 .full-width {
-    width: 100%;
+  width: 100%;
 }
 
 textarea {
-    min-height: 150px;
-    resize: vertical;
+  min-height: 150px;
+  resize: vertical;
 }
 
 .button-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
 }
 
-button[type="submit"],
+button[type='submit'],
 .download-btn {
-    padding: 1rem 1.5rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    background-color: var(--button-background-color);
-    color: var(--button-text-color);
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
 }
 
-button[type="submit"]:hover,
+button[type='submit']:hover,
 .download-btn:hover {
-    background-color: var(--button-hover-background-color);
-    transform: translateY(-2px);
+  background-color: var(--button-hover-background-color);
+  transform: translateY(-2px);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .form-group {
-        width: 100%;
-    }
-    
-    .form-row {
-        flex-direction: column;
-        margin-bottom: 0;
-    }
+  .form-group:not(.form-group.full-width) {
+    width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    margin-bottom: 0;
+  }
 }

@@ -5,11 +5,15 @@ const API_BASE = '/api';
  */
 async function request(url, options = {}) {
   const config = {
-    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    headers: { ...(options.headers || {}) },
     ...options,
   };
 
   if (config.body && typeof config.body === 'object') {
+    if (!config.headers['Content-Type']) {
+      config.headers['Content-Type'] = 'application/json';
+    }
     config.body = JSON.stringify(config.body);
   }
 
@@ -19,7 +23,10 @@ async function request(url, options = {}) {
     return null;
   }
 
-  const data = await response.json();
+  const contentType = response.headers.get('content-type') || '';
+  const data = contentType.includes('application/json')
+    ? await response.json()
+    : { error: await response.text() };
 
   if (!response.ok) {
     const error = new Error(data.error || 'Request failed');

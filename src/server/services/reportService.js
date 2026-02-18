@@ -26,7 +26,10 @@ function checkReportAuthorization(report, user, action = 'access') {
 function createReportService(modelName, options) {
   const model = prisma[modelName];
   const { orderByField, parseCreateData, parseUpdateData, dateFilter } = options;
-  const displayName = modelName.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
+  const displayName = modelName
+    .replace(/([A-Z])/g, ' $1')
+    .trim()
+    .toLowerCase();
 
   return {
     /**
@@ -153,24 +156,28 @@ const weeklyReportService = createReportService('weeklyReport', {
   orderByField: 'weekStart',
   dateFilter: { startField: 'weekStart', endField: 'weekEnd' },
   parseCreateData: (body) => ({
+    name: body.name,
     weekStart: new Date(body.weekStart),
     weekEnd: new Date(body.weekEnd),
     weekNumber: body.weekNumber,
     summary: body.summary,
     activities: body.activities,
-    instructions: body.instructions,
+    remarks: body.remarks,
     school: body.school,
     department: body.department,
     totalHours: body.totalHours,
+    yearOfTraining: body.yearOfTraining,
     status: body.status,
   }),
   parseUpdateData: (body) => ({
+    name: body.name,
     summary: body.summary,
     activities: body.activities,
-    instructions: body.instructions,
+    remarks: body.remarks,
     school: body.school,
     department: body.department,
     totalHours: body.totalHours,
+    yearOfTraining: body.yearOfTraining,
     status: body.status,
   }),
 });

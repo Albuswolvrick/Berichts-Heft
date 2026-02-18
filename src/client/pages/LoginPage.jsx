@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authApi } from '../services/api';
 
 const LoginPage = ({ onLogin }) => {
     const [email, setEmail] = useState('');
@@ -14,25 +15,12 @@ const LoginPage = ({ onLogin }) => {
         setError('');
 
         try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                onLogin(data.user);
-                navigate('/daily-reports');
-            } else {
-                const message = await response.text();
-                setError(message || 'Login fehlgeschlagen');
-            }
+            const data = await authApi.login({ email, password });
+            onLogin(data.user);
+            navigate('/reports/daily');
         } catch (error) {
             console.error('Fehler beim Login:', error);
-            setError('Verbindungsfehler');
+            setError(error.message || 'Verbindungsfehler');
         } finally {
             setIsLoading(false);
         }
