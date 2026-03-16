@@ -5,7 +5,7 @@ import { useTheme } from '../hooks/useTheme';
 
 const Navbar = ({ items, user, onLogout }) => {
   const navigate = useNavigate();
-  const { setCustomTheme } = useTheme();
+  const { setTheme } = useTheme();
 
   return (
     <nav className="vertical-nav">
@@ -33,13 +33,13 @@ const Navbar = ({ items, user, onLogout }) => {
         </button>
       ))}
       <div className="theme-buttons">
-        <button className="nav-button" onClick={() => setCustomTheme('light')}>
+        <button className="nav-button" onClick={() => setTheme('light')}>
           Light Mode
         </button>
-        <button className="nav-button" onClick={() => setCustomTheme('dark')}>
+        <button className="nav-button" onClick={() => setTheme('dark')}>
           Dark Mode
         </button>
-        <button className="nav-button" onClick={() => setCustomTheme('doom')}>
+        <button className="nav-button" onClick={() => setTheme('doom')}>
           Doom Mode
         </button>
       </div>

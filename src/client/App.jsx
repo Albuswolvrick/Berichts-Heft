@@ -14,14 +14,13 @@ import WeeklyReportPage from './pages/WeeklyReportPage';
 import MonthlyReportPage from './pages/MonthlyReportPage';
 import YearlyReportPage from './pages/YearlyReportPage';
 import NewReportPage from './pages/NewReportPage';
-import AdminPage from './pages/AdminPage';
+import ThemeManager from './components/ThemeManager';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
 import { authApi, userApi } from './services/api';
 import '../../public/css/style.css';
 import '../../public/css/navbar.css';
 import '../../public/css/report.css';
-import '../../public/css/doom.css';
 
 const allNavItems = [
   { label: 'Home', path: '/' },
@@ -115,7 +114,7 @@ function App() {
                 <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
                 <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
                 <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-                <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
+                <Route path="/admin" element={<AdminRoute user={user}><ThemeManager /></AdminRoute>} />
                 <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
                 <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
                 <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
