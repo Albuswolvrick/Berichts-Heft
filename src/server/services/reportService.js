@@ -159,14 +159,14 @@ const weeklyReportService = createReportService('weeklyReport', {
     name: body.name,
     weekStart: new Date(body.weekStart),
     weekEnd: new Date(body.weekEnd),
-    weekNumber: body.weekNumber,
+    weekNumber: parseInt(body.weekNumber),
     summary: body.summary,
     activities: body.activities,
     remarks: body.remarks,
     school: body.school,
     department: body.department,
-    totalHours: body.totalHours,
-    yearOfTraining: body.yearOfTraining,
+    totalHours: parseFloat(body.totalHours),
+    yearOfTraining: parseInt(body.yearOfTraining),
     status: body.status,
   }),
   parseUpdateData: (body) => ({
@@ -176,9 +176,12 @@ const weeklyReportService = createReportService('weeklyReport', {
     remarks: body.remarks,
     school: body.school,
     department: body.department,
-    totalHours: body.totalHours,
-    yearOfTraining: body.yearOfTraining,
+    totalHours: parseFloat(body.totalHours),
+    yearOfTraining: parseInt(body.yearOfTraining),
     status: body.status,
+    weekStart: body.weekStart ? new Date(body.weekStart) : undefined,
+    weekEnd: body.weekEnd ? new Date(body.weekEnd) : undefined,
+    weekNumber: body.weekNumber ? parseInt(body.weekNumber) : undefined,
   }),
 });
 
@@ -198,6 +201,10 @@ const monthlyReportService = createReportService('monthlyReport', {
       goals: body.goals,
       totalHours: !isNaN(parsedHours) ? parsedHours : 0,
       status: body.status,
+      name: body.name,
+      instructions: body.instructions,
+      remarks: body.remarks,
+      yearOfTraining: parseInt(body.yearOfTraining),
     };
   },
   parseUpdateData: (body, existing) => {
@@ -207,6 +214,14 @@ const monthlyReportService = createReportService('monthlyReport', {
       keyAchievements: body.keyAchievements,
       goals: body.goals,
       status: body.status,
+      name: body.name,
+      instructions: body.instructions,
+      remarks: body.remarks,
+      yearOfTraining: body.yearOfTraining ? parseInt(body.yearOfTraining) : existing.yearOfTraining,
+      month: body.month ? parseInt(body.month) : existing.month,
+      year: body.year ? parseInt(body.year) : existing.year,
+      monthStart: body.monthStart ? new Date(body.monthStart) : existing.monthStart,
+      monthEnd: body.monthEnd ? new Date(body.monthEnd) : existing.monthEnd,
     };
     if (body.totalHours !== undefined) {
       data.totalHours = !isNaN(parsedHours) ? parsedHours : existing.totalHours;
@@ -242,6 +257,10 @@ const yearlyReportService = createReportService('yearlyReport', {
       skillsImproved: body.skillsImproved,
       goals: body.goals,
       status: body.status,
+      year: body.year ? parseInt(body.year) : existing.year,
+      trainingYear: body.trainingYear,
+      yearStart: body.yearStart ? new Date(body.yearStart) : existing.yearStart,
+      yearEnd: body.yearEnd ? new Date(body.yearEnd) : existing.yearEnd,
     };
     if (body.totalHours !== undefined) {
       data.totalHours = !isNaN(parsedHours) ? parsedHours : existing.totalHours;
