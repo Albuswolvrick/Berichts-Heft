@@ -28,11 +28,11 @@ const RegisterPage = () => {
         navigate('/login');
       } else {
         const message = await response.text();
-        setError(message || 'Registrierung fehlgeschlagen');
+        setError(message || 'Registration failed');
       }
     } catch (error) {
-      console.error('Fehler bei der Registrierung:', error);
-      setError('Verbindungsfehler');
+      console.error('Registration error:', error);
+      setError('Connection error');
     } finally {
       setIsLoading(false);
     }
@@ -41,9 +41,9 @@ const RegisterPage = () => {
   return (
     <div className="login-container">
       <form onSubmit={handleRegister} className="login-form">
-        <h2>Registrieren</h2>
+        <h2>Register</h2>
         <div className="input-group">
-          <label>Benutzername:</label>
+          <label>Username:</label>
           <input
             type="text"
             value={username}
@@ -63,7 +63,7 @@ const RegisterPage = () => {
           />
         </div>
         <div className="input-group">
-          <label>Passwort:</label>
+          <label>Password:</label>
           <input
             type="password"
             value={password}
@@ -74,7 +74,7 @@ const RegisterPage = () => {
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Registrieren...' : 'Registrieren'}
+          {isLoading ? 'Registering...' : 'Register'}
         </button>
       </form>
     </div>
