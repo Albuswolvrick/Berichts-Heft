@@ -26,7 +26,7 @@ import '../../public/css/doom.css';
 const allNavItems = [
   { label: 'Home', path: '/' },
   { label: 'New Report', path: '/reports/new' },
-  { label: 'Admin Dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
+  { label: 'Theme Manager', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
   { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
 ];
 

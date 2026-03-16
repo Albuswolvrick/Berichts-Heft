@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useToast } from '../hooks/useToast';
+import ThemeManager from '../components/ThemeManager';
 
 const AdminPage = () => {
     const [reportType, setReportType] = useState('daily');
@@ -36,6 +38,7 @@ const AdminPage = () => {
     return (
         <div className="container">
             <h1>Admin Dashboard</h1>
+            <ThemeManager />
             <form onSubmit={handleFetchReports}>
                 <div className="form-group">
                     <label htmlFor="reportType">Report Type</label>
