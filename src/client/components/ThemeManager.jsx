@@ -1,39 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTheme } from '../hooks/useTheme';
 
-const themes = ['light', 'dark', 'doom']; // Example themes
-
 const ThemeManager = () => {
-    const { theme, setTheme } = useTheme();
-    const [selectedTheme, setSelectedTheme] = useState(theme);
-
-    const handleThemeChange = (e) => {
-        setSelectedTheme(e.target.value);
-    };
-
-    const handleSaveTheme = () => {
-        setTheme(selectedTheme);
-    };
-
-    useEffect(() => {
-        setSelectedTheme(theme);
-    }, [theme]);
+    const { setTheme } = useTheme();
 
     return (
         <div className="theme-manager">
-            <div className="form-group">
-                <label htmlFor="theme-select">Select Theme:</label>
-                <select id="theme-select" value={selectedTheme} onChange={handleThemeChange}>
-                    {themes.map((t) => (
-                        <option key={t} value={t}>
-                            {t}
-                        </option>
-                    ))}
-                </select>
+            <h3>Select a Theme</h3>
+            <div className="theme-buttons">
+                <button onClick={() => setTheme('light')} className="nav-button">Light</button>
+                <button onClick={() => setTheme('dark')} className="nav-button">Dark</button>
+                <button onClick={() => setTheme('doom')} className="nav-button">Doom</button>
             </div>
-            <button onClick={handleSaveTheme} className="btn">
-                Save Theme
-            </button>
         </div>
     );
 };

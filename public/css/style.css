@@ -1,12 +1,13 @@
 
 :root {
-  /* Light Theme (Default) */
   --background-color: #FDFDFA;
   --text-color: #3C3C3C;
+  --primary-color: #4CAF50;
+  --secondary-color: #6c757d;
   --nav-background-color: #EAEAEA;
   --nav-text-color: #3C3C3C;
   --nav-button-hover-background-color: #DCDCDC;
-  --button-background-color: #4CAF50;
+  --button-background-color: var(--primary-color);
   --button-text-color: white;
   --button-hover-background-color: #45a049;
   --button-disabled-background-color: #ccc;
@@ -17,7 +18,7 @@
   --report-border-color: #D3D3D3;
   --report-header-color: #333;
   --report-text-color: #555;
-  --accent-color: #007bff;
+  --accent-color: var(--secondary-color);
 }
 
 [data-theme="dark"] {
@@ -39,7 +40,7 @@
   --report-text-color: #f1f1f1;
   --container-background-color: #010700;
   --container-border-color: #363333;
-  --accent-color: #58a6ff;
+  --accent-color: #63b365;
 }
 
 [data-theme="doom"] {
@@ -64,9 +65,7 @@
   --accent-color: #c678dd;
 }
 
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
 }
 
@@ -76,4 +75,3 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-

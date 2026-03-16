@@ -1,17 +1,17 @@
 .report-form-container {
   margin: 2rem auto;
   padding: 2.5rem;
-  background-color: var(--report-background-color);
+  background-color: var(--background-color);
   border-radius: 10px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   transition: background-color 0.3s ease;
-  border: 1px solid var(--report-border-color);
+  border: 1px solid var(--secondary-color);
 }
 
 .report-form-container h1 {
   text-align: center;
-  color: var(--report-header-color);
+  color: var(--text-color);
   margin-bottom: 2.5rem;
   font-size: 2.2rem;
 }
@@ -47,11 +47,11 @@
 .form-group textarea,
 .form-group select {
   padding: 0.8rem 1rem;
-  border: 1px solid var(--input-border-color);
+  border: 1px solid var(--secondary-color);
   border-radius: 5px;
   font-size: 1rem;
-  background-color: var(--input-background-color);
-  color: var(--input-text-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
@@ -61,8 +61,8 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: var(--report-header-color);
-  box-shadow: 0 0 5px var(--report-header-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px var(--primary-color);
 }
 
 .full-width {
@@ -92,13 +92,13 @@ button[type='submit'],
   transition:
     background-color 0.3s ease,
     transform 0.2s ease;
-  background-color: var(--button-background-color);
-  color: var(--button-text-color);
+  background-color: var(--primary-color);
+  color: white;
 }
 
 button[type='submit']:hover,
 .download-btn:hover {
-  background-color: var(--button-hover-background-color);
+  background-color: var(--secondary-color);
   transform: translateY(-2px);
 }
 
