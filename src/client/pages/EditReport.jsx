@@ -143,35 +143,35 @@ const EditReport = () => {
             {reportType === 'WEEK' && (
             <>
                 <div className="form-group">
-                    <label htmlFor="trainingYear">Ausbildungsjahr</label>
+                    <label htmlFor="trainingYear">Training Year</label>
                     <input type="number" id="trainingYear" value={trainingYear} onChange={(e) => setTrainingYear(e.target.value)} disabled={submitting} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="reportNumber">Berichts-Nr.</label>
+                    <label htmlFor="reportNumber">Report No.</label>
                     <input type="number" id="reportNumber" value={reportNumber} onChange={(e) => setReportNumber(e.target.value)} disabled={submitting} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="weekStart">für die Woche vom</label>
+                    <label htmlFor="weekStart">for the week of</label>
                     <input type="date" id="weekStart" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} disabled={submitting} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="weekEnd">bis</label>
+                    <label htmlFor="weekEnd">to</label>
                     <input type="date" id="weekEnd" value={weekEnd} onChange={(e) => setWeekEnd(e.target.value)} disabled={submitting} />
                 </div>
                 <div className="form-group full-width">
-                    <label htmlFor="department">Ausbildungsabteilung</label>
+                    <label htmlFor="department">Training Department</label>
                     <input type="text" id="department" value={department} onChange={(e) => setDepartment(e.target.value)} disabled={submitting} />
                 </div>
                 <div className="form-group full-width">
-                    <label htmlFor="activities">Betriebliche Tätigkeiten</label>
+                    <label htmlFor="activities">Company Activities</label>
                     <textarea id="activities" value={activities} onChange={(e) => setActivities(e.target.value)} disabled={submitting} />
                 </div>
                 <div className="form-group full-width">
-                    <label htmlFor="instructions">Unterweisungen, betrieblicher Unterricht, sonstige Schulungen</label>
+                    <label htmlFor="instructions">Instructions, company lessons, other training</label>
                     <textarea id="instructions" value={instructions} onChange={(e) => setInstructions(e.target.value)} disabled={submitting} />
                 </div>
                 <div className="form-group full-width">
-                    <label htmlFor="school">Berufsschule</label>
+                    <label htmlFor="school">Vocational School</label>
                     <textarea id="school" value={school} onChange={(e) => setSchool(e.target.value)} disabled={submitting} />
                 </div>
             </>

@@ -19,10 +19,10 @@ const HomePage = () => {
         const data = await response.json();
         setReports(data);
       } else {
-        showToast('Fehler beim Laden der Berichte', 'error');
+        showToast('Error loading reports', 'error');
       }
     } catch (error) {
-      showToast('Fehler: ' + error.message, 'error');
+      showToast('Error: ' + error.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -30,13 +30,13 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Berichts-Heft</h1>
-      <h2>Meine Berichte</h2>
+      <h1>Report Booklet</h1>
+      <h2>My Reports</h2>
       
       {loading ? (
         <Spinner />
       ) : reports.length === 0 ? (
-        <p>Noch keine Berichte vorhanden.</p>
+        <p>No reports available yet.</p>
       ) : (
         <ul>
           {reports.map((report) => (

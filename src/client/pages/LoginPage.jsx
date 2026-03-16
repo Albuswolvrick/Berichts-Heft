@@ -19,8 +19,8 @@ const LoginPage = ({ onLogin }) => {
             onLogin(data.user);
             navigate('/reports/daily');
         } catch (error) {
-            console.error('Fehler beim Login:', error);
-            setError(error.message || 'Verbindungsfehler');
+            console.error('Login error:', error);
+            setError(error.message || 'Connection error');
         } finally {
             setIsLoading(false);
         }
@@ -41,7 +41,7 @@ const LoginPage = ({ onLogin }) => {
                     />
                 </div>
                 <div className="input-group">
-                    <label>Passwort:</label>
+                    <label>Password:</label>
                     <input
                         type="password"
                         value={password}
@@ -52,7 +52,7 @@ const LoginPage = ({ onLogin }) => {
                 </div>
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Anmelden...' : 'Anmelden'}
+                    {isLoading ? 'Logging in...' : 'Login'}
                 </button>
             </form>
         </div>

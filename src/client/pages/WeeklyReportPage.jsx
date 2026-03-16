@@ -75,7 +75,7 @@ const WeeklyReportPage = () => {
       !yearOfTraining ||
       !remarks
     ) {
-      addToast('Bitte alle Pflichtfelder ausfüllen.', 'error');
+      addToast('Please fill in all required fields.', 'error');
       return;
     }
 
@@ -95,43 +95,43 @@ const WeeklyReportPage = () => {
         status,
       });
 
-      addToast(`Wochenbericht gespeichert (ID: ${report.id})`, 'success');
+      addToast(`Weekly report saved (ID: ${report.id})`, 'success');
       setFormData(initialState);
     } catch (error) {
-      addToast(`Speichern fehlgeschlagen: ${error.message}`, 'error');
+      addToast(`Save failed: ${error.message}`, 'error');
     }
   };
 
   const handleDownloadPDF = () => {
     downloadReportPdf({
-      title: 'Wochenbericht',
-      fileName: `Wochenbericht_KW${formData.weekNumber}_${formData.name}.pdf`,
+      title: 'Weekly Report',
+      fileName: `WeeklyReport_CW${formData.weekNumber}_${formData.name}.pdf`,
       metadata: [
-        { label: 'Name des Auszubildenden', value: formData.name },
-        { label: 'Kalenderwoche', value: formData.weekNumber },
-        { label: 'Zeitraum von', value: formData.weekStart },
-        { label: 'Zeitraum bis', value: formData.weekEnd },
-        { label: 'Ausbildungsjahr', value: formData.yearOfTraining },
-        { label: 'Ausbildungsabteilung', value: formData.department },
-        { label: 'Gesamtstunden', value: formData.totalHours },
-        { label: 'Status', value: formData.status === 'DRAFT' ? 'Entwurf' : 'Eingereicht' },
+        { label: 'Trainee Name', value: formData.name },
+        { label: 'Calendar Week', value: formData.weekNumber },
+        { label: 'Period from', value: formData.weekStart },
+        { label: 'Period to', value: formData.weekEnd },
+        { label: 'Training Year', value: formData.yearOfTraining },
+        { label: 'Training Department', value: formData.department },
+        { label: 'Total Hours', value: formData.totalHours },
+        { label: 'Status', value: formData.status === 'DRAFT' ? 'Draft' : 'Submitted' },
       ],
       sections: [
-        { label: 'Betriebliche Tätigkeiten', value: formData.activities },
+        { label: 'Company Activities', value: formData.activities },
         {
           label:
-            'Unterweisungen, Lehrgespräche, betrieblicher Unterricht, außerbetriebliche Schulungsveranstaltungen, Zwischenprüfung',
+            'Instructions, training discussions, in-house training, external training events, intermediate examination',
           value: formData.summary,
         },
-        { label: 'Berufsschule (Unterrichtsthemen)', value: formData.school },
-        { label: 'Bemerkungen', value: formData.remarks },
+        { label: 'Vocational school (topics)', value: formData.school },
+        { label: 'Comments', value: formData.remarks },
       ],
     });
   };
 
   return (
     <div className="report-form-container">
-      <h1>Wochenbericht</h1>
+      <h1>Weekly Report</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group full-width">
@@ -141,7 +141,7 @@ const WeeklyReportPage = () => {
         </div>
         <div className="form-row">
           <div className="form-group">
-            <label>Ausbildungswoche vom :</label>
+            <label>Training week from:</label>
             <input
               type="date"
               value={formData.weekStart}
@@ -150,17 +150,17 @@ const WeeklyReportPage = () => {
             />
           </div>
           <div className="form-group">
-            <label>Bis :</label>
+            <label>To:</label>
             <input type="date" value={formData.weekEnd} readOnly required />
           </div>
         </div>
         <div className="form-row">
           <div className="form-group">
-            <label>Kalenderwoche (automatisch):</label>
+            <label>Calendar week (automatic):</label>
             <input type="number" value={formData.weekNumber} readOnly required />
           </div>
           <div className="form-group">
-            <label>Gesamtstunden:</label>
+            <label>Total Hours:</label>
             <input
               type="number"
               value={formData.totalHours}
@@ -170,7 +170,7 @@ const WeeklyReportPage = () => {
           </div>
         </div>
         <div className="form-group full-width">
-          <label>Ausbildungsabteilung:</label>
+          <label>Training Department:</label>
           <input
             type="text"
             value={formData.department}
@@ -179,7 +179,7 @@ const WeeklyReportPage = () => {
           />
         </div>
         <div className="form-group full-width">
-          <label>Ausbildungsjahr</label>
+          <label>Training Year</label>
           <input
             type="number"
             value={formData.yearOfTraining}
@@ -188,35 +188,34 @@ const WeeklyReportPage = () => {
           />
         </div>
         <div className="form-group full-width">
-          <label>Betriebliche Tätigkeiten:</label>
+          <label>Company Activities:</label>
           <textarea value={formData.activities} onChange={handleChange('activities')} required />
         </div>
         <div className="form-group full-width">
           <label>
-            Unterweisungen, Lehrgespräche, betrieblicher Unterricht, außerbetriebliche
-            Schulungsveranstaltungen, Zwischenprüfung:
+            Instructions, training discussions, in-house training, external training events, intermediate examination:
           </label>
           <textarea value={formData.summary} onChange={handleChange('summary')} required />
         </div>
         <div className="form-group full-width">
-          <label>Berufsschule (Unterrichtsthemen):</label>
+          <label>Vocational school (topics):</label>
           <textarea value={formData.school} onChange={handleChange('school')} required />
         </div>
         <div className="form-group full-width">
-          <label>Bemerkungen:</label>
+          <label>Comments:</label>
           <textarea value={formData.remarks} onChange={handleChange('remarks')} required />
         </div>
         <div className="form-group full-width">
           <label>Status:</label>
           <select value={formData.status} onChange={handleChange('status')}>
-            <option value="DRAFT">Entwurf</option>
-            <option value="SUBMITTED">Eingereicht</option>
+            <option value="DRAFT">Draft</option>
+            <option value="SUBMITTED">Submitted</option>
           </select>
         </div>
         <div className="button-group">
-          <button type="submit">Bericht speichern</button>
+          <button type="submit">Save Report</button>
           <button type="button" className="download-btn" onClick={handleDownloadPDF}>
-            Als PDF herunterladen
+            Download as PDF
           </button>
         </div>
       </form>
