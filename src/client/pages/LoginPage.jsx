@@ -17,7 +17,7 @@ const LoginPage = ({ onLogin }) => {
         try {
             const data = await authApi.login({ email, password });
             onLogin(data.user);
-            navigate('/reports/daily');
+            navigate('/');
         } catch (error) {
             console.error('Login error:', error);
             setError(error.message || 'Connection error');
