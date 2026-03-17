@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
+import './HomePage.css';
 
 const HomePage = () => {
   const [reports, setReports] = useState([]);
@@ -9,22 +10,42 @@ const HomePage = () => {
   const { showToast } = useToast();
 
   useEffect(() => {
-    fetchReports();
-  }, []);
-
-  const fetchReports = async () => {
-    try {
-      const response = await fetch('/api/reports');
-      if (response.ok) {
-        const data = await response.json();
-        setReports(data);
-      } else {
-        showToast('Error loading reports', 'error');
+    const fetchReports = async () => {
+      try {
+        // This fetches all reports of all types from the new, unified endpoint.
+        const response = await fetch('/api/reports/all-types');
+        if (response.ok) {
+          const data = await response.json();
+          setReports(data);
+        } else {
+          showToast('Error loading reports', 'error');
+        }
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      showToast('Error: ' + error.message, 'error');
-    } finally {
-      setLoading(false);
+    };
+    fetchReports();
+  }, [showToast]);
+
+  /**
+   * This function gets the correct title for a report based on its type.
+   * This is necessary because the title field is named differently in each report type's database schema.
+   */
+  const getReportTitle = (report) => {
+    switch (report.type) {
+      case 'Daily':
+        return report.title;
+      case 'Weekly':
+        return report.name || 'Weekly Report';
+      case 'Monthly':
+        const monthName = new Date(report.year, report.month - 1, 1).toLocaleString('en-US', { month: 'long' });
+        return `${monthName} ${report.year}`;
+      case 'Yearly':
+        return `Yearly Report ${report.year}`;
+      default:
+        return report.title || report.name || 'Report';
     }
   };
 
@@ -32,24 +53,27 @@ const HomePage = () => {
     <div>
       <h1>Report Booklet</h1>
       <h2>My Reports</h2>
-      
+
       {loading ? (
         <Spinner />
       ) : reports.length === 0 ? (
         <p>No reports available yet.</p>
       ) : (
-        <ul>
-          {reports.map((report) => (
-            <li key={report.id}>
-              <Link to={`/reports/${report.id}`}>
-                <h3>{report.title}</h3>
+        <div className="report-grid">
+          {reports.map((report) => {
+            // The edit link must be specific to the report type, matching the new unified route.
+            // Example: /reports/daily/1/edit
+            const editUrl = `/reports/${report.type.toLowerCase()}/${report.id}/edit`;
+
+            return (
+              <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
+                <h3>{getReportTitle(report)}</h3>
+                <p>Type: {report.type}</p>
+                <p>Status: {report.status}</p>
               </Link>
-              <p>{report.content}</p>
-              <p>Week ID: {report.weekId}</p>
-              <p>Status: {report.status}</p>
-            </li>
-          ))}
-        </ul>
+            );
+          })}
+        </div>
       )}
     </div>
   );

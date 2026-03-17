@@ -7,7 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DevMenu from './pages/DevMenu';
 import ReportPage from './pages/ReportPage';
-import EditReport from './pages/EditReport';
+import EditReportPage from './pages/EditReportPage';
 import ProfilePage from './pages/ProfilePage';
 import DailyReportPage from './pages/DailyReportPage';
 import WeeklyReportPage from './pages/WeeklyReportPage';
@@ -116,8 +116,8 @@ function App() {
                 <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
                 <Route path="/admin" element={<AdminRoute user={user}><ThemeManager /></AdminRoute>} />
                 <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
-                <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-                <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
+                <Route path="/reports/:reportType/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+                <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
               </Routes>
             </main>
