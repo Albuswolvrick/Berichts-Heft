@@ -22,11 +22,35 @@ const getReportService = (req, res, next) => {
 };
 
 const getAllReports = async (req, res) => {
-    if (!req.session.user) {
+    const { user } = req.session;
+    if (!user) {
         return res.status(401).json({ message: 'You must be logged in to view reports.' });
     }
-    const userId = req.session.user.id;
 
+    const isAdmin = user.role === 'ADMIN' || user.role === 'MANAGER';
+
+    if (isAdmin) {
+        const { search, userId } = req.query;
+        const query = { search, userId };
+
+        const [daily, weekly, monthly, yearly] = await Promise.all([
+            services.daily.listAll(query),
+            services.weekly.listAll(query),
+            services.monthly.listAll(query),
+            services.yearly.listAll(query),
+        ]);
+
+        const allReports = [
+            ...daily.map(r => ({ ...r, type: 'Daily' })),
+            ...weekly.map(r => ({ ...r, type: 'Weekly' })),
+            ...monthly.map(r => ({ ...r, type: 'Monthly' })),
+            ...yearly.map(r => ({ ...r, type: 'Yearly' }))
+        ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        return res.status(200).json(allReports);
+    }
+
+    const userId = user.id;
     const [daily, weekly, monthly, yearly] = await Promise.all([
         services.daily.listByUser(userId),
         services.weekly.listByUser(userId),

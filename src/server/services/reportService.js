@@ -7,6 +7,9 @@ const { NotFoundError, ForbiddenError } = require('../utils/errors');
  * ADMIN and MANAGER roles can access any report.
  */
 function checkReportAuthorization(report, user, action = 'access') {
+  if (!user) {
+    throw new ForbiddenError(`You must be logged in to ${action} this report`);
+  }
   if (report.userId !== user.id && !['ADMIN', 'MANAGER'].includes(user.role)) {
     throw new ForbiddenError(`You are not authorized to ${action} this report`);
   }
@@ -22,10 +25,11 @@ function checkReportAuthorization(report, user, action = 'access') {
  * @param {Function} options.parseCreateData - Transforms request body into Prisma create data
  * @param {Function} options.parseUpdateData - Transforms request body into Prisma update data
  * @param {object} [options.dateFilter] - Date filter configuration for admin queries
+ * @param {string[]} [options.searchFields] - Fields to search for in listAll queries
  */
 function createReportService(modelName, options) {
   const model = prisma[modelName];
-  const { orderByField, parseCreateData, parseUpdateData, dateFilter } = options;
+  const { orderByField, parseCreateData, parseUpdateData, dateFilter, searchFields } = options;
   const displayName = modelName
     .replace(/([A-Z])/g, ' $1')
     .trim()
@@ -52,10 +56,23 @@ function createReportService(modelName, options) {
     },
 
     /**
-     * Lists all reports (admin/manager), with optional date filtering.
+     * Lists all reports (admin/manager), with optional filtering.
      */
     async listAll(query) {
       const where = {};
+
+      if (query.userId) {
+        where.userId = parseInt(query.userId, 10);
+      }
+
+      if (query.search && searchFields && searchFields.length > 0) {
+        where.OR = searchFields.map(field => ({
+          [field]: {
+            contains: query.search,
+            mode: 'insensitive',
+          },
+        }));
+      }
 
       if (dateFilter && query.startDate && query.endDate) {
         const { startField, endField } = dateFilter;
@@ -65,7 +82,7 @@ function createReportService(modelName, options) {
 
       return model.findMany({
         where,
-        include: { user: { select: { name: true } } },
+        include: { user: { select: { name: true, id: true } } },
         orderBy: { [orderByField]: 'desc' },
       });
     },
@@ -123,6 +140,7 @@ function createReportService(modelName, options) {
 const dailyReportService = createReportService('dailyReport', {
   orderByField: 'reportDate',
   dateFilter: { startField: 'reportDate', endField: 'reportDate' },
+  searchFields: ['title', 'activities', 'learnings', 'challenges'],
   parseCreateData: (body) => {
     const parsedHours = parseFloat(body.hoursWorked);
     return {
@@ -155,6 +173,7 @@ const dailyReportService = createReportService('dailyReport', {
 const weeklyReportService = createReportService('weeklyReport', {
   orderByField: 'weekStart',
   dateFilter: { startField: 'weekStart', endField: 'weekEnd' },
+  searchFields: ['name', 'summary', 'activities', 'remarks'],
   parseCreateData: (body) => ({
     name: body.name,
     weekStart: new Date(body.weekStart),
@@ -189,6 +208,7 @@ const weeklyReportService = createReportService('weeklyReport', {
 const monthlyReportService = createReportService('monthlyReport', {
   orderByField: 'monthStart',
   dateFilter: { startField: 'monthStart', endField: 'monthEnd' },
+  searchFields: ['name', 'summary', 'keyAchievements', 'goals'],
   parseCreateData: (body) => {
     const parsedHours = parseFloat(body.totalHours);
     return {
@@ -234,6 +254,7 @@ const monthlyReportService = createReportService('monthlyReport', {
 const yearlyReportService = createReportService('yearlyReport', {
   orderByField: 'year',
   dateFilter: { startField: 'yearStart', endField: 'yearEnd' },
+  searchFields: ['trainingYear', 'summary', 'achievements', 'skillsImproved', 'goals'],
   parseCreateData: (body) => {
     const parsedHours = parseFloat(body.totalHours);
     return {
