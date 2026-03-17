@@ -46,7 +46,7 @@ const getAllReports = async (req, res) => {
 
 const getReportById = async (req, res) => {
     const { id } = req.params;
-    const report = await req.service.getById(parseInt(id, 10));
+    const report = await req.service.getById(parseInt(id, 10), req.session.user);
     if (!report) {
         return res.status(404).json({ message: 'Report not found' });
     }
@@ -55,7 +55,7 @@ const getReportById = async (req, res) => {
 
 const updateReportById = async (req, res) => {
     const { id } = req.params;
-    const report = await req.service.update(parseInt(id, 10), req.body);
+    const report = await req.service.update(parseInt(id, 10), req.session.user, req.body);
     res.status(200).json(report);
 };
 
