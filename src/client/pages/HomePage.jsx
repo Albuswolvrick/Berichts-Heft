@@ -7,7 +7,7 @@ import './HomePage.css';
 const HomePage = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { showToast } = useToast();
+  const { addToast } = useToast();
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -18,16 +18,16 @@ const HomePage = () => {
           const data = await response.json();
           setReports(data);
         } else {
-          showToast('Error loading reports', 'error');
+          addToast('Error loading reports', 'error');
         }
       } catch (error) {
-        showToast('Error: ' + error.message, 'error');
+        addToast('Error: ' + error.message, 'error');
       } finally {
         setLoading(false);
       }
     };
     fetchReports();
-  }, [showToast]);
+  }, [addToast]);
 
   /**
    * This function gets the correct title for a report based on its type.
