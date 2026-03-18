@@ -7,27 +7,26 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DevMenu from './pages/DevMenu';
 import ReportPage from './pages/ReportPage';
-import EditReportPage from './pages/EditReportPage';
+import EditReport from './pages/EditReport';
 import ProfilePage from './pages/ProfilePage';
 import DailyReportPage from './pages/DailyReportPage';
 import WeeklyReportPage from './pages/WeeklyReportPage';
 import MonthlyReportPage from './pages/MonthlyReportPage';
 import YearlyReportPage from './pages/YearlyReportPage';
 import NewReportPage from './pages/NewReportPage';
-import AdminReportsPage from './pages/AdminReportsPage';
-import ThemeManager from './components/ThemeManager';
+import AdminPage from './pages/AdminPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
 import { authApi, userApi } from './services/api';
 import '../../public/css/style.css';
 import '../../public/css/navbar.css';
 import '../../public/css/report.css';
+import '../../public/css/doom.css';
 
 const allNavItems = [
   { label: 'Home', path: '/' },
   { label: 'New Report', path: '/reports/new' },
-  { label: 'Admin Reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
-  { label: 'Theme Manager', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
+  { label: 'Admin Dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
   { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
 ];
 
@@ -116,11 +115,10 @@ function App() {
                 <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
                 <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
                 <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-                <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
-                <Route path="/admin" element={<AdminRoute user={user}><ThemeManager /></AdminRoute>} />
+                <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
                 <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
-                <Route path="/reports/:reportType/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-                <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
+                <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+                <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
               </Routes>
             </main>
