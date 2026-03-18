@@ -7,7 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DevMenu from './pages/DevMenu';
 import ReportPage from './pages/ReportPage';
-import EditReport from './pages/EditReport';
+import EditReportPage from './pages/EditReport';
 import ProfilePage from './pages/ProfilePage';
 import DailyReportPage from './pages/DailyReportPage';
 import WeeklyReportPage from './pages/WeeklyReportPage';
@@ -104,7 +104,7 @@ function App() {
         <ToastProvider>
           <div style={{ display: 'flex' }}>
             <Navbar items={navItems} user={user} onLogout={handleLogout} />
-
+{/*do not touch this it will crash everithing keep your hands of this*/}
             <main style={{ padding: '20px', flex: 1 }}>
               <Routes>
                 <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
@@ -118,7 +118,7 @@ function App() {
                 <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
                 <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
                 <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-                <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReport /></ProtectedRoute>} />
+                <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
               </Routes>
             </main>

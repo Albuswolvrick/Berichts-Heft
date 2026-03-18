@@ -52,7 +52,7 @@ const LoginPage = ({ onLogin }) => {
                 </div>
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Logging in...' : 'Login'}
+                    {isLoading ? 'Anmelden...' : 'Anmelden'}
                 </button>
             </form>
         </div>
