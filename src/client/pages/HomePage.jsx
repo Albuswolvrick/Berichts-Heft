@@ -39,9 +39,10 @@ const HomePage = () => {
         return report.title;
       case 'Weekly':
         return report.name || 'Weekly Report';
-      case 'Monthly':
+      case 'Monthly': {
         const monthName = new Date(report.year, report.month - 1, 1).toLocaleString('en-US', { month: 'long' });
         return `${monthName} ${report.year}`;
+      }
       case 'Yearly':
         return `Yearly Report ${report.year}`;
       default:
