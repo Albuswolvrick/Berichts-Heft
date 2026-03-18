@@ -148,7 +148,7 @@ const MonthlyReportPage = () => {
             <label>Remarks:</label>
             <textarea value={remarks} onChange={(e) => setRemarks(e.target.value)} required />
         </div>
-        <div classNameG="form-group full-width">
+        <div className="form-group full-width">
             <label>Status:</label>
             <select value={status} onChange={(e) => setStatus(e.target.value)}>
                 <option value="DRAFT">Draft</option>
