@@ -118,7 +118,7 @@ function App() {
                 <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
                 <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
                 <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-                <Route path="/reports/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
+                <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
               </Routes>
             </main>
