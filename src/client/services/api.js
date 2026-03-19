@@ -81,6 +81,13 @@ const weeklyReportApi = createReportApi('/weekly-reports');
 const monthlyReportApi = createReportApi('/monthly-reports');
 const yearlyReportApi = createReportApi('/yearly-reports');
 
+const reportsApi = {
+    getAll: (params) => {
+        const query = new URLSearchParams(params).toString();
+        return api.get(`/reports/all-types${query ? `?${query}` : ''}`);
+    },
+};
+
 export {
   api,
   authApi,
@@ -89,4 +96,5 @@ export {
   weeklyReportApi,
   monthlyReportApi,
   yearlyReportApi,
+  reportsApi
 };
