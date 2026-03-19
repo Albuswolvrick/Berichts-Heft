@@ -1,5 +1,5 @@
 const { prisma } = require('../config/database');
-const { NotFoundError, ForbiddenError } = require('../utils/errors');
+const { NotFoundError, ForbiddenError, UnauthorizedError } = require('../utils/errors');
 
 /**
  * Checks if a user is authorized to access a report.
@@ -8,7 +8,7 @@ const { NotFoundError, ForbiddenError } = require('../utils/errors');
  */
 function checkReportAuthorization(report, user, action = 'access') {
   if (!user) {
-    throw new ForbiddenError(`You must be logged in to ${action} this report`);
+    throw new UnauthorizedError(`You must be logged in to ${action} this report`);
   }
   if (report.userId !== user.id && !['ADMIN', 'MANAGER'].includes(user.role)) {
     throw new ForbiddenError(`You are not authorized to ${action} this report`);
