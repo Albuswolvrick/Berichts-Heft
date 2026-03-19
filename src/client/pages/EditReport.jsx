@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
-
+import '../../../public/css/edit-report.css';
 const EditReportPage = () => {
   const { reportType, id } = useParams();
   const navigate = useNavigate();
@@ -14,12 +14,18 @@ const EditReportPage = () => {
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        // This fetches the specific report to edit from the new, general endpoint.
         const response = await fetch(`/api/reports/${reportType}/${id}`);
         if (response.ok) {
           const data = await response.json();
           setReport(data);
-          setFormData(data);
+          // For date inputs, we need to format the date to YYYY-MM-DD
+          const formattedData = { ...data };
+          Object.keys(formattedData).forEach(key => {
+            if (['weekStart', 'weekEnd', 'monthStart', 'monthEnd', 'yearStart', 'yearEnd', 'reportDate'].includes(key) && formattedData[key]) {
+              formattedData[key] = new Date(formattedData[key]).toISOString().split('T')[0];
+            }
+          });
+          setFormData(formattedData);
         } else {
           showToast('Error loading report', 'error');
         }
@@ -32,17 +38,14 @@ const EditReportPage = () => {
     fetchReport();
   }, [reportType, id, showToast]);
 
-  // This function handles changes to any input field in the form.
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: type === 'number' ? parseFloat(value) || 0 : value }));
   };
 
-  // This function handles the form submission.
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // This sends the updated report data to the unified endpoint.
       const response = await fetch(`/api/reports/${reportType}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -67,47 +70,85 @@ const EditReportPage = () => {
     return <p>Report not found.</p>;
   }
 
-  /**
-   * This function dynamically renders the correct form fields based on the report type.
-   * This is necessary because each report type has a different set of fields.
-   */
   const renderFormFields = () => {
+    const statusOptions = ["DRAFT", "SUBMITTED", "APPROVED", "REJECTED", "REVISION_REQUIRED"];
     switch (reportType) {
       case 'daily':
         return (
           <>
             <label>Title: <input type="text" name="title" value={formData.title || ''} onChange={handleInputChange} /></label>
+            <label>Date: <input type="date" name="reportDate" value={formData.reportDate || ''} onChange={handleInputChange} /></label>
             <label>Activities: <textarea name="activities" value={formData.activities || ''} onChange={handleInputChange}></textarea></label>
             <label>Learnings: <textarea name="learnings" value={formData.learnings || ''} onChange={handleInputChange}></textarea></label>
             <label>Challenges: <textarea name="challenges" value={formData.challenges || ''} onChange={handleInputChange}></textarea></label>
             <label>Hours Worked: <input type="number" name="hoursWorked" value={formData.hoursWorked || ''} onChange={handleInputChange} /></label>
-            <label>Status: <input type="text" name="status" value={formData.status || ''} onChange={handleInputChange} /></label>
+            <label>Status:
+              <select name="status" value={formData.status || ''} onChange={handleInputChange}>
+                {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </label>
           </>
         );
       case 'weekly':
         return (
           <>
             <label>Name: <input type="text" name="name" value={formData.name || ''} onChange={handleInputChange} /></label>
+            <label>Week Start: <input type="date" name="weekStart" value={formData.weekStart || ''} onChange={handleInputChange} /></label>
+            <label>Week End: <input type="date" name="weekEnd" value={formData.weekEnd || ''} onChange={handleInputChange} /></label>
+            <label>Week Number: <input type="number" name="weekNumber" value={formData.weekNumber || ''} onChange={handleInputChange} /></label>
+            <label>Department: <input type="text" name="department" value={formData.department || ''} onChange={handleInputChange} /></label>
+            <label>Year of Training: <input type="number" name="yearOfTraining" value={formData.yearOfTraining || ''} onChange={handleInputChange} /></label>
             <label>Summary: <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
             <label>Activities: <textarea name="activities" value={formData.activities || ''} onChange={handleInputChange}></textarea></label>
+            <label>School: <textarea name="school" value={formData.school || ''} onChange={handleInputChange}></textarea></label>
+            <label>Total Hours: <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
             <label>Remarks: <textarea name="remarks" value={formData.remarks || ''} onChange={handleInputChange}></textarea></label>
+            <label>Status:
+              <select name="status" value={formData.status || ''} onChange={handleInputChange}>
+                {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </label>
           </>
         );
       case 'monthly':
         return (
           <>
+            <label>Name: <input type="text" name="name" value={formData.name || ''} onChange={handleInputChange} /></label>
+            <label>Month: <input type="number" name="month" value={formData.month || ''} onChange={handleInputChange} /></label>
+            <label>Year: <input type="number" name="year" value={formData.year || ''} onChange={handleInputChange} /></label>
+            <label>Month Start: <input type="date" name="monthStart" value={formData.monthStart || ''} onChange={handleInputChange} /></label>
+            <label>Month End: <input type="date" name="monthEnd" value={formData.monthEnd || ''} onChange={handleInputChange} /></label>
             <label>Summary: <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
             <label>Key Achievements: <textarea name="keyAchievements" value={formData.keyAchievements || ''} onChange={handleInputChange}></textarea></label>
             <label>Goals: <textarea name="goals" value={formData.goals || ''} onChange={handleInputChange}></textarea></label>
+            <label>Total Hours: <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
+            <label>Year of Training: <input type="number" name="yearOfTraining" value={formData.yearOfTraining || ''} onChange={handleInputChange} /></label>
+            <label>Instructions: <textarea name="instructions" value={formData.instructions || ''} onChange={handleInputChange}></textarea></label>
+            <label>Remarks: <textarea name="remarks" value={formData.remarks || ''} onChange={handleInputChange}></textarea></label>
+            <label>Status:
+              <select name="status" value={formData.status || ''} onChange={handleInputChange}>
+                {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </label>
           </>
         );
       case 'yearly':
         return (
           <>
+            <label>Year: <input type="number" name="year" value={formData.year || ''} onChange={handleInputChange} /></label>
+            <label>Training Year: <input type="text" name="trainingYear" value={formData.trainingYear || ''} onChange={handleInputChange} /></label>
+            <label>Year Start: <input type="date" name="yearStart" value={formData.yearStart || ''} onChange={handleInputChange} /></label>
+            <label>Year End: <input type="date" name="yearEnd" value={formData.yearEnd || ''} onChange={handleInputChange} /></label>
             <label>Summary: <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
             <label>Achievements: <textarea name="achievements" value={formData.achievements || ''} onChange={handleInputChange}></textarea></label>
             <label>Skills Improved: <textarea name="skillsImproved" value={formData.skillsImproved || ''} onChange={handleInputChange}></textarea></label>
             <label>Goals: <textarea name="goals" value={formData.goals || ''} onChange={handleInputChange}></textarea></label>
+            <label>Total Hours: <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
+            <label>Status:
+              <select name="status" value={formData.status || ''} onChange={handleInputChange}>
+                {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </label>
           </>
         );
       default:
@@ -116,9 +157,9 @@ const EditReportPage = () => {
   };
 
   return (
-    <div>
+    <div className="edit-report-container">
       <h2>Edit {reportType.charAt(0).toUpperCase() + reportType.slice(1)} Report</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="edit-report-form">
         {renderFormFields()}
         <button type="submit">Save Changes</button>
       </form>
