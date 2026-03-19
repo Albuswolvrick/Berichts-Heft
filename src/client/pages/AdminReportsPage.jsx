@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../services/api';
+import { reportsApi, userApi } from '../services/api';
 import { formatDate } from '../utils/dateUtils';
 
 const AdminReportsPage = () => {
@@ -15,8 +15,8 @@ const AdminReportsPage = () => {
             try {
                 setLoading(true);
                 const [reportsData, usersData] = await Promise.all([
-                    api.reports.getAll(),
-                    api.users.getAll(),
+                    reportsApi.getAll(),
+                    userApi.getAll(),
                 ]);
                 setReports(reportsData);
                 setUsers(usersData);
@@ -35,7 +35,7 @@ const AdminReportsPage = () => {
         try {
             setLoading(true);
             const query = { search: searchTerm, userId: selectedUserId };
-            const reportsData = await api.reports.getAll(query);
+            const reportsData = await reportsApi.getAll(query);
             setReports(reportsData);
             setError(null);
         } catch (err) {
