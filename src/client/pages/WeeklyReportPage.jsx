@@ -107,7 +107,7 @@ const WeeklyReportPage = () => {
       title: 'Weekly Report',
       fileName: `WeeklyReport_CW${formData.weekNumber}_${formData.name}.pdf`,
       metadata: [
-        { label: 'Trainee Name', value: formData.name },
+        { label: 'TEST Name', value: formData.name },
         { label: 'Calendar Week', value: formData.weekNumber },
         { label: 'Period from', value: formData.weekStart },
         { label: 'Period to', value: formData.weekEnd },

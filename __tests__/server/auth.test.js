@@ -16,10 +16,10 @@ describe('Auth Middleware', () => {
 
   describe('isAuthenticated', () => {
     it('calls next and sets req.user when session has user', () => {
-      req.session.user = { id: 1, name: 'Test', role: 'TRAINEE' };
+      req.session.user = { id: 1, name: 'Test', role: 'TEST' };
       isAuthenticated(req, res, next);
 
-      expect(req.user).toEqual({ id: 1, name: 'Test', role: 'TRAINEE' });
+      expect(req.user).toEqual({ id: 1, name: 'Test', role: 'TEST' });
       expect(next).toHaveBeenCalledWith();
     });
 
@@ -43,8 +43,8 @@ describe('Auth Middleware', () => {
       expect(next).toHaveBeenCalledWith();
     });
 
-    it('calls next with ForbiddenError for TRAINEE role', () => {
-      req.user = { id: 1, role: 'TRAINEE' };
+    it('calls next with ForbiddenError for TEST role', () => {
+      req.user = { id: 1, role: 'TEST' };
       isAdminOrManager(req, res, next);
       expect(next).toHaveBeenCalledWith(expect.any(ForbiddenError));
     });
@@ -63,7 +63,7 @@ describe('Auth Middleware', () => {
     });
 
     it('calls next with ForbiddenError when user lacks role', () => {
-      req.user = { id: 1, role: 'TRAINEE' };
+      req.user = { id: 1, role: 'TEST' };
       hasRole(['ADMIN'])(req, res, next);
       expect(next).toHaveBeenCalledWith(expect.any(ForbiddenError));
     });
