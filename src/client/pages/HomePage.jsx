@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
-import './HomePage.css';
+import '../../../public/css/HomePage.css';
 
 const HomePage = () => {
   const [reports, setReports] = useState([]);

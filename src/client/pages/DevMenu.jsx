@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from './../hooks/useToast';
-import './DevMenu.css';
+import '../../../public/css/DevMenu.css'
 
 // Inline component for managing a single user row
 const UserRow = ({ user, onUpdate, onDelete, onUpdatePassword }) => {
