@@ -13,8 +13,8 @@ datasource db {
 enum UserRole {
   ADMIN
   MANAGER
-  EMPLOYEE
-  TRAINEE
+  USER
+  TEST
 }
 
 enum ReportStatus {
@@ -29,7 +29,7 @@ model User {
   id           Int      @id @default(autoincrement())
   email        String   @unique
   name         String
-  role         UserRole @default(TRAINEE)
+  role         UserRole @default(USER)
   passwordHash String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

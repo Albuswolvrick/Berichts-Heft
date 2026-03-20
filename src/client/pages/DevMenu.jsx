@@ -39,10 +39,11 @@ const UserRow = ({ user, onUpdate, onDelete, onUpdatePassword }) => {
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
           <select value={role} onChange={(e) => setRole(e.target.value)}>
+            {/* BUGFIX: Removed 'EMPLOYEE' role and added 'TEST' to align with the 'UserRole' enum in the Prisma schema. */}
             <option value="USER">User</option>
-            <option value="EMPLOYEE">EMPLOYEE</option>
             <option value="MANAGER">Manager</option>
             <option value="ADMIN">Admin</option>
+            <option value="TEST">Test</option>
           </select>
           <button onClick={handleUpdate} className="btn btn-ready">Save</button>
           <button onClick={() => setIsEditing(false)} className="btn">Cancel</button>
@@ -126,8 +127,8 @@ const DevMenu = () => {
       setCreationStatus('error');
       setTimeout(() => setCreationStatus('idle'), 1500); // Reset after animation
     }
-  };
-  
+  };  
+
   const handleUpdateUser = async (userId, userData) => {
     setError('');
     try {
@@ -202,16 +203,17 @@ const DevMenu = () => {
       <div className="user-management">
         <h3>User Management</h3>
         
-        <form onSubmit={handleCreateUser} className="create-user-form">
+        <form onSubmit={handleCreateUser} className="create-user-.form">
           <h4>Create New User</h4>
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
           <select value={role} onChange={(e) => setRole(e.target.value)}>
+            {/* BUGFIX: Removed 'EMPLOYEE' role and added 'TEST' to align with the 'UserRole' enum in the Prisma schema. */}
             <option value="USER">User</option>
-            <option value="EMPLOYEE">EMPLOYEE</option>
             <option value="MANAGER">Manager</option>
             <option value="ADMIN">Admin</option>
+            <option value="TEST">Test</option>
           </select>
           <button type="submit" className={`btn btn-primary ${creationStatus === 'error' ? 'flash-error' : ''}`}>
             Create User

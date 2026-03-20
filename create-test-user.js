@@ -3,6 +3,15 @@ const bcrypt = require('bcrypt');
 
 async function createTestUsers() {
   try {
+    // Delete existing test users
+    await prisma.user.deleteMany({
+      where: {
+        email: {
+          in: ['admin@test.com', 'manager@test.com', 'test@test.com', 'user@test.com'],
+        },
+      },
+    });
+
     // Create Admin
     const admin = await prisma.user.create({
       data: {
@@ -25,34 +34,35 @@ async function createTestUsers() {
     });
     console.log('✅ Manager created:', manager.email);
 
-    // Create Employee
-    const employee = await prisma.user.create({
+    // Create User
+    const user = await prisma.user.create({
       data: {
-        email: 'employee@test.com',
-        name: 'Employee Test',
-        role: 'EMPLOYEE',
-        passwordHash: await bcrypt.hash('employee123', 10),
+      email: 'user@test.com' ,
+        name: 'User_Test',
+        role: 'USER',
+        passwordHash: await bcrypt.hash('test123', 10),
       },
     });
-    console.log('✅ Employee created:', employee.email);
+    console.log('✅ User created:', user.email);
 
-    // Create Trainee
-    const trainee = await prisma.user.create({
+    // Create Test
+    const test = await prisma.user.create({
       data: {
-        email: 'trainee@test.com',
-        name: 'Trainee Test',
-        role: 'TRAINEE',
-        passwordHash: await bcrypt.hash('trainee123', 10),
+
+        email:'test@test.com',
+        name: 'test Test',
+        role: 'TEST',
+        passwordHash: await bcrypt.hash('user123', 10),
       },
     });
-    console.log('✅ Trainee created:', trainee.email);
+    console.log('✅ Test created:', test.email);
 
     console.log('\n✅ All test users created successfully!');
     console.log('\nLogin credentials:');
     console.log('  admin@test.com / admin123');
     console.log('  manager@test.com / manager123');
-    console.log('  employee@test.com / employee123');
-    console.log('  trainee@test.com / trainee123');
+    console.log('  user@test.com / user123');
+    console.log('  test@test.com / test123');
   } catch (error) {
     console.error('❌ Error creating users:', error.message);
   } finally {

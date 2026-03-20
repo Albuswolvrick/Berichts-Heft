@@ -12,7 +12,11 @@ async function register({ name, email, password }) {
   }
 
   const userCount = await prisma.user.count();
-  const role = userCount === 0 ? 'ADMIN' : 'TRAINEE';
+  // BUGFIX: Changed role from 'TRAINEE' to 'USER'.
+  // The 'TRAINEE' role was removed from the 'UserRole' enum in the Prisma schema,
+  // causing an error when creating new users. This change ensures that new
+  // users are assigned a valid role.
+  const role = userCount === 0 ? 'ADMIN' : 'USER';
   const passwordHash = await bcrypt.hash(password, env.BCRYPT_SALT_ROUNDS);
 
   try {

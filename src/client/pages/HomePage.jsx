@@ -63,7 +63,7 @@ const HomePage = () => {
         <div className="report-grid">
           {reports.map((report) => {
             // The edit link must be specific to the report type, matching the new unified route.
-            // Example: /reports/daily/1/edit
+            // Example: /reports/daily/1/edit that was a headick
             const editUrl = `/reports/${report.type.toLowerCase()}/${report.id}/edit`;
 
             return (
