@@ -1,3 +1,4 @@
+// HomePage: The main landing page, displaying a grid of the user's reports.
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
@@ -5,14 +6,16 @@ import { useToast } from '../hooks/useToast';
 import '../../../public/css/HomePage.css';
 
 const HomePage = () => {
+  // State management for reports, loading status, and toast notifications.
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToast();
 
+  // On component mount, fetch all of the user's reports from the server.
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        // This fetches all reports of all types from the new, unified endpoint.
+        // Fetches all reports of all types from a unified endpoint.
         const response = await fetch('/api/reports/all-types');
         if (response.ok) {
           const data = await response.json();
@@ -23,16 +26,14 @@ const HomePage = () => {
       } catch (error) {
         addToast('Error: ' + error.message, 'error');
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop the loading indicator.
       }
     };
     fetchReports();
-  }, [addToast]);
+  }, [addToast]); // Re-run the effect if the addToast function changes.
 
-  /**
-   * This function gets the correct title for a report based on its type.
-   * This is necessary because the title field is named differently in each report type's database schema.
-   */
+  // getReportTitle: A helper function to get the correct title for a report based on its type.
+  // This is needed because the title field is named differently across different report types.
   const getReportTitle = (report) => {
     switch (report.type) {
       case 'Daily':
@@ -55,15 +56,16 @@ const HomePage = () => {
       <h1>Report Booklet</h1>
       <h2>My Reports</h2>
 
+      {/* Show a spinner while loading, a message if there are no reports, or the report grid. */}
       {loading ? (
         <Spinner />
       ) : reports.length === 0 ? (
         <p>No reports available yet.</p>
       ) : (
         <div className="report-grid">
+          {/* Map over the reports and render a clickable card for each one. */}
           {reports.map((report) => {
-            // The edit link must be specific to the report type, matching the new unified route.
-            // Example: /reports/daily/1/edit that was a headick
+            // The edit link must be specific to the report type to match the unified route.
             const editUrl = `/reports/${report.type.toLowerCase()}/${report.id}/edit`;
 
             return (

@@ -1,8 +1,13 @@
+// AdminReportsPage: A component for administrators to view and filter all user reports.
 import React, { useState, useEffect } from 'react';
-import { reportsApi, userApi } from '../services/api';
+import { Link } from 'react-router-dom';
+import { userApi } from '../services/api';
 import { formatDate } from '../utils/dateUtils';
+import '../../../public/css/AdminReportsPage.css';
+import '../../../public/css/HomePage.css';
 
 const AdminReportsPage = () => {
+    // State management for reports, users, search term, selected user, loading status, and errors.
     const [reports, setReports] = useState([]);
     const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -10,100 +15,115 @@ const AdminReportsPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // On component mount, fetch all reports and users from the API.
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
                 setLoading(true);
-                const [reportsData, usersData] = await Promise.all([
-                    reportsApi.getAll(),
+                // Fetch reports and users in parallel. Reports are fetched from the same unified endpoint as the HomePage.
+                const [reportsResponse, usersData] = await Promise.all([
+                    fetch('/api/reports/all-types'),
                     userApi.getAll(),
                 ]);
+
+                if (!reportsResponse.ok) {
+                    throw new Error(`Failed to fetch reports: ${reportsResponse.statusText}`);
+                }
+
+                const reportsData = await reportsResponse.json();
+
                 setReports(reportsData);
                 setUsers(usersData);
-                setError(null);
+                setError(null); // Clear any previous errors.
             } catch (err) {
                 setError(err.message || 'Failed to fetch data');
             } finally {
-                setLoading(false);
+                setLoading(false); // Stop the loading indicator.
             }
         };
         fetchInitialData();
     }, []);
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        try {
-            setLoading(true);
-            const query = { search: searchTerm, userId: selectedUserId };
-            const reportsData = await reportsApi.getAll(query);
-            setReports(reportsData);
-            setError(null);
-        } catch (err) {
-            setError(err.message || 'Failed to fetch reports');
-        } finally {
-            setLoading(false);
+    // getReportTitle: A helper function to get the correct title for a report based on its type.
+    const getReportTitle = (report) => {
+        switch (report.type) {
+            case 'Daily':
+                return report.title;
+            case 'Weekly':
+                return report.name || 'Weekly Report';
+            case 'Monthly': {
+                const monthName = new Date(report.year, report.month - 1, 1).toLocaleString('en-US', { month: 'long' });
+                return `${monthName} ${report.year}`;
+            }
+            case 'Yearly':
+                return `Yearly Report ${report.year}`;
+            default:
+                return report.title || report.name || 'Report';
         }
     };
 
+    // Filter reports based on the search term and the selected user ID.
+    const filteredReports = reports
+        .filter(report => {
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+            const user = users.find(u => u.id === report.userId);
+            const reportTitle = getReportTitle(report);
+
+            const reportTitleMatch = reportTitle.toLowerCase().includes(lowerCaseSearchTerm);
+            const userNameMatch = user && user.name && user.name.toLowerCase().includes(lowerCaseSearchTerm);
+            const userUsernameMatch = user && user.username && user.username.toLowerCase().includes(lowerCaseSearchTerm);
+
+            return reportTitleMatch || userNameMatch || userUsernameMatch;
+        })
+        .filter(report =>
+            selectedUserId ? report.userId === parseInt(selectedUserId) : true
+        );
+
     return (
-        <div className="container">
-            <h1 className="title">Admin Reports</h1>
-            <form onSubmit={handleSearch} className="mb-4">
-                <div className="field is-grouped">
-                    <div className="control">
-                        <input
-                            className="input"
-                            type="text"
-                            placeholder="Search reports..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-                    <div className="control">
-                        <div className="select">
-                            <select
-                                value={selectedUserId}
-                                onChange={(e) => setSelectedUserId(e.target.value)}
-                            >
-                                <option value="">All Users</option>
-                                {users.map(user => (
-                                    <option key={user.id} value={user.id}>{user.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="control">
-                        <button type="submit" className="button is-primary">Search</button>
-                    </div>
-                </div>
-            </form>
+        <div className="admin-reports-page">
+            <h1>Admin Reports</h1>
+            <div className="filters">
+                <input
+                    type="text"
+                    placeholder="Search reports by title or user..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <select
+                    className="user-select-list"
+                    size={8}
+                    value={selectedUserId}
+                    onChange={(e) => setSelectedUserId(e.target.value)}
+                >
+                    <option value="">All Users</option>
+                    {users.map(user => (
+                        <option key={user.id} value={user.id}>
+                            {user.name} ({user.username})
+                        </option>
+                    ))}
+                </select>
+            </div>
 
             {loading && <p>Loading...</p>}
-            {error && <p className="has-text-danger">{error}</p>}
+            {error && <p className="error-message">{error}</p>}
 
-            <div className="table-container">
-                <table className="table is-fullwidth is-striped">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Type</th>
-                            <th>User</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {reports.map(report => (
-                            <tr key={`${report.type}-${report.id}`}>
-                                <td>{report.title || report.name}</td>
-                                <td>{report.type}</td>
-                                <td>{report.user.name}</td>
-                                <td>{formatDate(report.createdAt)}</td>
-                                <td>{report.status}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="report-grid">
+                {!loading && !error && filteredReports.length > 0 ? (
+                    filteredReports.map(report => {
+                        const user = users.find(u => u.id === report.userId);
+                        // The edit link is specific to the report type, matching the unified route.
+                        const editUrl = `/reports/${report.type.toLowerCase()}/${report.id}/edit`;
+                        return (
+                            <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
+                                <h3>{getReportTitle(report)}</h3>
+                                <p><strong>User:</strong> {user ? `${user.name} (${user.username})` : 'N/A'}</p>
+                                <p><strong>Date:</strong> {report.reportDate ? formatDate(report.reportDate) : 'N/A'}</p>
+                            </Link>
+                        );
+                    })
+                ) : (
+                    !loading && !error && <p>No reports found for the selected criteria.</p>
+                )}
             </div>
         </div>
     );
