@@ -203,7 +203,7 @@ const DevMenu = () => {
       <div className="user-management">
         <h3>User Management</h3>
         
-        <form onSubmit={handleCreateUser} className="create-user-.form">
+        <form onSubmit={handleCreateUser} className="create-user-form">
           <h4>Create New User</h4>
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />

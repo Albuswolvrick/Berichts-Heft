@@ -76,7 +76,7 @@
 
   @keyframes flash-red {
     0%, 100% { background-color: transparent; }
-    25%, 75% { background-color: #ffcccc; }
+    25%, 75% { background-color: rgba(255, 0, 0, 0.3); }
     50% { background-color: transparent; }
   }
   

@@ -1,12 +1,11 @@
-/* Inherit the base font for the entire page */
 .admin-reports-page {
     font-family: var(--font-family, sans-serif);
-    color: var(--text-color, #333);
+    color: var(--text-color);
     padding: 1rem;
 }
 
 .admin-reports-page h1 {
-    color: var(--primary-color, #007bff);
+    color: var(--report-header-color);
 }
 
 .admin-reports-page .filters {
@@ -19,42 +18,47 @@
 .admin-reports-page .filters input {
     padding: 0.75rem;
     border-radius: 4px;
-    border: 1px solid #ccc;
-    font-family: inherit; /* Ensure input uses the same font */
+    border: 1px solid var(--input-border-color);
+    background-color: var(--input-background-color);
+    color: var(--input-text-color);
+    font-family: inherit;
     font-size: 1rem;
 }
 
 /* Make the user select listbox larger and more readable */
 .user-select-list {
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border-color);
+    background-color: var(--input-background-color);
+    color: var(--input-text-color);
     border-radius: 4px;
     padding: 5px;
-    font-family: inherit; /* Use the main font */
-    font-size: 1rem; /* Increase font size for readability */
-    min-width: 200px; /* Set a minimum width */
-    height: 150px; /* Set a fixed height */
+    font-family: inherit;
+    font-size: 1rem;
+    min-width: 200px;
+    height: 150px;
 }
 
 /* Style the options within the select list */
 .user-select-list option {
     padding: 5px;
+    background-color: var(--input-background-color);
+    color: var(--input-text-color);
 }
 
 .report-list {
     margin-top: 20px;
-    overflow-y: auto; /* Allow vertical scrolling for the report list */
 }
 
 .report-item {
-    border: 1px solid #ddd;
+    border: 1px solid var(--report-border-color);
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 5px;
-    background-color: var(--background-color, #f9f9f9);
-    color: var(--text-color, #333);
+    background-color: var(--report-background-color);
+    color: var(--report-text-color);
 }
 
 .report-item h3 {
-    color: var(--primary-color, #007bff);
+    color: var(--primary-color);
     margin-top: 0;
 }

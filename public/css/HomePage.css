@@ -38,7 +38,9 @@
 .search-input {
   flex: 1;
   padding: 10px 15px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border-color);
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
@@ -46,18 +48,19 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #1e3a5f;
+  border-color: var(--accent-color);
 }
 
 .search-clear {
   padding: 0 15px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
+  background-color: var(--nav-button-hover-background-color);
+  color: var(--text-color);
+  border: 1px solid var(--input-border-color);
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: opacity 0.2s;
 }
 
 .search-clear:hover {
-  background-color: #e0e0e0;
+  opacity: 0.8;
 }
