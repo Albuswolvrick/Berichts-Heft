@@ -90,6 +90,11 @@ npm run prisma:reset
 - Automatische Kalenderwochen-Berechnung im Weekly Report
 - Speicherung der Reports in der Datenbank
 - Professionell formatierter PDF-Export pro Berichtstyp
+- Kommentarsystem für Admin-Feedback
+- Design-System (Light, Dark)
+- Suche und Filter für Berichte
+- Benutzer-Self-Service (Passwortänderung)
+- Login-Tracking und Cookie-Hinweis
 - Admin-Bereich für Verwaltung und Einsicht
 
 ## API-Endpunkte
@@ -101,6 +106,8 @@ npm run prisma:reset
 | POST | `/api/auth/logout` | Benutzer abmelden |
 | GET | `/api/users/me` | Aktueller Benutzer |
 | GET | `/api/users` | Alle Benutzer (Admin) |
+| GET | `/api/comments/:type/:id` | Kommentare abrufen |
+| POST | `/api/comments` | Kommentar erstellen (Admin/Manager) |
 | CRUD | `/api/daily-reports` | Tägliche Berichte |
 | CRUD | `/api/weekly-reports` | Wöchentliche Berichte |
 | CRUD | `/api/monthly-reports` | Monatliche Berichte |
