@@ -2,6 +2,7 @@ const express = require('express');
 const authRoutes = require('./auth');
 const userRoutes = require('./users');
 const allReportsRoutes = require('./allReports');
+const commentRoutes = require('./comments');
 const { createReportRouter } = require('./reports');
 const {
   dailyReportService,
@@ -18,6 +19,7 @@ router.use('/users', userRoutes);
 
 // Aggregated reports route for fetching and editing
 router.use('/reports', allReportsRoutes);
+router.use('/comments', commentRoutes);
 
 // Individual report routes for creating new reports
 router.use('/daily-reports', createReportRouter(dailyReportService));

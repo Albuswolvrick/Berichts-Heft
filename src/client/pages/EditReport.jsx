@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
+import CommentSection from '../components/CommentSection';
 import { useToast } from '../hooks/useToast';
 import '../../../public/css/edit-report.css';
 const EditReportPage = () => {
@@ -9,6 +10,7 @@ const EditReportPage = () => {
   const { showToast } = useToast();
   const [report, setReport] = useState(null);
   const [formData, setFormData] = useState({});
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +37,19 @@ const EditReportPage = () => {
         setLoading(false);
       }
     };
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('/api/users/me');
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        }
+      } catch (err) {
+        console.error('Failed to fetch user', err);
+      }
+    };
     fetchReport();
+    fetchUser();
   }, [reportType, id, showToast]);
 
   const handleInputChange = (e) => {
@@ -157,12 +171,17 @@ const EditReportPage = () => {
   };
 
   return (
-    <div className="edit-report-container">
-      <h2>Edit {reportType.charAt(0).toUpperCase() + reportType.slice(1)} Report</h2>
-      <form onSubmit={handleSubmit} className="edit-report-form">
-        {renderFormFields()}
-        <button type="submit">Save Changes</button>
-      </form>
+    <div className="edit-report-page">
+      <div className="edit-report-main">
+        <h2>Edit {reportType.charAt(0).toUpperCase() + reportType.slice(1)} Report</h2>
+        <form onSubmit={handleSubmit} className="edit-report-form">
+          {renderFormFields()}
+          <button type="submit">Save Changes</button>
+        </form>
+      </div>
+      <aside className="edit-report-sidebar">
+        <CommentSection reportType={reportType} reportId={id} user={user} />
+      </aside>
     </div>
   );
 };

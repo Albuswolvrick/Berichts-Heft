@@ -45,7 +45,14 @@ async function update(req, res) {
  * PUT /api/users/:id/password
  */
 async function updatePassword(req, res) {
-  await authService.updatePassword(req.params.id, req.body.password);
+  const { id } = req.params;
+
+  // Verify that the user is an admin OR is updating their own password.
+  if (req.user.role !== 'ADMIN' && req.user.id !== parseInt(id, 10)) {
+    throw new BadRequestError('You are not authorized to update this password.');
+  }
+
+  await authService.updatePassword(id, req.body.password);
   res.status(200).json({ message: 'Password updated successfully' });
 }
 

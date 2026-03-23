@@ -6,6 +6,7 @@ const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
   const { addToast } = useToast();
 
   useEffect(() => {
@@ -45,6 +46,30 @@ const ProfilePage = () => {
       }
     } catch (error) {
       addToast('Error updating profile: ' + error.message, { appearance: 'error' });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    if (!newPassword) return;
+    setSubmitting(true);
+    try {
+      const response = await fetch(`/api/users/${user.id}/password`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: newPassword }),
+      });
+
+      if (response.ok) {
+        addToast('Password updated successfully', { appearance: 'success' });
+        setNewPassword('');
+      } else {
+        addToast('Failed to update password', { appearance: 'error' });
+      }
+    } catch (error) {
+      addToast('Error updating password: ' + error.message, { appearance: 'error' });
     } finally {
       setSubmitting(false);
     }
@@ -93,6 +118,29 @@ const ProfilePage = () => {
           </div>
           <button type="submit" disabled={submitting}>
             {submitting ? 'Saving...' : 'Update Profile'}
+          </button>
+        </fieldset>
+      </form>
+
+      <hr />
+
+      <h2>Change Password</h2>
+      <form onSubmit={handlePasswordUpdate}>
+        <fieldset disabled={submitting}>
+          <div className="form-group">
+            <label htmlFor="newPassword">New Password</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Enter new password"
+              required
+            />
+          </div>
+          <button type="submit" disabled={submitting || !newPassword}>
+            {submitting ? 'Updating...' : 'Change Password'}
           </button>
         </fieldset>
       </form>

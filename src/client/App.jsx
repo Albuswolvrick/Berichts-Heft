@@ -110,7 +110,7 @@ function App() {
                         {/* Navbar must remain outside <main> to preserve the side-by-side flex layout */}
                         <main style={{ padding: '20px', flex: 1 }}>
                             <Routes>
-                                <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+                                <Route path="/" element={<ProtectedRoute><HomePage user={user} /></ProtectedRoute>} />
                                 <Route path="/login" element={<LoginPage onLogin={setUser} />} />
                                 <Route path="/register" element={<RegisterPage />} />
                                 <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />

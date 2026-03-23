@@ -6,10 +6,12 @@ import { useToast } from '../hooks/useToast';
 import { toDisplayDate } from '../utils/dateUtils';
 import '../../../public/css/HomePage.css';
 
-const HomePage = () => {
-  // State management for reports, loading status, and toast notifications.
+const HomePage = ({ user }) => {
+  // State management for reports, loading status, search, and toast notifications.
   const [reports, setReports] = useState([]);
+  const [filteredReports, setFilteredReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
   const { addToast } = useToast();
 
   // On component mount, fetch all of the user's reports from the server.
@@ -31,7 +33,29 @@ const HomePage = () => {
       }
     };
     fetchReports();
-  }, [addToast]); // Re-run the effect if the addToast function changes.
+  }, [addToast]);
+
+  // Filter reports whenever they are loaded or the search term changes.
+  useEffect(() => {
+    let filtered = reports;
+
+    // RULE: Only show user's own reports on the home page.
+    if (user && user.id) {
+        filtered = filtered.filter((r) => r.userId === user.id);
+    }
+
+    if (search) {
+      const term = search.toLowerCase();
+      filtered = filtered.filter((r) => {
+        const title = (r.title || r.name || '').toLowerCase();
+        const type = (r.type || '').toLowerCase();
+        const status = (r.status || '').toLowerCase();
+        return title.includes(term) || type.includes(term) || status.includes(term);
+      });
+    }
+
+    setFilteredReports(filtered);
+  }, [reports, search, user]);
 
   // getReportTitle: A helper function to get the correct title for a report based on its type.
   // This is needed because the title field is named differently across different report types.
@@ -57,15 +81,30 @@ const HomePage = () => {
       <h1>Report Booklet</h1>
       <h2>My Reports</h2>
 
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by title, type, or status..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="search-input"
+        />
+        {search && (
+            <button onClick={() => setSearch('')} className="search-clear">
+                Clear
+            </button>
+        )}
+      </div>
+
       {/* Show a spinner while loading, a message if there are no reports, or the report grid. */}
       {loading ? (
         <Spinner />
-      ) : reports.length === 0 ? (
-        <p>No reports available yet.</p>
+      ) : filteredReports.length === 0 ? (
+        <p>{search ? 'No reports matching your search.' : 'No reports available yet.'}</p>
       ) : (
         <div className="report-grid">
           {/* Map over the reports and render a clickable card for each one. */}
-          {reports.map((report) => {
+          {filteredReports.map((report) => {
             // The edit link must be specific to the report type to match the unified route.
             const editUrl = `/reports/${report.type.toLowerCase()}/${report.id}/edit`;
 
