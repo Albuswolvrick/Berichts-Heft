@@ -23,13 +23,14 @@ import '../../public/css/style.css';
 import '../../public/css/navbar.css';
 import '../../public/css/report.css';
 import '../../public/css/doom.css';
+import CookieConsent from './components/CookieConsent';
 
 const allNavItems = [
-  { label: 'Home', path: '/' },
-  { label: 'New Report', path: '/reports/new' },
-  { label: 'Admin Dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
-  { label: 'Admin Reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
-  { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
+    { label: 'Home', path: '/' },
+    { label: 'New Report', path: '/reports/new' },
+    { label: 'Admin Dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
+    { label: 'Admin Reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
+    { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
 ];
 
 const ProtectedRoute = ({ children }) => {
@@ -55,7 +56,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const AdminRoute = ({ children, user }) => {
-    if (!user || !['MODERATOR', 'ADMIN', 'MANAGER'].includes(user.role)) {
+    if (!user || !['ADMIN', 'MANAGER'].includes(user.role)) {
         return <Navigate to="/" />;
     }
     return children;
@@ -100,36 +101,37 @@ function App() {
         }
     };
 
-  return (
-    <ErrorBoundary>
-      <ThemeProvider>
-        <ToastProvider>
-          <div style={{ display: 'flex' }}>
-            <Navbar items={navItems} user={user} onLogout={handleLogout} />
-{/*do not touch this it will crash everithing keep your hands of this*/}
-            <main style={{ padding: '20px', flex: 1 }}>
-              <Routes>
-                <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-                <Route path="/login" element={<LoginPage onLogin={setUser} />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
-                <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
-                <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
-                <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
-                <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-                <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
-                <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
-                <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
-                <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-                <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
-                <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-              </Routes>
-            </main>
-          </div>
-        </ToastProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
+    return (
+        <ErrorBoundary>
+            <ThemeProvider>
+                <ToastProvider>
+                    <div style={{ display: 'flex' }}>
+                        <Navbar items={navItems} user={user} onLogout={handleLogout} />
+                        {/* Navbar must remain outside <main> to preserve the side-by-side flex layout */}
+                        <main style={{ padding: '20px', flex: 1 }}>
+                            <Routes>
+                                <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+                                <Route path="/login" element={<LoginPage onLogin={setUser} />} />
+                                <Route path="/register" element={<RegisterPage />} />
+                                <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
+                                <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
+                                <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
+                                <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
+                                <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
+                                <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
+                                <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
+                                <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
+                                <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+                                <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
+                                <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                            </Routes>
+                        </main>
+                        <CookieConsent isAuthenticated={!!user} />
+                    </div>
+                </ToastProvider>
+            </ThemeProvider>
+        </ErrorBoundary>
+    );
 }
 
 export default App;

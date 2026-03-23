@@ -22,6 +22,10 @@
 # TypeScript cache
 *.tsbuildinfo
 
+# Editor swap files
+*.swp
+*.swo
+
 # Logs
 npm-debug.log*
 yarn-debug.log*

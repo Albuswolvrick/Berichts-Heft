@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../../../public/css/report.css';
 import { useToast } from '../hooks/useToast';
 import { weeklyReportApi } from '../services/api';
-import { getWeekRangeFromDate } from '../utils/dateUtils';
+import { getWeekRangeFromDate, toInputDate, toDisplayDate } from '../utils/dateUtils';
 import { downloadReportPdf } from '../utils/pdfGenerator';
 
 const initialState = {
@@ -23,6 +23,19 @@ const initialState = {
 const WeeklyReportPage = () => {
   const [formData, setFormData] = useState(initialState);
   const { addToast } = useToast();
+
+  useEffect(() => {
+    const today = toInputDate(new Date());
+    const week = getWeekRangeFromDate(today);
+    if (week) {
+      setFormData(prev => ({
+        ...prev,
+        weekStart: week.weekStart,
+        weekEnd: week.weekEnd,
+        weekNumber: String(week.weekNumber),
+      }));
+    }
+  }, []);
 
   const handleChange = (field) => (e) => {
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
@@ -109,8 +122,8 @@ const WeeklyReportPage = () => {
       metadata: [
         { label: 'TEST Name', value: formData.name },
         { label: 'Calendar Week', value: formData.weekNumber },
-        { label: 'Period from', value: formData.weekStart },
-        { label: 'Period to', value: formData.weekEnd },
+        { label: 'Period from', value: toDisplayDate(formData.weekStart) },
+        { label: 'Period to', value: toDisplayDate(formData.weekEnd) },
         { label: 'Training Year', value: formData.yearOfTraining },
         { label: 'Training Department', value: formData.department },
         { label: 'Total Hours', value: formData.totalHours },

@@ -1,7 +1,7 @@
 {
   "name": "berichts-heft",
   "version": "1.0.0",
-  "description": "Ein Berichts Open source Berichts heft web app mit standard Fetures\r ein Simple planung mit zimlich",
+  "description": "An open-source digital training report book (Berichtsheft) web app with daily, weekly, monthly, and yearly report management.",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",

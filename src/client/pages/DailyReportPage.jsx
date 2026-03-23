@@ -1,10 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
+import { toInputDate, toDisplayDate } from '../utils/dateUtils';
 import '../../../public/css/report.css';
 
 const DailyReportPage = () => {
-  const [reportDate, setReportDate] = useState('');
+  const [reportDate, setReportDate] = useState(toInputDate(new Date()));
   const [title, setTitle] = useState('');
   const [activities, setActivities] = useState('');
   const [learnings, setLearnings] = useState('');
@@ -60,7 +61,7 @@ const DailyReportPage = () => {
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
     doc.text('Daily Report', 10, 10);
-    doc.text(`Report Date: ${reportDate}`, 10, 20);
+    doc.text(`Report Date: ${toDisplayDate(reportDate)}`, 10, 20);
     doc.text(`Title: ${title}`, 10, 30);
     doc.text(`Activities: ${activities}`, 10, 40);
     doc.text(`Learnings: ${learnings}`, 10, 50);

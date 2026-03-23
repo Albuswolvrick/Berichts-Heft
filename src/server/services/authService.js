@@ -35,12 +35,21 @@ async function register({ name, email, password }) {
 /**
  * Authenticates a user with email and password.
  */
-async function login({ email, password }) {
+async function login({ email, password, ip }) {
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
     throw new UnauthorizedError('Invalid credentials');
   }
+
+  // Update last login info
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      lastLoginAt: new Date(),
+      lastLoginIp: ip,
+    },
+  });
 
   return { id: user.id, name: user.name, email: user.email, role: user.role };
 }

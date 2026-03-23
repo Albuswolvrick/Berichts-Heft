@@ -1,6 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
+import { toInputDate, toDisplayDate } from '../utils/dateUtils';
 
 const YearlyReportPage = () => {
   const [year, setYear] = useState('');
@@ -13,6 +14,16 @@ const YearlyReportPage = () => {
   const [goals, setGoals] = useState('');
   const [totalHours, setTotalHours] = useState('');
   const [status, setStatus] = useState('DRAFT');
+
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    const firstDay = new Date(currentYear, 0, 1);
+    const lastDay = new Date(currentYear, 11, 31);
+
+    setYear(String(currentYear));
+    setYearStart(toInputDate(firstDay));
+    setYearEnd(toInputDate(lastDay));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,8 +82,8 @@ const YearlyReportPage = () => {
     doc.text('Yearly Report', 10, 10);
     doc.text(`Year: ${year}`, 10, 20);
     doc.text(`Training Year: ${trainingYear}`, 10, 30);
-    doc.text(`Year Start: ${yearStart}`, 10, 40);
-    doc.text(`Year End: ${yearEnd}`, 10, 50);
+    doc.text(`Year Start: ${toDisplayDate(yearStart)}`, 10, 40);
+    doc.text(`Year End: ${toDisplayDate(yearEnd)}`, 10, 50);
     doc.text(`Total Hours: ${totalHours}`, 10, 60);
     doc.text(`Summary: ${summary}`, 10, 70);
     doc.text(`Achievements: ${achievements}`, 10, 80);

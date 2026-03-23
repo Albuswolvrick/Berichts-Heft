@@ -13,7 +13,7 @@ async function register(req, res) {
  * POST /api/auth/login
  */
 async function login(req, res) {
-  const user = await authService.login(req.body);
+  const user = await authService.login({ ...req.body, ip: req.ip });
   req.session.user = { id: user.id, name: user.name, role: user.role };
   res.status(200).json({ user });
 }

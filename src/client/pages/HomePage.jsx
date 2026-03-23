@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
+import { toDisplayDate } from '../utils/dateUtils';
 import '../../../public/css/HomePage.css';
 
 const HomePage = () => {
@@ -72,6 +73,7 @@ const HomePage = () => {
               <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
                 <h3>{getReportTitle(report)}</h3>
                 <p>Type: {report.type}</p>
+                <p>Date: {toDisplayDate(report.reportDate || report.weekStart || report.monthStart || report.yearStart)}</p>
                 <p>Status: {report.status}</p>
               </Link>
             );

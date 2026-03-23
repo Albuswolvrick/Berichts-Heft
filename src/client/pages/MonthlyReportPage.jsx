@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
+import { toInputDate, toDisplayDate } from '../utils/dateUtils';
 
 const MonthlyReportPage = () => {
   const [name, setName] = useState('');
@@ -15,6 +16,19 @@ const MonthlyReportPage = () => {
   const [instructions, setInstructions] = useState('');
   const [remarks, setRemarks] = useState('');
   const [yearOfTraining, setYearOfTraining] = useState('');
+
+  useEffect(() => {
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear();
+    const firstDay = new Date(currentYear, now.getMonth(), 1);
+    const lastDay = new Date(currentYear, now.getMonth() + 1, 0);
+
+    setMonth(String(currentMonth));
+    setYear(String(currentYear));
+    setMonthStart(toInputDate(firstDay));
+    setMonthEnd(toInputDate(lastDay));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,8 +93,8 @@ const MonthlyReportPage = () => {
     doc.text(`Name: ${name}`, 10, 20);
     doc.text(`Month: ${month}`, 10, 30);
     doc.text(`Year: ${year}`, 10, 40);
-    doc.text(`Month Start: ${monthStart}`, 10, 50);
-    doc.text(`Month End: ${monthEnd}`, 10, 60);
+    doc.text(`Month Start: ${toDisplayDate(monthStart)}`, 10, 50);
+    doc.text(`Month End: ${toDisplayDate(monthEnd)}`, 10, 60);
     doc.text(`Total Hours: ${totalHours}`, 10, 70);
     doc.text(`Summary: ${summary}`, 10, 80);
     doc.text(`Key Achievements: ${keyAchievements}`, 10, 90);
