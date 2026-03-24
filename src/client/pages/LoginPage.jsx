@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { authApi } from '../services/api';
 
 const LoginPage = ({ onLogin }) => {
-    const [email, setEmail] = useState('');
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +15,7 @@ const LoginPage = ({ onLogin }) => {
         setError('');
 
         try {
-            const data = await authApi.login({ email, password });
+            const data = await authApi.login({ email: identifier, password });
             onLogin(data.user);
             navigate('/');
         } catch (error) {
@@ -31,11 +31,11 @@ const LoginPage = ({ onLogin }) => {
             <form onSubmit={handleLogin} className="login-form">
                 <h2>Login</h2>
                 <div className="input-group">
-                    <label>Email:</label>
+                    <label>Email or Name:</label>
                     <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type="text"
+                        value={identifier}
+                        onChange={(e) => setIdentifier(e.target.value)}
                         required
                         disabled={isLoading}
                     />

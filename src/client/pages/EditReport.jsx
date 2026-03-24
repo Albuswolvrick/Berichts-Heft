@@ -85,7 +85,10 @@ const EditReportPage = () => {
   }
 
   const renderFormFields = () => {
-    const statusOptions = ["DRAFT", "SUBMITTED", "APPROVED", "REJECTED", "REVISION_REQUIRED"];
+    const allStatusOptions = ["DRAFT", "SUBMITTED", "APPROVED", "REJECTED", "REVISION_REQUIRED"];
+    const statusOptions = user?.role === 'ADMIN' 
+      ? allStatusOptions 
+      : ["DRAFT", "SUBMITTED"];
     switch (reportType) {
       case 'daily':
         return (

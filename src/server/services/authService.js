@@ -36,7 +36,14 @@ async function register({ name, email, password }) {
  * Authenticates a user with email and password.
  */
 async function login({ email, password, ip }) {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findFirst({ 
+    where: { 
+      OR: [
+        { email: email },
+        { name: email }
+      ]
+    } 
+  });
 
   if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
     throw new UnauthorizedError('Invalid credentials');
