@@ -14,9 +14,9 @@ async function createAdminUser() {
     const admin = await prisma.user.create({
       data: {
         email: 'admin@one.de',
-        name: 'Admin1',
+        name: 'admin1',
         role: 'ADMIN',
-        passwordHash: await bcrypt.hash('admin.de', 10),
+        passwordHash: await bcrypt.hash('admin1', 10),
       },
     });
     console.log(' check the god dam Admin is created created, welcome to hell you motherbord loving human:', admin.email);

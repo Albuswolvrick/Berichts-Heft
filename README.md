@@ -18,6 +18,13 @@ npm run prisma:generate
 npm run prisma:push
 ```
 
+## creating first user 
+
+```bash
+node create.js  // only if you need to create a new user
+```
+
+
 ## Entwicklung starten
 
 Ein Befehl startet Frontend und Backend parallel:
