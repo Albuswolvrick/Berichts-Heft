@@ -1,21 +1,20 @@
-
 :root[data-theme="doom"] {
-    --background-color: #000000;
-    --text-color: #ff0000;
-    --nav-background-color: #1a0000;
-    --nav-text-color: #ff4500;
-    --nav-button-background-color: #400000;
-    --nav-button-hover-background-color: #600000;
-    --button-background-color: #cc0000;
-    --button-text-color: #ffffff;
-    --button-hover-background-color: #990000;
-    --input-background-color: #1a0000;
-    --input-border-color: #ff0000;
-    --input-text-color: #ff0000;
-    --report-background-color: #2a0f0f;
-    --report-border-color: #8b0000;
-    --report-header-color: #dc143c;
-    --report-text-color: #f5f5f5;
+  --background-color: #000000;
+  --text-color: #ff0000;
+  --nav-background-color: #1a0000;
+  --nav-text-color: #ff4500;
+  --nav-button-background-color: #400000;
+  --nav-button-hover-background-color: #600000;
+  --button-background-color: #cc0000;
+  --button-text-color: #ffffff;
+  --button-hover-background-color: #990000;
+  --input-background-color: #1a0000;
+  --input-border-color: #ff0000;
+  --input-text-color: #ff0000;
+  --report-background-color: #2a0f0f;
+  --report-border-color: #8b0000;
+  --report-header-color: #dc143c;
+  --report-text-color: #f5f5f5;
 }
 
 [data-theme="doom"] body {
@@ -35,9 +34,10 @@
 [data-theme="doom"] h4,
 [data-theme="doom"] h5,
 [data-theme="doom"] h6 {
-    text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
+  text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
 }
 
-[data-theme="doom"] .nav-button, [data-theme="doom"] button {
-    border: 1px solid #ff0000;
+[data-theme="doom"] .nav-button,
+[data-theme="doom"] button {
+  border: 1px solid #ff0000;
 }

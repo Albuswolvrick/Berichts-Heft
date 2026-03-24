@@ -10,14 +10,14 @@
   padding: 15px;
   border-radius: 8px;
   flex: 1 1 calc(33.333% - 20px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-decoration: none;
   color: var(--text-color);
   transition: transform 0.2s ease-in-out;
 }
 
 .report-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 .report-card h3 {
@@ -26,7 +26,7 @@
 }
 
 .report-card p {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .search-container {
@@ -42,7 +42,7 @@
   background-color: var(--input-background-color);
   color: var(--input-text-color);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 20px;
   transition: border-color 0.2s;
 }
 

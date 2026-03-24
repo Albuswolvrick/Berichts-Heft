@@ -22,7 +22,7 @@
 
 .cookie-consent-content p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 20px;
   line-height: 1.4;
   flex: 1;
   padding-right: 2rem;
@@ -49,6 +49,7 @@
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }

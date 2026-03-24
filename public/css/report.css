@@ -13,7 +13,7 @@
   text-align: center;
   color: var(--text-color);
   margin-bottom: 2.5rem;
-  font-size: 2.2rem;
+  font-size: 20px;
 }
 
 .form-row {
@@ -29,6 +29,7 @@
   width: 48%;
   margin-bottom: 1rem;
 }
+
 .form-group.full-width {
   display: flex;
   flex-direction: column;
@@ -40,7 +41,7 @@
   margin-bottom: 0.6rem;
   color: var(--text-color);
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 20px;
 }
 
 .form-group input,
@@ -49,7 +50,7 @@
   padding: 0.8rem 1rem;
   border: 1px solid var(--secondary-color);
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 20px;
   background-color: var(--background-color);
   color: var(--text-color);
   transition:
@@ -86,7 +87,7 @@ button[type='submit'],
   padding: 1rem 1.5rem;
   border: none;
   border-radius: 5px;
-  font-size: 1.1rem;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   transition:
