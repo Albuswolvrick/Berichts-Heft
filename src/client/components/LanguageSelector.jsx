@@ -51,9 +51,9 @@ const LanguageSelector = () => {
       {isOpen && (
         <div style={{
           position: 'absolute', top: '100%', left: 0, right: 0,
-          backgroundColor: 'var(--bg-card, #2a2a2a)', border: '1px solid var(--border-color, #444)',
+          backgroundColor: 'var(--bg-card, #2a2a2a)', border: '1px solid var(--border-color, #d3d3d3ff)',
           borderRadius: '4px', zIndex: 1000, marginTop: '4px', padding: '8px',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+          boxShadow: '0 4px 6px rgba(157, 157, 157, 0.1)'
         }}>
           <input
             type="text"
@@ -79,7 +79,7 @@ const LanguageSelector = () => {
                   style={{
                     width: '100%', textAlign: 'left', padding: '8px',
                     backgroundColor: locale === lang.code ? 'var(--accent-color, #007bff)' : 'transparent',
-                    color: 'var(--text-primary, #929191ff)', border: 'none', cursor: 'pointer',
+                    color: 'var(--text-primary, #ffffffff)', border: 'none', cursor: 'pointer',
                     borderRadius: '4px'
                   }}
                   onMouseOver={(e) => e.target.style.backgroundColor = 'var(--bg-hover, #444)'}
@@ -90,7 +90,7 @@ const LanguageSelector = () => {
               </li>
             ))}
             {filteredLanguages.length === 0 && (
-              <li style={{ padding: '8px', color: '#999', textAlign: 'center' }}>No results</li>
+              <li style={{ padding: '8px', color: '#ffffffff', textAlign: 'center' }}>No results</li>
             )}
           </ul>
         </div>

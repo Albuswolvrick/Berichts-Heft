@@ -4,6 +4,8 @@ import Spinner from '../components/Spinner';
 import CommentSection from '../components/CommentSection';
 import { useToast } from '../hooks/useToast';
 import '../../../public/css/edit-report.css';
+import { useLanguage } from '../hooks/useLanguage';
+
 const EditReportPage = () => {
   const { reportType, id } = useParams();
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ const EditReportPage = () => {
   const [formData, setFormData] = useState({});
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -93,13 +96,13 @@ const EditReportPage = () => {
       case 'daily':
         return (
           <>
-            <label>Title: <input type="text" name="title" value={formData.title || ''} onChange={handleInputChange} /></label>
-            <label>Date: <input type="date" name="reportDate" value={formData.reportDate || ''} onChange={handleInputChange} /></label>
-            <label>Activities: <textarea name="activities" value={formData.activities || ''} onChange={handleInputChange}></textarea></label>
-            <label>Learnings: <textarea name="learnings" value={formData.learnings || ''} onChange={handleInputChange}></textarea></label>
-            <label>Challenges: <textarea name="challenges" value={formData.challenges || ''} onChange={handleInputChange}></textarea></label>
-            <label>Hours Worked: <input type="number" name="hoursWorked" value={formData.hoursWorked || ''} onChange={handleInputChange} /></label>
-            <label>Status:
+            <label>{t('daily.title')} <input type="text" name="title" value={formData.title || ''} onChange={handleInputChange} /></label>
+            <label>{t('daily.report_date')} <input type="date" name="reportDate" value={formData.reportDate || ''} onChange={handleInputChange} /></label>
+            <label>{t('daily.activities')} <textarea name="activities" value={formData.activities || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('daily.learnings')} <textarea name="learnings" value={formData.learnings || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('daily.challenges')} <textarea name="challenges" value={formData.challenges || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('daily.hours_worked')} <input type="number" name="hoursWorked" value={formData.hoursWorked || ''} onChange={handleInputChange} /></label>
+            <label>{t('daily.status')}
               <select name="status" value={formData.status || ''} onChange={handleInputChange}>
                 {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
               </select>
@@ -109,18 +112,18 @@ const EditReportPage = () => {
       case 'weekly':
         return (
           <>
-            <label>Name: <input type="text" name="name" value={formData.name || ''} onChange={handleInputChange} /></label>
-            <label>Week Start: <input type="date" name="weekStart" value={formData.weekStart || ''} onChange={handleInputChange} /></label>
-            <label>Week End: <input type="date" name="weekEnd" value={formData.weekEnd || ''} onChange={handleInputChange} /></label>
-            <label>Week Number: <input type="number" name="weekNumber" value={formData.weekNumber || ''} onChange={handleInputChange} /></label>
-            <label>Department: <input type="text" name="department" value={formData.department || ''} onChange={handleInputChange} /></label>
-            <label>Year of Training: <input type="number" name="yearOfTraining" value={formData.yearOfTraining || ''} onChange={handleInputChange} /></label>
-            <label>Summary: <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
-            <label>Activities: <textarea name="activities" value={formData.activities || ''} onChange={handleInputChange}></textarea></label>
-            <label>School: <textarea name="school" value={formData.school || ''} onChange={handleInputChange}></textarea></label>
-            <label>Total Hours: <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
-            <label>Remarks: <textarea name="remarks" value={formData.remarks || ''} onChange={handleInputChange}></textarea></label>
-            <label>Status:
+            <label>{t('weekly.name')} <input type="text" name="name" value={formData.name || ''} onChange={handleInputChange} /></label>
+            <label>{t('weekly.from')} <input type="date" name="weekStart" value={formData.weekStart || ''} onChange={handleInputChange} /></label>
+            <label>{t('weekly.to')} <input type="date" name="weekEnd" value={formData.weekEnd || ''} onChange={handleInputChange} /></label>
+            <label>{t('weekly.calendar_week')} <input type="number" name="weekNumber" value={formData.weekNumber || ''} onChange={handleInputChange} /></label>
+            <label>{t('weekly.department')} <input type="text" name="department" value={formData.department || ''} onChange={handleInputChange} /></label>
+            <label>{t('weekly.year_of_training')} <input type="number" name="yearOfTraining" value={formData.yearOfTraining || ''} onChange={handleInputChange} /></label>
+            <label>{t('monthly.summary')} <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('weekly.company_activities')} <textarea name="activities" value={formData.activities || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('weekly.school')} <textarea name="school" value={formData.school || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('weekly.total_hours')} <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
+            <label>{t('monthly.remarks')} <textarea name="remarks" value={formData.remarks || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('daily.status')}
               <select name="status" value={formData.status || ''} onChange={handleInputChange}>
                 {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
               </select>
@@ -130,19 +133,19 @@ const EditReportPage = () => {
       case 'monthly':
         return (
           <>
-            <label>Name: <input type="text" name="name" value={formData.name || ''} onChange={handleInputChange} /></label>
-            <label>Month: <input type="number" name="month" value={formData.month || ''} onChange={handleInputChange} /></label>
-            <label>Year: <input type="number" name="year" value={formData.year || ''} onChange={handleInputChange} /></label>
-            <label>Month Start: <input type="date" name="monthStart" value={formData.monthStart || ''} onChange={handleInputChange} /></label>
-            <label>Month End: <input type="date" name="monthEnd" value={formData.monthEnd || ''} onChange={handleInputChange} /></label>
-            <label>Summary: <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
-            <label>Key Achievements: <textarea name="keyAchievements" value={formData.keyAchievements || ''} onChange={handleInputChange}></textarea></label>
-            <label>Goals: <textarea name="goals" value={formData.goals || ''} onChange={handleInputChange}></textarea></label>
-            <label>Total Hours: <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
-            <label>Year of Training: <input type="number" name="yearOfTraining" value={formData.yearOfTraining || ''} onChange={handleInputChange} /></label>
-            <label>Instructions: <textarea name="instructions" value={formData.instructions || ''} onChange={handleInputChange}></textarea></label>
-            <label>Remarks: <textarea name="remarks" value={formData.remarks || ''} onChange={handleInputChange}></textarea></label>
-            <label>Status:
+            <label>{t('monthly.name')} <input type="text" name="name" value={formData.name || ''} onChange={handleInputChange} /></label>
+            <label>{t('monthly.month')} <input type="number" name="month" value={formData.month || ''} onChange={handleInputChange} /></label>
+            <label>{t('monthly.year')} <input type="number" name="year" value={formData.year || ''} onChange={handleInputChange} /></label>
+            <label>{t('monthly.start')} <input type="date" name="monthStart" value={formData.monthStart || ''} onChange={handleInputChange} /></label>
+            <label>{t('monthly.end')} <input type="date" name="monthEnd" value={formData.monthEnd || ''} onChange={handleInputChange} /></label>
+            <label>{t('monthly.summary')} <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('monthly.achievements')} <textarea name="keyAchievements" value={formData.keyAchievements || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('monthly.goals')} <textarea name="goals" value={formData.goals || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('weekly.total_hours')} <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
+            <label>{t('weekly.year_of_training')} <input type="number" name="yearOfTraining" value={formData.yearOfTraining || ''} onChange={handleInputChange} /></label>
+            <label>{t('monthly.instructions')} <textarea name="instructions" value={formData.instructions || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('monthly.remarks')} <textarea name="remarks" value={formData.remarks || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('daily.status')}
               <select name="status" value={formData.status || ''} onChange={handleInputChange}>
                 {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
               </select>
@@ -152,16 +155,16 @@ const EditReportPage = () => {
       case 'yearly':
         return (
           <>
-            <label>Year: <input type="number" name="year" value={formData.year || ''} onChange={handleInputChange} /></label>
-            <label>Training Year: <input type="text" name="trainingYear" value={formData.trainingYear || ''} onChange={handleInputChange} /></label>
-            <label>Year Start: <input type="date" name="yearStart" value={formData.yearStart || ''} onChange={handleInputChange} /></label>
-            <label>Year End: <input type="date" name="yearEnd" value={formData.yearEnd || ''} onChange={handleInputChange} /></label>
-            <label>Summary: <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
-            <label>Achievements: <textarea name="achievements" value={formData.achievements || ''} onChange={handleInputChange}></textarea></label>
-            <label>Skills Improved: <textarea name="skillsImproved" value={formData.skillsImproved || ''} onChange={handleInputChange}></textarea></label>
-            <label>Goals: <textarea name="goals" value={formData.goals || ''} onChange={handleInputChange}></textarea></label>
-            <label>Total Hours: <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
-            <label>Status:
+            <label>{t('yearly.year')} <input type="number" name="year" value={formData.year || ''} onChange={handleInputChange} /></label>
+            <label>{t('yearly.training_year')} <input type="text" name="trainingYear" value={formData.trainingYear || ''} onChange={handleInputChange} /></label>
+            <label>{t('yearly.start')} <input type="date" name="yearStart" value={formData.yearStart || ''} onChange={handleInputChange} /></label>
+            <label>{t('yearly.end')} <input type="date" name="yearEnd" value={formData.yearEnd || ''} onChange={handleInputChange} /></label>
+            <label>{t('yearly.summary')} <textarea name="summary" value={formData.summary || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('yearly.achievements')} <textarea name="achievements" value={formData.achievements || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('yearly.skills_improved')} <textarea name="skillsImproved" value={formData.skillsImproved || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('yearly.goals')} <textarea name="goals" value={formData.goals || ''} onChange={handleInputChange}></textarea></label>
+            <label>{t('weekly.total_hours')} <input type="number" name="totalHours" value={formData.totalHours || ''} onChange={handleInputChange} /></label>
+            <label>{t('daily.status')}
               <select name="status" value={formData.status || ''} onChange={handleInputChange}>
                 {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
               </select>
@@ -176,10 +179,10 @@ const EditReportPage = () => {
   return (
     <div className="edit-report-page">
       <div className="edit-report-main">
-        <h2>Edit {reportType.charAt(0).toUpperCase() + reportType.slice(1)} Report</h2>
+        <h2>{t('report.edit')} {reportType.charAt(0).toUpperCase() + reportType.slice(1)}</h2>
         <form onSubmit={handleSubmit} className="edit-report-form">
           {renderFormFields()}
-          <button type="submit">Save Changes</button>
+          <button type="submit">{t('edit.save')}</button>
         </form>
       </div>
       <aside className="edit-report-sidebar">
