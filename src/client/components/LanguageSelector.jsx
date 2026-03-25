@@ -44,8 +44,8 @@ const LanguageSelector = () => {
         *so I will just put a placeholder here and hope for the best
         *yet the globe is not a good emoji
         */}
-        <span> ️ {currentLang.name}</span>
-        <span>{isOpen ? '' : ''}</span>
+        <span>"emoji:languageimport from anywhere" {currentLang.name}</span>
+        <span>{isOpen ? '▲' : '▼'}</span>
       </button>
 
       {isOpen && (
@@ -63,7 +63,7 @@ const LanguageSelector = () => {
             style={{
               width: '100%', padding: '6px', marginBottom: '8px',
               boxSizing: 'border-box', backgroundColor: 'var(--bg-input, #333)',
-              color: 'var(--text-primary, #fff)', border: '1px solid var(--border-color, #555)',
+              color: 'var(--text-primary, #686666ff)', border: '1px solid var(--border-color, #323030ff)',
               borderRadius: '4px'
             }}
           />
@@ -79,7 +79,7 @@ const LanguageSelector = () => {
                   style={{
                     width: '100%', textAlign: 'left', padding: '8px',
                     backgroundColor: locale === lang.code ? 'var(--accent-color, #007bff)' : 'transparent',
-                    color: 'var(--text-primary, #fff)', border: 'none', cursor: 'pointer',
+                    color: 'var(--text-primary, #929191ff)', border: 'none', cursor: 'pointer',
                     borderRadius: '4px'
                   }}
                   onMouseOver={(e) => e.target.style.backgroundColor = 'var(--bg-hover, #444)'}
