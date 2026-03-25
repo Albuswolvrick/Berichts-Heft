@@ -4,6 +4,7 @@ import { useToast } from '../hooks/useToast';
 import { weeklyReportApi } from '../services/api';
 import { getWeekRangeFromDate, toInputDate, toDisplayDate } from '../utils/dateUtils';
 import { downloadReportPdf } from '../utils/pdfGenerator';
+import { useLanguage } from '../hooks/useLanguage';
 
 const initialState = {
   name: '',
@@ -23,6 +24,7 @@ const initialState = {
 const WeeklyReportPage = () => {
   const [formData, setFormData] = useState(initialState);
   const { addToast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const today = toInputDate(new Date());
@@ -88,7 +90,7 @@ const WeeklyReportPage = () => {
       !yearOfTraining ||
       !remarks
     ) {
-      addToast('Please fill in all required fields.', 'error');
+      addToast(t('report.fill_all'), 'error');
       return;
     }
 
@@ -144,17 +146,17 @@ const WeeklyReportPage = () => {
 
   return (
     <div className="report-form-container">
-      <h1>Weekly Report</h1>
+      <h1>{t('report.weekly')}</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group full-width">
-            <label>Name:</label>
+            <label>{t('weekly.name')}</label>
             <input type="text" value={formData.name} onChange={handleChange('name')} required />
           </div>
         </div>
         <div className="form-row">
           <div className="form-group">
-            <label>Training week from:</label>
+            <label>{t('weekly.from')}</label>
             <input
               type="date"
               value={formData.weekStart}
@@ -163,17 +165,17 @@ const WeeklyReportPage = () => {
             />
           </div>
           <div className="form-group">
-            <label>To:</label>
+            <label>{t('weekly.to')}</label>
             <input type="date" value={formData.weekEnd} readOnly required />
           </div>
         </div>
         <div className="form-row">
           <div className="form-group">
-            <label>Calendar week (automatic):</label>
+            <label>{t('weekly.calendar_week')}</label>
             <input type="number" value={formData.weekNumber} readOnly required />
           </div>
           <div className="form-group">
-            <label>Total Hours:</label>
+            <label>{t('weekly.total_hours')}</label>
             <input
               type="number"
               value={formData.totalHours}
@@ -183,7 +185,7 @@ const WeeklyReportPage = () => {
           </div>
         </div>
         <div className="form-group full-width">
-          <label>Training Department:</label>
+          <label>{t('weekly.department')}</label>
           <input
             type="text"
             value={formData.department}
@@ -192,7 +194,7 @@ const WeeklyReportPage = () => {
           />
         </div>
         <div className="form-group full-width">
-          <label>Training Year</label>
+          <label>{t('weekly.year_of_training')}</label>
           <input
             type="number"
             value={formData.yearOfTraining}
@@ -201,34 +203,34 @@ const WeeklyReportPage = () => {
           />
         </div>
         <div className="form-group full-width">
-          <label>Company Activities:</label>
+          <label>{t('weekly.company_activities')}</label>
           <textarea value={formData.activities} onChange={handleChange('activities')} required />
         </div>
         <div className="form-group full-width">
           <label>
-            Instructions, training discussions, in-house training, external training events, intermediate examination:
+            {t('weekly.summary_label')}
           </label>
           <textarea value={formData.summary} onChange={handleChange('summary')} required />
         </div>
         <div className="form-group full-width">
-          <label>Vocational school (topics):</label>
+          <label>{t('weekly.school')}</label>
           <textarea value={formData.school} onChange={handleChange('school')} required />
         </div>
         <div className="form-group full-width">
-          <label>Comments:</label>
+          <label>{t('weekly.comments')}</label>
           <textarea value={formData.remarks} onChange={handleChange('remarks')} required />
         </div>
         <div className="form-group full-width">
-          <label>Status:</label>
+          <label>{t('daily.status')}</label>
           <select value={formData.status} onChange={handleChange('status')}>
-            <option value="DRAFT">Draft</option>
-            <option value="SUBMITTED">Submitted</option>
+            <option value="DRAFT">{t('report.draft')}</option>
+            <option value="SUBMITTED">{t('report.submitted')}</option>
           </select>
         </div>
         <div className="button-group">
-          <button type="submit">Save Report</button>
+          <button type="submit">{t('report.save_button')}</button>
           <button type="button" className="download-btn" onClick={handleDownloadPDF}>
-            Download as PDF
+            {t('report.download_pdf')}
           </button>
         </div>
       </form>

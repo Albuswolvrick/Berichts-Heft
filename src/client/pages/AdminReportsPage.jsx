@@ -5,6 +5,7 @@ import { userApi } from '../services/api';
 import { formatDate } from '../utils/dateUtils';
 import '../../../public/css/AdminReportsPage.css';
 import '../../../public/css/HomePage.css';
+import { useLanguage } from '../hooks/useLanguage';
 
 const AdminReportsPage = () => {
     // State management for reports, users, search term, selected user, loading status, and errors.
@@ -14,6 +15,7 @@ const AdminReportsPage = () => {
     const [selectedUserId, setSelectedUserId] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { t } = useLanguage();
 
     // On component mount, fetch all reports and users from the API.
     useEffect(() => {
@@ -81,11 +83,11 @@ const AdminReportsPage = () => {
 
     return (
         <div className="admin-reports-page">
-            <h1>Admin Reports</h1>
+            <h1>{t('admin.title')}</h1>
             <div className="filters">
                 <input
                     type="text"
-                    placeholder="Search reports by title or user..."
+                    placeholder={t('home.search_placeholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -95,7 +97,7 @@ const AdminReportsPage = () => {
                     value={selectedUserId}
                     onChange={(e) => setSelectedUserId(e.target.value)}
                 >
-                    <option value="">All Users</option>
+                    <option value="">{t('admin.all_users')}</option>
                     {users.map(user => (
                         <option key={user.id} value={user.id}>
                             {user.name} ({user.username})
@@ -104,7 +106,7 @@ const AdminReportsPage = () => {
                 </select>
             </div>
 
-            {loading && <p>Loading...</p>}
+            {loading && <p>{t('admin.loading')}</p>}
             {error && <p className="error-message">{error}</p>}
 
             <div className="report-grid">
@@ -116,13 +118,13 @@ const AdminReportsPage = () => {
                         return (
                             <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
                                 <h3>{getReportTitle(report)}</h3>
-                                <p><strong>User:</strong> {user ? `${user.name} (${user.username})` : 'N/A'}</p>
-                                <p><strong>Date:</strong> {report.reportDate ? formatDate(report.reportDate) : 'N/A'}</p>
+                                <p><strong>{t('common.user')}</strong> {user ? `${user.name} (${user.username})` : 'N/A'}</p>
+                                <p><strong>{t('common.date')}</strong> {report.reportDate ? formatDate(report.reportDate) : 'N/A'}</p>
                             </Link>
                         );
                     })
                 ) : (
-                    !loading && !error && <p>No reports found for the selected criteria.</p>
+                    !loading && !error && <p>{t('admin.no_reports')}</p>
                 )}
             </div>
         </div>

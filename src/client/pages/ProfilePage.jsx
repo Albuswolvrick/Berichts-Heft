@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
+import { useLanguage } from '../hooks/useLanguage';
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -8,6 +9,7 @@ const ProfilePage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const { addToast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchUser();
@@ -88,16 +90,16 @@ const ProfilePage = () => {
   }
 
   if (!user) {
-    return <p>Could not load user profile.</p>;
+    return <p>{t('profile.error_load')}</p>;
   }
 
   return (
     <div>
-      <h1>Profile</h1>
+      <h1>{t('profile.title')}</h1>
       <form onSubmit={handleUpdate}>
         <fieldset disabled={submitting}>
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">{t('profile.name_label')}</label>
             <input
               type="text"
               id="name"
@@ -107,7 +109,7 @@ const ProfilePage = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('profile.email_label')}</label>
             <input
               type="email"
               id="email"
@@ -117,30 +119,30 @@ const ProfilePage = () => {
             />
           </div>
           <button type="submit" disabled={submitting}>
-            {submitting ? 'Saving...' : 'Update Profile'}
+            {submitting ? t('profile.saving') : t('profile.update_button')}
           </button>
         </fieldset>
       </form>
 
       <hr />
 
-      <h2>Change Password</h2>
+      <h2>{t('profile.change_password')}</h2>
       <form onSubmit={handlePasswordUpdate}>
         <fieldset disabled={submitting}>
           <div className="form-group">
-            <label htmlFor="newPassword">New Password</label>
+            <label htmlFor="newPassword">{t('profile.new_password_label')}</label>
             <input
               type="password"
               id="newPassword"
               name="newPassword"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Enter new password"
+              placeholder={t('profile.new_password_placeholder')}
               required
             />
           </div>
           <button type="submit" disabled={submitting || !newPassword}>
-            {submitting ? 'Updating...' : 'Change Password'}
+            {submitting ? t('profile.updating') : t('profile.change_password_button')}
           </button>
         </fieldset>
       </form>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../services/api';
+import { useLanguage } from '../hooks/useLanguage';
 
 const LoginPage = ({ onLogin }) => {
     const [identifier, setIdentifier] = useState('');
@@ -8,6 +9,7 @@ const LoginPage = ({ onLogin }) => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { t } = useLanguage();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -29,9 +31,9 @@ const LoginPage = ({ onLogin }) => {
     return (
         <div className="login-container">
             <form onSubmit={handleLogin} className="login-form">
-                <h2>Login</h2>
+                <h2>{t('login.title')}</h2>
                 <div className="input-group">
-                    <label>Email or Name:</label>
+                    <label>{t('login.email_or_name')}</label>
                     <input
                         type="text"
                         value={identifier}
@@ -41,7 +43,7 @@ const LoginPage = ({ onLogin }) => {
                     />
                 </div>
                 <div className="input-group">
-                    <label>Password:</label>
+                    <label>{t('login.password')}</label>
                     <input
                         type="password"
                         value={password}
@@ -52,7 +54,7 @@ const LoginPage = ({ onLogin }) => {
                 </div>
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Anmelden...' : 'Anmelden'}
+                    {isLoading ? t('login.button_loading') : t('login.button')}
                 </button>
             </form>
         </div>

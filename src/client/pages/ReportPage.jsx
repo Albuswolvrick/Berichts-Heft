@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
+import { useLanguage } from '../hooks/useLanguage';
 
 const ReportPage = () => {
   const [report, setReport] = useState(null);
@@ -9,6 +9,7 @@ const ReportPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchReport();
@@ -53,12 +54,12 @@ const ReportPage = () => {
           <h1>{report.title}</h1>
           <p>{report.content}</p>
           <p>Week ID: {report.weekId}</p>
-          <p>Status: {report.status}</p>
-          <Link to={`/reports/${id}/edit`}>Edit</Link>
-          <button onClick={handleDelete}>Delete</button>
+          <p>{t('daily.status')} {report.status}</p>
+          <Link to={`/reports/${id}/edit`}>{t('report.edit')}</Link>
+          <button onClick={handleDelete}>{t('report.delete')}</button>
         </div>
       ) : (
-        <p>Report not found.</p>
+        <p>{t('report.not_found')}</p>
       )}
     </div>
   );

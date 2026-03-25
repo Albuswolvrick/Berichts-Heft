@@ -18,6 +18,7 @@ import AdminPage from './pages/AdminPage';
 import AdminReportsPage from './pages/AdminReportsPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
+import { LanguageProvider } from './hooks/useLanguage';
 import { authApi, userApi } from './services/api';
 import '../../public/css/style.css';
 import '../../public/css/navbar.css';
@@ -26,11 +27,11 @@ import '../../public/css/doom.css';
 import CookieConsent from './components/CookieConsent';
 
 const allNavItems = [
-    { label: 'Home', path: '/' },
-    { label: 'New Report', path: '/reports/new' },
-    { label: 'Admin Dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
-    { label: 'Admin Reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
-    { label: 'Dev Menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
+    { label: 'nav.home', path: '/' },
+    { label: 'nav.new_report', path: '/reports/new' },
+    { label: 'nav.admin_dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
+    { label: 'nav.admin_reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
+    { label: 'nav.dev_menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
 ];
 
 const ProtectedRoute = ({ children }) => {
@@ -104,11 +105,12 @@ function App() {
     return (
         <ErrorBoundary>
             <ThemeProvider>
-                <ToastProvider>
-                    <div style={{ display: 'flex' }}>
-                        <Navbar items={navItems} user={user} onLogout={handleLogout} />
-                        {/* Navbar must remain outside <main> to preserve the side-by-side flex layout */}
-                        <main style={{ padding: '20px', flex: 1 }}>
+                <LanguageProvider>
+                    <ToastProvider>
+                        <div style={{ display: 'flex' }}>
+                            <Navbar items={navItems} user={user} onLogout={handleLogout} />
+                            {/* Navbar must remain outside <main> to preserve the side-by-side flex layout */}
+                            <main style={{ padding: '20px', flex: 1 }}>
                             <Routes>
                                 <Route path="/" element={<ProtectedRoute><HomePage user={user} /></ProtectedRoute>} />
                                 <Route path="/login" element={<LoginPage onLogin={setUser} />} />
@@ -128,7 +130,8 @@ function App() {
                         </main>
                         <CookieConsent isAuthenticated={!!user} />
                     </div>
-                </ToastProvider>
+                    </ToastProvider>
+                </LanguageProvider>
             </ThemeProvider>
         </ErrorBoundary>
     );
