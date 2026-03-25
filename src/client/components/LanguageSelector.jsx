@@ -63,7 +63,7 @@ const LanguageSelector = () => {
             style={{
               width: '100%', padding: '6px', marginBottom: '8px',
               boxSizing: 'border-box', backgroundColor: 'var(--bg-input, #333)',
-              color: 'var(--text-primary, #686666ff)', border: '1px solid var(--border-color, #323030ff)',
+              color: 'var(--text-primary, #aeaaaaff)', border: '1px solid var(--border-color, #323030ff)',
               borderRadius: '4px'
             }}
           />

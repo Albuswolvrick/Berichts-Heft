@@ -12,21 +12,21 @@ const Navbar = ({ items, user, onLogout }) => {
 
   return (
     <nav className="vertical-nav">
-        <LanguageSelector />
-        {user ? (
-            <div className="user-info">
-                <span>{t('nav.welcome', { username: user.username })}</span>
-                <button onClick={() => navigate('/profile')} className="nav-button">{t('nav.profile')}</button>
-                <button onClick={onLogout} className="nav-button">{t('nav.logout')}</button>
-            </div>
-        ) : (
-            <button
-                className="nav-button"
-                onClick={() => navigate('/login')}
-            >
-                {t('nav.login')}
-            </button>
-        )}
+      <LanguageSelector />
+      {user ? (
+        <div className="user-info">
+          <span>{t('nav.welcome', { username: user.name })}</span>
+          <button onClick={() => navigate('/profile')} className="nav-button">{t('nav.profile')}</button>
+          <button onClick={onLogout} className="nav-button">{t('nav.logout')}</button>
+        </div>
+      ) : (
+        <button
+          className="nav-button"
+          onClick={() => navigate('/login')}
+        >
+          {t('nav.login')}
+        </button>
+      )}
       {items.map((item) => (
         <button
           key={item.path}
