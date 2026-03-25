@@ -22,7 +22,7 @@
   background-color: var(--input-background-color);
   color: var(--input-text-color);
   border-radius: 4px;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .user-list {
@@ -72,7 +72,7 @@
   background-color: var(--input-background-color);
   color: var(--input-text-color);
   border-radius: 4px;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 @keyframes flash-red {

@@ -37,12 +37,12 @@
 }
 
 .report-option h2 {
-    font-size: 20px;
+    font-size: 25px;
     color: var(--primary-color);
     margin-top: 0;
 }
 
 .report-option p {
-    font-size: 20px;
+    font-size: 25px;
     color: var(--report-text-color);
 }

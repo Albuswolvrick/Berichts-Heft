@@ -42,7 +42,7 @@
   background-color: var(--input-background-color);
   color: var(--input-text-color);
   border-radius: 8px;
-  font-size: 20px;
+  font-size: 25px;
   transition: border-color 0.2s;
 }
 
