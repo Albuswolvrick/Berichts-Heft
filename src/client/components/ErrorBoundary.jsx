@@ -1,4 +1,18 @@
 import React from 'react';
+import { useLanguage } from '../hooks/useLanguage';
+
+const DefaultFallback = ({ error, resetError }) => {
+  const { t } = useLanguage();
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h2>{t('error.something_went_wrong')}</h2>
+      <p>{error?.message}</p>
+      <button onClick={resetError}>
+        {t('error.try_again')}
+      </button>
+    </div>
+  );
+};
 
 /**
  * Error Boundary component that catches rendering errors
@@ -22,13 +36,10 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
-          <div style={{ padding: '20px', textAlign: 'center' }}>
-            <h2>Something went wrong</h2>
-            <p>{this.state.error?.message}</p>
-            <button onClick={() => this.setState({ hasError: false, error: null })}>
-              Try again
-            </button>
-          </div>
+          <DefaultFallback 
+            error={this.state.error} 
+            resetError={() => this.setState({ hasError: false, error: null })} 
+          />
         )
       );
     }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../../public/css/login.css'; // Reusing the login CSS for consistency
+import { useLanguage } from '../hooks/useLanguage';
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
@@ -9,6 +10,7 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -41,9 +43,9 @@ const RegisterPage = () => {
   return (
     <div className="login-container">
       <form onSubmit={handleRegister} className="login-form">
-        <h2>Register</h2>
+        <h2>{t('register.title')}</h2>
         <div className="input-group">
-          <label>Username:</label>
+          <label>{t('register.username')}</label>
           <input
             type="text"
             value={username}
@@ -53,7 +55,7 @@ const RegisterPage = () => {
           />
         </div>
         <div className="input-group">
-          <label>Email:</label>
+          <label>{t('register.email')}</label>
           <input
             type="email"
             value={email}
@@ -63,7 +65,7 @@ const RegisterPage = () => {
           />
         </div>
         <div className="input-group">
-          <label>Password:</label>
+          <label>{t('register.password')}</label>
           <input
             type="password"
             value={password}
@@ -74,7 +76,7 @@ const RegisterPage = () => {
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Registering...' : 'Register'}
+          {isLoading ? t('register.button_loading') : t('register.button')}
         </button>
       </form>
     </div>

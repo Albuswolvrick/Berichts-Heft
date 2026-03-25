@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useToast } from '../hooks/useToast';
 import ThemeManager from '../components/ThemeManager';
+import { useLanguage } from '../hooks/useLanguage';
 
 const AdminPage = () => {
     const [reportType, setReportType] = useState('daily');
@@ -10,6 +11,7 @@ const AdminPage = () => {
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(false);
     const { addToast } = useToast();
+    const { t } = useLanguage();
 
     const handleFetchReports = async (e) => {
         e.preventDefault();
@@ -37,11 +39,11 @@ const AdminPage = () => {
 
     return (
         <div className="container">
-            <h1>Admin Dashboard</h1>
+            <h1>{t('admin.title')}</h1>
             <ThemeManager />
             <form onSubmit={handleFetchReports}>
                 <div className="form-group">
-                    <label htmlFor="reportType">Report Type</label>
+                    <label htmlFor="reportType">{t('admin.report_type')}</label>
                     <select id="reportType" value={reportType} onChange={(e) => setReportType(e.target.value)}>
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
@@ -50,15 +52,15 @@ const AdminPage = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="startDate">Start Date</label>
+                    <label htmlFor="startDate">{t('admin.start_date')}</label>
                     <input type="date" id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="endDate">End Date</label>
+                    <label htmlFor="endDate">{t('admin.end_date')}</label>
                     <input type="date" id="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 </div>
                 <button type="submit" className="btn" disabled={loading}>
-                    {loading ? 'Fetching...' : 'Fetch Reports'}
+                    {loading ? t('admin.fetching') : t('admin.fetch')}
                 </button>
             </form>
 
@@ -67,13 +69,13 @@ const AdminPage = () => {
                     reports.map(report => (
                         <div key={report.id} className="report-item">
                             <h3>{report.title}</h3>
-                            <p><strong>User:</strong> {report.user.username}</p>
-                            <p><strong>Date:</strong> {new Date(report.reportDate).toLocaleDateString()}</p>
-                            <Link to={`/reports/${report.id}?type=${reportType}`}>View Report</Link>
+                            <p><strong>{t('common.user')}</strong> {report.user.username}</p>
+                            <p><strong>{t('common.date')}</strong> {new Date(report.reportDate).toLocaleDateString()}</p>
+                            <Link to={`/reports/${report.id}?type=${reportType}`}>{t('common.view_report')}</Link>
                         </div>
                     ))
                 ) : (
-                    <p>No reports found for the selected criteria.</p>
+                    <p>{t('admin.no_reports')}</p>
                 )}
             </div>
         </div>

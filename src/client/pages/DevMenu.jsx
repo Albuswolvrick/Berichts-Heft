@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from './../hooks/useToast';
-import '../../../public/css/DevMenu.css'
+import '../../../public/css/DevMenu.css';
+import { useLanguage } from '../hooks/useLanguage';
 
 // Inline component for managing a single user row
 const UserRow = ({ user, onUpdate, onDelete, onUpdatePassword }) => {
+  const { t } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -45,24 +47,24 @@ const UserRow = ({ user, onUpdate, onDelete, onUpdatePassword }) => {
             <option value="ADMIN">Admin</option>
             <option value="TEST">Test</option>
           </select>
-          <button onClick={handleUpdate} className="btn btn-ready">Save</button>
-          <button onClick={() => setIsEditing(false)} className="btn">Cancel</button>
+          <button onClick={handleUpdate} className="btn btn-ready">{t('dev.action_save')}</button>
+          <button onClick={() => setIsEditing(false)} className="btn">{t('dev.action_cancel')}</button>
         </div>
       ) : (
         <div className="user-details">
           <span>{user.name} ({user.email}) - {user.role}</span>
           <div>
-            <button onClick={() => setIsEditing(true)} className="btn btn-primary">Edit</button>
-            <button onClick={() => setIsChangingPassword(!isChangingPassword)} className="btn btn-primary">Change Password</button>
-            <button onClick={() => onDelete(user.id)} className="btn btn-logout">Delete</button>
+            <button onClick={() => setIsEditing(true)} className="btn btn-primary">{t('dev.action_edit')}</button>
+            <button onClick={() => setIsChangingPassword(!isChangingPassword)} className="btn btn-primary">{t('dev.action_change_password')}</button>
+            <button onClick={() => onDelete(user.id)} className="btn btn-logout">{t('dev.action_delete')}</button>
           </div>
         </div>
       )}
       {isChangingPassword && (
         <div className="edit-user-form">
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="New Password" />
-          <button onClick={handlePasswordChange} className="btn btn-ready">Save Password</button>
-          <button onClick={() => setIsChangingPassword(false)} className="btn">Cancel</button>
+          <button onClick={handlePasswordChange} className="btn btn-ready">{t('dev.action_save_password')}</button>
+          <button onClick={() => setIsChangingPassword(false)} className="btn">{t('dev.action_cancel')}</button>
         </div>
       )}
     </li>
@@ -78,6 +80,7 @@ const DevMenu = () => {
   const [error, setError] = useState('');
   const [creationStatus, setCreationStatus] = useState('idle');
   const showToast = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchUsers();
@@ -197,14 +200,14 @@ const DevMenu = () => {
 
   return (
     <div className="dev-menu">
-      <h2>Dev Menu</h2>
+      <h2>{t('dev.title')}</h2>
       {error && <p className="error-message">{error}</p>}
       
       <div className="user-management">
-        <h3>User Management</h3>
+        <h3>{t('dev.user_management')}</h3>
         
         <form onSubmit={handleCreateUser} className="create-user-form">
-          <h4>Create New User</h4>
+          <h4>{t('dev.create_user')}</h4>
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
@@ -216,13 +219,13 @@ const DevMenu = () => {
             <option value="TEST">Test</option>
           </select>
           <button type="submit" className={`btn btn-primary ${creationStatus === 'error' ? 'flash-error' : ''}`}>
-            Create User
+            {t('dev.create_user')}
           </button>
         </form>
 
-        <h4>Existing Users</h4>
+        <h4>{t('dev.existing_users')}</h4>
         {users.length === 0 ? (
-          <p>No users found.</p>
+          <p>{t('dev.no_users')}</p>
         ) : (
           <ul className="user-list">
             {users.map((user) => (

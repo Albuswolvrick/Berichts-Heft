@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import { toInputDate, toDisplayDate } from '../utils/dateUtils';
+import { useLanguage } from '../hooks/useLanguage';
 
 const MonthlyReportPage = () => {
   const [name, setName] = useState('');
@@ -16,6 +17,7 @@ const MonthlyReportPage = () => {
   const [instructions, setInstructions] = useState('');
   const [remarks, setRemarks] = useState('');
   const [yearOfTraining, setYearOfTraining] = useState('');
+  const { t } = useLanguage();
 
   useEffect(() => {
     const now = new Date();
@@ -34,7 +36,7 @@ const MonthlyReportPage = () => {
     e.preventDefault();
 
     if (!name || !month || !year || !monthStart || !monthEnd || !summary || !keyAchievements || !goals || !totalHours || !instructions || !remarks || !yearOfTraining) {
-        alert('Please fill out all fields.');
+        alert(t('report.fill_all'));
         return;
     }
 
@@ -62,7 +64,7 @@ const MonthlyReportPage = () => {
       });
 
       if (response.ok) {
-        alert('Monthly report saved successfully!');
+        alert(t('report.save_success'));
         // Optionally, clear the form
         setName('');
         setMonth('');
@@ -79,11 +81,11 @@ const MonthlyReportPage = () => {
         setYearOfTraining('');
       } else {
         const errorData = await response.json();
-        alert(`Failed to save monthly report: ${errorData.error}`);
+        alert(`${t('report.save_failed')}: ${errorData.error}`);
       }
     } catch (error) {
       console.error('Failed to save monthly report:', error);
-      alert('Failed to save monthly report. Please try again later.');
+      alert(t('report.save_error_generic'));
     }
   };
 
@@ -108,70 +110,70 @@ const MonthlyReportPage = () => {
 
   return (
     <div className="report-form-container">
-      <h1>Monthly Report</h1>
+      <h1>{t('report.monthly')}</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group full-width">
-            <label>Report Name:</label>
+            <label>{t('monthly.name')}</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
         <div className="form-row">
             <div className="form-group">
-                <label>Month:</label>
+                <label>{t('monthly.month')}</label>
                 <input type="number" value={month} onChange={(e) => setMonth(e.target.value)} required />
             </div>
             <div className="form-group">
-                <label>Year:</label>
+                <label>{t('monthly.year')}</label>
                 <input type="number" value={year} onChange={(e) => setYear(e.target.value)} required />
             </div>
         </div>
         <div className="form-row">
             <div className="form-group">
-                <label>Month Start:</label>
+                <label>{t('monthly.start')}</label>
                 <input type="date" value={monthStart} onChange={(e) => setMonthStart(e.target.value)} required />
             </div>
             <div className="form-group">
-                <label>Month End:</label>
+                <label>{t('monthly.end')}</label>
                 <input type="date" value={monthEnd} onChange={(e) => setMonthEnd(e.target.value)} required />
             </div>
         </div>
         <div className="form-group full-width">
-            <label>Total Hours:</label>
+            <label>{t('weekly.total_hours')}</label>
             <input type="number" value={totalHours} onChange={(e) => setTotalHours(e.target.value)} required />
         </div>
         <div className="form-group full-width">
-            <label>Year of Training:</label>
+            <label>{t('weekly.year_of_training')}</label>
             <input type="number" value={yearOfTraining} onChange={(e) => setYearOfTraining(e.target.value)} required />
         </div>
         <div className="form-group full-width">
-            <label>Summary:</label>
+            <label>{t('monthly.summary')}</label>
             <textarea value={summary} onChange={(e) => setSummary(e.target.value)} required />
         </div>
         <div className="form-group full-width">
-            <label>Key Achievements:</label>
+            <label>{t('monthly.achievements')}</label>
             <textarea value={keyAchievements} onChange={(e) => setKeyAchievements(e.target.value)} required />
         </div>
         <div className="form-group full-width">
-            <label>Goals:</label>
+            <label>{t('monthly.goals')}</label>
             <textarea value={goals} onChange={(e) => setGoals(e.target.value)} required />
         </div>
         <div className="form-group full-width">
-            <label>Instructions:</label>
+            <label>{t('monthly.instructions')}</label>
             <textarea value={instructions} onChange={(e) => setInstructions(e.target.value)} required />
         </div>
         <div className="form-group full-width">
-            <label>Remarks:</label>
+            <label>{t('monthly.remarks')}</label>
             <textarea value={remarks} onChange={(e) => setRemarks(e.target.value)} required />
         </div>
         <div className="form-group full-width">
-            <label>Status:</label>
+            <label>{t('daily.status')}</label>
             <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                <option value="DRAFT">Draft</option>
-                <option value="SUBMITTED">Submitted</option>
+                <option value="DRAFT">{t('report.draft')}</option>
+                <option value="SUBMITTED">{t('report.submitted')}</option>
             </select>
         </div>
         <div className="button-group">
-            <button type="submit">Save Report</button>
-            <button type="button" className="download-btn" onClick={handleDownloadPDF}>Download as PDF</button>
+            <button type="submit">{t('report.save_button')}</button>
+            <button type="button" className="download-btn" onClick={handleDownloadPDF}>{t('report.download_pdf')}</button>
         </div>
       </form>
     </div>

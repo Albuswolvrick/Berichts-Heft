@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { useToast } from '../hooks/useToast';
+import { useLanguage } from '../hooks/useLanguage';
 
 const CommentSection = ({ reportType, reportId, user }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
+  const { t } = useLanguage();
 
   const isAdminOrManager = user && (user.role === 'ADMIN' || user.role === 'MANAGER');
 
@@ -36,20 +38,20 @@ const CommentSection = ({ reportType, reportId, user }) => {
       });
       setComments([...comments, comment]);
       setNewComment('');
-      showToast('Comment added', 'success');
+      showToast(t('comment.success'), 'success');
     } catch (err) {
-      showToast('Failed to add comment', 'error');
+      showToast(t('comment.failed'), 'error');
     }
   };
 
   return (
     <div className="comment-section">
-      <h3>Comments</h3>
+      <h3>{t('comment.title')}</h3>
       <div className="comment-list">
         {loading ? (
-          <p>Loading comments...</p>
+          <p>{t('comment.loading')}</p>
         ) : comments.length === 0 ? (
-          <p className="no-comments">No comments yet.</p>
+          <p className="no-comments">{t('comment.none')}</p>
         ) : (
           comments.map((c) => (
             <div key={c.id} className="comment-item">
@@ -70,10 +72,10 @@ const CommentSection = ({ reportType, reportId, user }) => {
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add a comment..."
+            placeholder={t('comment.placeholder')}
             required
           />
-          <button type="submit">Post Comment</button>
+          <button type="submit">{t('comment.submit')}</button>
         </form>
       )}
     </div>

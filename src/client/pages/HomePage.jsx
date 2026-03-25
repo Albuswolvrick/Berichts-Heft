@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
+import { useLanguage } from '../hooks/useLanguage';
 import { toDisplayDate } from '../utils/dateUtils';
 import '../../../public/css/HomePage.css';
 
@@ -13,6 +14,7 @@ const HomePage = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const { addToast } = useToast();
+  const { t } = useLanguage();
 
   // On component mount, fetch all of the user's reports from the server.
   useEffect(() => {
@@ -78,20 +80,20 @@ const HomePage = ({ user }) => {
 
   return (
     <div>
-      <h1>Report Booklet</h1>
-      <h2>My Reports</h2>
+      <h1>{t('home.title')}</h1>
+      <h2>{t('home.my_reports')}</h2>
 
       <div className="search-container">
         <input
           type="text"
-          placeholder="Search by title, type, or status..."
+          placeholder={t('home.search_placeholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="search-input"
         />
         {search && (
             <button onClick={() => setSearch('')} className="search-clear">
-                Clear
+                {t('home.clear')}
             </button>
         )}
       </div>
@@ -100,7 +102,7 @@ const HomePage = ({ user }) => {
       {loading ? (
         <Spinner />
       ) : filteredReports.length === 0 ? (
-        <p>{search ? 'No reports matching your search.' : 'No reports available yet.'}</p>
+        <p>{search ? t('home.no_reports_search') : t('home.no_reports_yet')}</p>
       ) : (
         <div className="report-grid">
           {/* Map over the reports and render a clickable card for each one. */}
@@ -111,9 +113,9 @@ const HomePage = ({ user }) => {
             return (
               <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
                 <h3>{getReportTitle(report)}</h3>
-                <p>Type: {report.type}</p>
-                <p>Date: {toDisplayDate(report.reportDate || report.weekStart || report.monthStart || report.yearStart)}</p>
-                <p>Status: {report.status}</p>
+                <p>{t('home.type', { type: report.type })}</p>
+                <p>{t('home.date', { date: toDisplayDate(report.reportDate || report.weekStart || report.monthStart || report.yearStart) })}</p>
+                <p>{t('home.status', { status: report.status })}</p>
               </Link>
             );
           })}
