@@ -19,9 +19,10 @@ async function createAdminUser() {
         passwordHash: await bcrypt.hash('admin1', 10),
       },
     });
-    console.log(' check the god dam Admin is created created, welcome to hell you motherbord loving human:', admin.email);
-    console.log('\nLogin credentials:');
+    console.log(' User is created.', admin.email);
+    console.log('\nLogin credentials:admin1');
     console.log('  admin@hespie.de / 1');
+    console.log('bitte erstelen sie einen Privaten nutzer und Löschen sie den admin1')
 
   } catch (error) {
     console.error('Error creating admin user:', error.message);

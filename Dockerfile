@@ -41,3 +41,4 @@ EXPOSE 3000
 CMD ["node", "src/server/index.js"]
 
 #I have high hopes for this it is to this date 23.03.2026 not tested
+#the more I look at this the les do I trust it works

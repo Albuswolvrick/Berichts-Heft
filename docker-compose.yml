@@ -6,10 +6,12 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=file:./data/dev.db
-      - SESSION_SECRET=change-this-to-a-secure-secret
+      - SESSION_SECRET=your-secure-session-secret-here
       - CORS_ORIGIN=http://localhost:3000
     volumes:
       - ./dev.db:/app/dev.db
       - ./sessions.db:/app/sessions.db
     restart: always
 #hope it works 23.03.2026
+
+#somthing Is wrong but I do not figure out wht the fuck is wrong make isue now
