@@ -1,17 +1,38 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: berichts-heft:latest
+    container_name: berichts-heft
+    restart: unless-stopped
+
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=file:./data/dev.db
-      - SESSION_SECRET=your-secure-session-secret-here
-      - CORS_ORIGIN=http://localhost:3000
-    volumes:
-      - ./dev.db:/app/dev.db
-      - ./sessions.db:/app/sessions.db
-    restart: always
-#hope it works 23.03.2026
 
-#somthing Is wrong but I do not figure out wht the fuck is wrong make isue now
+    # Put secrets in a .env file (see .env.example) – never commit real values!
+    env_file:
+      - .env
+
+    # Override / supply required variables here if you don't use an env file
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      # DATABASE_URL and SESSION_SECRET come from .env
+
+    volumes:
+      # Named volume keeps the SQLite DB + session DB alive across restarts
+      - berichts_data:/app/data
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+# Declare the named volume so Docker manages it properly
+volumes:
+  berichts_data:
+    driver: local
