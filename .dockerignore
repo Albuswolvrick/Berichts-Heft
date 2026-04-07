@@ -1,0 +1,28 @@
+node_modules
+npm-debug.log*
+
+# Build output
+dist
+generated   
+
+#sqLite databases -we do not want data in the image
+*.db
+*.db-shm
+*.db-wal
+
+#secretst that no one needs to know or have to know exist
+.env
+.env.example
+.env.local
+
+#Developer stuf
+.git
+.gitignore
+.vscode
+__tests__
+coverage
+
+#all mdfiles
+*.md
+
+
