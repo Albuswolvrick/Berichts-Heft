@@ -74,8 +74,9 @@ ENV NODE_ENV=production \
 
 EXPOSE 3000
 
-# Healthcheck: ping the server every 30 s, fail after 3 misses
-HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+# Healthcheck: ping the server every 60 s, fail after 20 misses
+HEALTHCHECK --interval=60s --timeout=20s --start-period=30s --retries=20 \
+#if helth check failed 20 times it exist and I have to manualy restart it so hopfully it does not need to be restarted.
   CMD wget -qO- http://localhost:3000/health || exit 1
 
 # dumb-init ensures signals (SIGTERM/SIGINT) reach Node.js properly
