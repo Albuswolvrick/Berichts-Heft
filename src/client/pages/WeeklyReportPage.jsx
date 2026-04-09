@@ -5,6 +5,7 @@ import { weeklyReportApi } from '../services/api';
 import { getWeekRangeFromDate, toInputDate, toDisplayDate } from '../utils/dateUtils';
 import { downloadReportPdf } from '../utils/pdfGenerator';
 import { useLanguage } from '../hooks/useLanguage';
+import { useFavicon } from '../hooks/useFavicon';
 
 const initialState = {
   name: '',
@@ -25,6 +26,7 @@ const WeeklyReportPage = () => {
   const [formData, setFormData] = useState(initialState);
   const { addToast } = useToast();
   const { t } = useLanguage();
+  useFavicon('/imgs/icons/opened_book/128x128.png');
 
   useEffect(() => {
     const today = toInputDate(new Date());

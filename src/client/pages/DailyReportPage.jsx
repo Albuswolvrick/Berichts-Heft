@@ -4,6 +4,7 @@ import jsPDF from 'jspdf';
 import { toInputDate, toDisplayDate } from '../utils/dateUtils';
 import '../../../public/css/report.css';
 import { useLanguage } from '../hooks/useLanguage';
+import { useFavicon } from '../hooks/useFavicon';
 
 const DailyReportPage = () => {
   const [reportDate, setReportDate] = useState(toInputDate(new Date()));
@@ -14,6 +15,7 @@ const DailyReportPage = () => {
   const [hoursWorked, setHoursWorked] = useState('');
   const [status, setStatus] = useState('DRAFT');
   const { t } = useLanguage();
+  useFavicon('/imgs/icons/opened_book/128x128.png');
 
   const handleSubmit = async (e) => {
     e.preventDefault();

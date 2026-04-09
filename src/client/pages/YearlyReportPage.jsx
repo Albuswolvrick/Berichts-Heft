@@ -1,7 +1,9 @@
-
+import React, { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import { toInputDate, toDisplayDate } from '../utils/dateUtils';
+import '../../../public/css/report.css';
 import { useLanguage } from '../hooks/useLanguage';
+import { useFavicon } from '../hooks/useFavicon';
 
 const YearlyReportPage = () => {
   const [year, setYear] = useState('');
@@ -15,6 +17,7 @@ const YearlyReportPage = () => {
   const [totalHours, setTotalHours] = useState('');
   const [status, setStatus] = useState('DRAFT');
   const { t } = useLanguage();
+  useFavicon('/imgs/icons/opened_book/128x128.png');
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import { toInputDate, toDisplayDate } from '../utils/dateUtils';
 import { useLanguage } from '../hooks/useLanguage';
+import { useFavicon } from '../hooks/useFavicon';
 
 const MonthlyReportPage = () => {
   const [name, setName] = useState('');
@@ -18,6 +19,7 @@ const MonthlyReportPage = () => {
   const [remarks, setRemarks] = useState('');
   const [yearOfTraining, setYearOfTraining] = useState('');
   const { t } = useLanguage();
+  useFavicon('/imgs/icons/opened_book/128x128.png');
 
   useEffect(() => {
     const now = new Date();

@@ -2,10 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../../public/css/NewReport.css';
 import { useLanguage } from '../hooks/useLanguage';
+import { useFavicon } from '../hooks/useFavicon';
 
 const NewReportPage = () => {
     const navigate = useNavigate();
     const { t } = useLanguage();
+    useFavicon('/imgs/icons/opened_book/128x128.png');
 
     return (
         <div className="new-report-container">

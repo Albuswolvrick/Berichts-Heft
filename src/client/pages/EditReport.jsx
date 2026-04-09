@@ -5,6 +5,7 @@ import CommentSection from '../components/CommentSection';
 import { useToast } from '../hooks/useToast';
 import '../../../public/css/edit-report.css';
 import { useLanguage } from '../hooks/useLanguage';
+import { useFavicon } from '../hooks/useFavicon';
 
 const EditReportPage = () => {
   const { reportType, id } = useParams();
@@ -15,6 +16,7 @@ const EditReportPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
+  useFavicon('/imgs/icons/opened_book/128x128.png');
 
   useEffect(() => {
     const fetchReport = async () => {

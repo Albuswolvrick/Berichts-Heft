@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
 import { useLanguage } from '../hooks/useLanguage';
+import { useFavicon } from '../hooks/useFavicon';
 
 const ReportPage = () => {
   const [report, setReport] = useState(null);
@@ -10,6 +11,7 @@ const ReportPage = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const { t } = useLanguage();
+  useFavicon('/imgs/icons/opened_book/128x128.png');
 
   useEffect(() => {
     fetchReport();
