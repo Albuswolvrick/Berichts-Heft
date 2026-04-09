@@ -6,7 +6,19 @@ const LANGUAGES = [
   { code: 'en', name: 'English' },
   { code: 'de', name: 'Deutsch' },
   { code: 'nl', name: 'Nederlands' },
-  { code: 'uk', name: 'Українська' }
+  { code: 'bayer', name: 'Bayerisch' },
+  { code: 'frisish', name: 'Plat' },
+  { code: 'fr', name: 'Français' },
+  { code: 'lat', name: 'Latin' },
+  { code: 'brit', name: 'British' },
+  { code: 'sp', name: 'Spanish' },
+  { code: 'pirat', name: 'Pirat' },
+  { code: 'sv', name: 'Svenska' },
+  { code: 'ir', name: 'Gaeilge' },
+  { code: 'hi', name: 'हिन्दी' },
+  { code: 'ch', name: '中文' },
+  { code: 'ar', name: 'العربية' },
+  { code: 'uk', name: 'Українська' },
 ];
 
 const LanguageSelector = () => {
