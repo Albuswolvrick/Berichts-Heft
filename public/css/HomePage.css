@@ -20,12 +20,36 @@
   transform: translateY(-5px);
 }
 
+.report-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
 .report-card h3 {
-  margin-top: 0;
+  margin: 0;
   color: var(--report-header-color);
+  flex: 1;
+}
+
+.card-download-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  line-height: 1;
+}
+
+.card-download-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .report-card p {
+  margin: 0;
   margin-bottom: 5px;
 }
 

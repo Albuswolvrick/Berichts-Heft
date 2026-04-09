@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import jsPDF from 'jspdf';
 import { toInputDate, toDisplayDate } from '../utils/dateUtils';
+import { handleReportDownload } from '../utils/reportPdfHelper';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFavicon } from '../hooks/useFavicon';
 
@@ -92,22 +92,22 @@ const MonthlyReportPage = () => {
   };
 
   const handleDownloadPDF = () => {
-    const doc = new jsPDF();
-    doc.text('Monthly Report', 10, 10);
-    doc.text(`Name: ${name}`, 10, 20);
-    doc.text(`Month: ${month}`, 10, 30);
-    doc.text(`Year: ${year}`, 10, 40);
-    doc.text(`Month Start: ${toDisplayDate(monthStart)}`, 10, 50);
-    doc.text(`Month End: ${toDisplayDate(monthEnd)}`, 10, 60);
-    doc.text(`Total Hours: ${totalHours}`, 10, 70);
-    doc.text(`Summary: ${summary}`, 10, 80);
-    doc.text(`Key Achievements: ${keyAchievements}`, 10, 90);
-    doc.text(`Goals: ${goals}`, 10, 100);
-    doc.text(`Instructions: ${instructions}`, 10, 110);
-    doc.text(`Remarks: ${remarks}`, 10, 120);
-    doc.text(`Year of Training: ${yearOfTraining}`, 10, 130);
-
-    doc.save('monthly-report.pdf');
+    handleReportDownload({
+      type: 'Monthly',
+      name,
+      month,
+      year,
+      monthStart,
+      monthEnd,
+      yearOfTraining,
+      totalHours,
+      status,
+      summary,
+      keyAchievements,
+      goals,
+      instructions,
+      remarks,
+    }, t);
   };
 
   return (

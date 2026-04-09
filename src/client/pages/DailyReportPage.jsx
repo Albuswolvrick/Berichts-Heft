@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import jsPDF from 'jspdf';
 import { toInputDate, toDisplayDate } from '../utils/dateUtils';
 import '../../../public/css/report.css';
+import { handleReportDownload } from '../utils/reportPdfHelper';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFavicon } from '../hooks/useFavicon';
 
@@ -63,15 +63,16 @@ const DailyReportPage = () => {
   };
 
   const handleDownloadPDF = () => {
-    const doc = new jsPDF();
-    doc.text('Daily Report', 10, 10);
-    doc.text(`Report Date: ${toDisplayDate(reportDate)}`, 10, 20);
-    doc.text(`Title: ${title}`, 10, 30);
-    doc.text(`Activities: ${activities}`, 10, 40);
-    doc.text(`Learnings: ${learnings}`, 10, 50);
-    doc.text(`Challenges: ${challenges}`, 10, 60);
-    doc.text(`Hours Worked: ${hoursWorked}`, 10, 70);
-    doc.save('daily-report.pdf');
+    handleReportDownload({
+      type: 'Daily',
+      reportDate,
+      title,
+      hoursWorked,
+      status,
+      activities,
+      learnings,
+      challenges,
+    }, t);
   };
 
   return (

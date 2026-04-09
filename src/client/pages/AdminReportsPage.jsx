@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { userApi } from '../services/api';
 import { formatDate } from '../utils/dateUtils';
+import { handleReportDownload } from '../utils/reportPdfHelper';
 import '../../../public/css/AdminReportsPage.css';
 import '../../../public/css/HomePage.css';
 import { useLanguage } from '../hooks/useLanguage';
@@ -117,7 +118,20 @@ const AdminReportsPage = () => {
                         const editUrl = `/reports/${report.type.toLowerCase()}/${report.id}/edit`;
                         return (
                             <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
-                                <h3>{getReportTitle(report)}</h3>
+                                <div className="report-card-header">
+                                    <h3>{getReportTitle(report)}</h3>
+                                    <button 
+                                        className="card-download-btn" 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleReportDownload(report, t);
+                                        }}
+                                        title={t('report.download_pdf')}
+                                    >
+                                        ⬇️
+                                    </button>
+                                </div>
                                 <p><strong>{t('common.user')}</strong> {user ? `${user.name} (${user.username})` : 'N/A'}</p>
                                 <p><strong>{t('common.date')}</strong> {report.reportDate ? formatDate(report.reportDate) : 'N/A'}</p>
                             </Link>

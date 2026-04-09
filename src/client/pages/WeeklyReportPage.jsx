@@ -3,7 +3,7 @@ import '../../../public/css/report.css';
 import { useToast } from '../hooks/useToast';
 import { weeklyReportApi } from '../services/api';
 import { getWeekRangeFromDate, toInputDate, toDisplayDate } from '../utils/dateUtils';
-import { downloadReportPdf } from '../utils/pdfGenerator';
+import { handleReportDownload } from '../utils/reportPdfHelper';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFavicon } from '../hooks/useFavicon';
 
@@ -120,30 +120,7 @@ const WeeklyReportPage = () => {
   };
 
   const handleDownloadPDF = () => {
-    downloadReportPdf({
-      title: 'Weekly Report',
-      fileName: `WeeklyReport_CW${formData.weekNumber}_${formData.name}.pdf`,
-      metadata: [
-        { label: 'TEST Name', value: formData.name },
-        { label: 'Calendar Week', value: formData.weekNumber },
-        { label: 'Period from', value: toDisplayDate(formData.weekStart) },
-        { label: 'Period to', value: toDisplayDate(formData.weekEnd) },
-        { label: 'Training Year', value: formData.yearOfTraining },
-        { label: 'Training Department', value: formData.department },
-        { label: 'Total Hours', value: formData.totalHours },
-        { label: 'Status', value: formData.status === 'DRAFT' ? 'Draft' : 'Submitted' },
-      ],
-      sections: [
-        { label: 'Company Activities', value: formData.activities },
-        {
-          label:
-            'Instructions, training discussions, in-house training, external training events, intermediate examination',
-          value: formData.summary,
-        },
-        { label: 'Vocational school (topics)', value: formData.school },
-        { label: 'Comments', value: formData.remarks },
-      ],
-    });
+    handleReportDownload({ ...formData, type: 'Weekly' }, t);
   };
 
   return (
