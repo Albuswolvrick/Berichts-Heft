@@ -14,7 +14,6 @@ import WeeklyReportPage from './pages/WeeklyReportPage';
 import MonthlyReportPage from './pages/MonthlyReportPage';
 import YearlyReportPage from './pages/YearlyReportPage';
 import NewReportPage from './pages/NewReportPage';
-import AdminPage from './pages/AdminPage';
 import AdminReportsPage from './pages/AdminReportsPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
@@ -29,9 +28,8 @@ import CookieConsent from './components/CookieConsent';
 const allNavItems = [
     { label: 'nav.home', path: '/' },
     { label: 'nav.new_report', path: '/reports/new' },
-    { label: 'nav.admin_dashboard', path: '/admin', roles: ['ADMIN', 'MANAGER'] },
-    { label: 'nav.admin_reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
     { label: 'nav.dev_menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
+    { label: 'nav.admin_reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
 ];
 
 const ProtectedRoute = ({ children }) => {
@@ -111,25 +109,24 @@ function App() {
                             <Navbar items={navItems} user={user} onLogout={handleLogout} />
                             {/* Navbar must remain outside <main> to preserve the side-by-side flex layout */}
                             <main style={{ padding: '20px', flex: 1 }}>
-                            <Routes>
-                                <Route path="/" element={<ProtectedRoute><HomePage user={user} /></ProtectedRoute>} />
-                                <Route path="/login" element={<LoginPage onLogin={setUser} />} />
-                                <Route path="/register" element={<RegisterPage />} />
-                                <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
-                                <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
-                                <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
-                                <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
-                                <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-                                <Route path="/admin" element={<AdminRoute user={user}><AdminPage /></AdminRoute>} />
-                                <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
-                                <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
-                                <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-                                <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
-                                <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-                            </Routes>
-                        </main>
-                        <CookieConsent isAuthenticated={!!user} />
-                    </div>
+                                <Routes>
+                                    <Route path="/" element={<ProtectedRoute><HomePage user={user} /></ProtectedRoute>} />
+                                    <Route path="/login" element={<LoginPage onLogin={setUser} />} />
+                                    <Route path="/register" element={<RegisterPage />} />
+                                    <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
+                                    <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
+                                    <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
+                                    <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
+                                    <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
+                                    <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
+                                    <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
+                                    <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+                                    <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
+                                    <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                                </Routes>
+                            </main>
+                            <CookieConsent isAuthenticated={!!user} />
+                        </div>
                     </ToastProvider>
                 </LanguageProvider>
             </ThemeProvider>
