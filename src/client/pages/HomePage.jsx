@@ -5,6 +5,7 @@ import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
 import { useLanguage } from '../hooks/useLanguage';
 import { toDisplayDate } from '../utils/dateUtils';
+import { handleReportDownload } from '../utils/reportPdfHelper';
 import '../../../public/css/HomePage.css';
 
 const HomePage = ({ user }) => {
@@ -112,7 +113,20 @@ const HomePage = ({ user }) => {
 
             return (
               <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
-                <h3>{getReportTitle(report)}</h3>
+                <div className="report-card-header">
+                  <h3>{getReportTitle(report)}</h3>
+                  <button 
+                    className="card-download-btn" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleReportDownload(report, t);
+                    }}
+                    title={t('report.download_pdf')}
+                  >
+                    ⬇️
+                  </button>
+                </div>
                 <p>{t('home.type', { type: report.type })}</p>
                 <p>{t('home.date', { date: toDisplayDate(report.reportDate || report.weekStart || report.monthStart || report.yearStart) })}</p>
                 <p>{t('home.status', { status: report.status })}</p>

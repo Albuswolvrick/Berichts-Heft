@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import CommentSection from '../components/CommentSection';
 import { useToast } from '../hooks/useToast';
+import { toDisplayDate } from '../utils/dateUtils';
+import { handleReportDownload } from '../utils/reportPdfHelper';
 import '../../../public/css/edit-report.css';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFavicon } from '../hooks/useFavicon';
@@ -60,6 +62,10 @@ const EditReportPage = () => {
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({ ...prev, [name]: type === 'number' ? parseFloat(value) || 0 : value }));
+  };
+
+  const handleDownloadPDF = () => {
+    handleReportDownload({ ...formData, type: reportType }, t);
   };
 
   const handleSubmit = async (e) => {
@@ -184,7 +190,12 @@ const EditReportPage = () => {
         <h2>{t('report.edit')} {reportType.charAt(0).toUpperCase() + reportType.slice(1)}</h2>
         <form onSubmit={handleSubmit} className="edit-report-form">
           {renderFormFields()}
-          <button type="submit">{t('edit.save')}</button>
+          <div className="button-group">
+            <button type="submit">{t('edit.save')}</button>
+            <button type="button" className="download-btn" onClick={handleDownloadPDF}>
+              {t('report.download_pdf')}
+            </button>
+          </div>
         </form>
       </div>
       <aside className="edit-report-sidebar">

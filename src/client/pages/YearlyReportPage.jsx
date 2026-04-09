@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import jsPDF from 'jspdf';
 import { toInputDate, toDisplayDate } from '../utils/dateUtils';
 import '../../../public/css/report.css';
+import { handleReportDownload } from '../utils/reportPdfHelper';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFavicon } from '../hooks/useFavicon';
 
@@ -81,20 +81,19 @@ const YearlyReportPage = () => {
   };
 
   const handleDownloadPDF = () => {
-    const doc = new jsPDF();
-
-    doc.text('Yearly Report', 10, 10);
-    doc.text(`Year: ${year}`, 10, 20);
-    doc.text(`Training Year: ${trainingYear}`, 10, 30);
-    doc.text(`Year Start: ${toDisplayDate(yearStart)}`, 10, 40);
-    doc.text(`Year End: ${toDisplayDate(yearEnd)}`, 10, 50);
-    doc.text(`Total Hours: ${totalHours}`, 10, 60);
-    doc.text(`Summary: ${summary}`, 10, 70);
-    doc.text(`Achievements: ${achievements}`, 10, 80);
-    doc.text(`Skills Improved: ${skillsImproved}`, 10, 90);
-    doc.text(`Goals: ${goals}`, 10, 100);
-
-    doc.save('yearly-report.pdf');
+    handleReportDownload({
+      type: 'Yearly',
+      year,
+      trainingYear,
+      yearStart,
+      yearEnd,
+      totalHours,
+      status,
+      summary,
+      achievements,
+      skillsImproved,
+      goals,
+    }, t);
   };
 
   return (
