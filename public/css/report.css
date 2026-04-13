@@ -13,7 +13,7 @@
   text-align: center;
   color: var(--text-color);
   margin-bottom: 2.5rem;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .form-row {
@@ -41,7 +41,7 @@
   margin-bottom: 0.6rem;
   color: var(--text-color);
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .form-group input,
@@ -50,7 +50,7 @@
   padding: 0.8rem 1rem;
   border: 1px solid var(--secondary-color);
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 1.25rem;
   background-color: var(--background-color);
   color: var(--text-color);
   transition:
@@ -87,7 +87,7 @@ button[type='submit'],
   padding: 1rem 1.5rem;
   border: none;
   border-radius: 5px;
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
   transition:

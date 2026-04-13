@@ -4,6 +4,7 @@ import '../../../public/css/navbar.css';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../hooks/useLanguage';
 import LanguageSelector from './LanguageSelector';
+import TextSizeSelector from './TextSizeSelector';
 
 const Navbar = ({ items, user, onLogout }) => {
   const navigate = useNavigate();
@@ -59,6 +60,8 @@ const Navbar = ({ items, user, onLogout }) => {
             </button>
           ))}
         </div>
+        
+        <TextSizeSelector />
 
         <div className="theme-buttons">
           <button className="nav-button" onClick={() => { setTheme('light'); closeMenu(); }}>
