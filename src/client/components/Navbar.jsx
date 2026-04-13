@@ -9,45 +9,70 @@ const Navbar = ({ items, user, onLogout }) => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
   const { t } = useLanguage();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
+  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const closeMenu = () => setIsMobileMenuOpen(false);
+
+  const handleNavClick = (path) => {
+    navigate(path);
+    closeMenu();
+  };
 
   return (
-    <nav className="vertical-nav">
-      <LanguageSelector />
-      {user ? (
-        <div className="user-info">
-          <span>{t('nav.welcome', { username: user.name })}</span>
-          <button onClick={() => navigate('/profile')} className="nav-button">{t('nav.profile')}</button>
-          <button onClick={onLogout} className="nav-button">{t('nav.logout')}</button>
+    <>
+      <button className="mobile-toggle" onClick={toggleMenu} aria-label="Toggle Menu">
+        {isMobileMenuOpen ? '✕' : '☰'}
+      </button>
+      
+      {isMobileMenuOpen && <div className="nav-backdrop" onClick={closeMenu} />}
+
+      <nav className={`vertical-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+        <div className="nav-header">
+           <LanguageSelector />
+           <button className="mobile-close" onClick={closeMenu}>✕</button>
         </div>
-      ) : (
-        <button
-          className="nav-button"
-          onClick={() => navigate('/login')}
-        >
-          {t('nav.login')}
-        </button>
-      )}
-      {items.map((item) => (
-        <button
-          key={item.path}
-          className="nav-button"
-          onClick={() => navigate(item.path)}
-        >
-          {t(item.label)}
-        </button>
-      ))}
-      <div className="theme-buttons">
-        <button className="nav-button" onClick={() => setTheme('light')}>
-          {t('nav.light_mode')}
-        </button>
-        <button className="nav-button" onClick={() => setTheme('dark')}>
-          {t('nav.dark_mode')}
-        </button>
-        <button className="nav-button" onClick={() => setTheme('doom')}>
-          {t('nav.doom_mode')}
-        </button>
-      </div>
-    </nav>
+
+        {user ? (
+          <div className="user-info">
+            <span>{t('nav.welcome', { username: user.name })}</span>
+            <button onClick={() => handleNavClick('/profile')} className="nav-button">{t('nav.profile')}</button>
+            <button onClick={() => { onLogout(); closeMenu(); }} className="nav-button">{t('nav.logout')}</button>
+          </div>
+        ) : (
+          <button
+            className="nav-button"
+            onClick={() => handleNavClick('/login')}
+          >
+            {t('nav.login')}
+          </button>
+        )}
+        
+        <div className="nav-items">
+          {items.map((item) => (
+            <button
+              key={item.path}
+              className="nav-button"
+              onClick={() => handleNavClick(item.path)}
+            >
+              {t(item.label)}
+            </button>
+          ))}
+        </div>
+
+        <div className="theme-buttons">
+          <button className="nav-button" onClick={() => { setTheme('light'); closeMenu(); }}>
+            {t('nav.light_mode')}
+          </button>
+          <button className="nav-button" onClick={() => { setTheme('dark'); closeMenu(); }}>
+            {t('nav.dark_mode')}
+          </button>
+          <button className="nav-button" onClick={() => { setTheme('doom'); closeMenu(); }}>
+            {t('nav.doom_mode')}
+          </button>
+        </div>
+      </nav>
+    </>
   );
 };
 

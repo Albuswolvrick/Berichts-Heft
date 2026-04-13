@@ -116,3 +116,26 @@ h5,
 h6 {
   color: var(--report-header-color, var(--text-color));
 }
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  width: 100%;
+  transition: padding 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .main-content {
+    padding: 10px;
+    margin-top: 60px; /* Space for mobile header if needed */
+  }
+}

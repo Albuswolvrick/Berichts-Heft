@@ -20,6 +20,12 @@
   transform: translateY(-5px);
 }
 
+@media (max-width: 768px) {
+  .report-card {
+    flex: 1 1 100%;
+  }
+}
+
 .report-card-header {
   display: flex;
   justify-content: space-between;
