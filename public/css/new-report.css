@@ -1,7 +1,6 @@
 .new-report-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 2.5rem;
+    max-width: 100%;
+    padding: 20px;
     background-color: var(--background-color);
     border-radius: 10px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -10,7 +9,7 @@
 }
 
 .new-report-container h1 {
-    margin-bottom: 2.5rem;
+    margin-bottom: 20px;
     font-size: 2.2rem;
     color: var(--text-color);
 }
@@ -37,12 +36,12 @@
 }
 
 .report-option h2 {
-    font-size: 25px;
+    font-size: 1.5625rem;
     color: var(--primary-color);
     margin-top: 0;
 }
 
 .report-option p {
-    font-size: 25px;
+    font-size: 1.5625rem;
     color: var(--report-text-color);
 }

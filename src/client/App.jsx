@@ -18,6 +18,7 @@ import AdminReportsPage from './pages/AdminReportsPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
 import { LanguageProvider } from './hooks/useLanguage';
+import { TextSizeProvider } from './hooks/useTextSize';
 import { authApi, userApi } from './services/api';
 import '../../public/css/style.css';
 import '../../public/css/navbar.css';
@@ -143,14 +144,16 @@ function App() {
         <ErrorBoundary>
             <ThemeProvider>
                 <LanguageProvider>
-                    <ToastProvider>
-                        <AppContent 
-                            navItems={navItems} 
-                            user={user} 
-                            setUser={setUser}
-                            handleLogout={handleLogout} 
-                        />
-                    </ToastProvider>
+                    <TextSizeProvider>
+                        <ToastProvider>
+                            <AppContent 
+                                navItems={navItems} 
+                                user={user} 
+                                setUser={setUser}
+                                handleLogout={handleLogout} 
+                            />
+                        </ToastProvider>
+                    </TextSizeProvider>
                 </LanguageProvider>
             </ThemeProvider>
         </ErrorBoundary>
