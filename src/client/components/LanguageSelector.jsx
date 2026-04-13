@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 //a selectore for diverent Languages
-//hope this shit works as wanted 
+//added those Languages and for now I do not plan on ading any more Languages if you want to ad more 
+// ad a json data in client/locales/ and import it here after that ad it with the Folowing heare 
+// {code: '(name of the json file without .json)', name: '(Language name optimal the native name )'},
 const LANGUAGES = [
   { code: 'en', name: 'English' },
   { code: 'de', name: 'Deutsch' },
@@ -19,6 +21,7 @@ const LANGUAGES = [
   { code: 'ch', name: '中文' },
   { code: 'ar', name: 'العربية' },
   { code: 'uk', name: 'Українська' },
+  { code: 'rus', name: 'Русский' }
 ];
 
 const LanguageSelector = () => {
