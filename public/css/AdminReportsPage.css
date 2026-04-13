@@ -16,6 +16,17 @@
     /* Align items to the top */
 }
 
+@media (max-width: 768px) {
+    .admin-reports-page .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .user-select-list {
+        width: 100%;
+    }
+}
+
 .admin-reports-page .filters input {
     padding: 0.75rem;
     border-radius: 4px;

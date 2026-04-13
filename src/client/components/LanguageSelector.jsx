@@ -1,27 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
+import '../../../public/css/LanguageSelector.css';
+
 //a selectore for diverent Languages
 //added those Languages and for now I do not plan on ading any more Languages if you want to ad more 
 // ad a json data in client/locales/ and import it here after that ad it with the Folowing heare 
 // {code: '(name of the json file without .json)', name: '(Language name optimal the native name )'},
 const LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'de', name: 'Deutsch' },
-  { code: 'nl', name: 'Nederlands' },
-  { code: 'bayer', name: 'Bayerisch' },
-  { code: 'frisish', name: 'Plat' },
-  { code: 'fr', name: 'Français' },
-  { code: 'lat', name: 'Latin' },
-  { code: 'brit', name: 'British' },
-  { code: 'sp', name: 'Spanish' },
-  { code: 'pirat', name: 'Pirat' },
-  { code: 'sv', name: 'Svenska' },
-  { code: 'ir', name: 'Gaeilge' },
-  { code: 'hi', name: 'हिन्दी' },
-  { code: 'ch', name: '中文' },
-  { code: 'ar', name: 'العربية' },
-  { code: 'uk', name: 'Українська' },
-  { code: 'rus', name: 'Русский' }
+
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
+  { code: 'bayer', name: 'Bayerisch', flag: '🇩🇪' },
+  { code: 'frisish', name: 'Plat', flag: '🇩🇪' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'lat', name: 'Latin', flag: '🇻🇦' },
+  { code: 'brit', name: 'British', flag: '🇬🇧' },
+  { code: 'sp', name: 'Spanish', flag: '🇪🇸' },
+  { code: 'pirat', name: 'Pirat', flag: '🏴‍☠️' },
+  { code: 'sv', name: 'Svenska', flag: '🇸🇪' },
+  { code: 'ir', name: 'Gaeilge', flag: '🇮🇪' },
+  { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
+  { code: 'ch', name: '中文', flag: '🇨🇳' },
+  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+  { code: 'uk', name: 'Українська', flag: '🇺🇦' },
+  { code: 'rus', name: 'Русский', flag: '🇷🇺' }
 ];
 
 const LanguageSelector = () => {
@@ -48,64 +51,47 @@ const LanguageSelector = () => {
   const currentLang = LANGUAGES.find(l => l.code === locale) || LANGUAGES[0];
 
   return (
-    <div className="language-selector" ref={dropdownRef} style={{ position: 'relative', margin: '10px 0' }}>
+    <div className="language-selector" ref={dropdownRef}>
       <button
         className="nav-button"
         onClick={() => setIsOpen(!isOpen)}
-        style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-      >{/**
+      >  {/**
         *this is a button to select the language
         *Iwish for a good emojy heare and I do not want to search for it myself
         *so I will just put a placeholder here and hope for the best
         *yet the globe is not a good emoji
         */}
-        <span>"emoji:languageimport from anywhere" {currentLang.name}</span>
+        <span>🌐 {currentLang.name} {currentLang.flag}</span>
         <span>{isOpen ? '▲' : '▼'}</span>
       </button>
 
       {isOpen && (
-        <div style={{
-          position: 'absolute', top: '100%', left: 0, right: 0,
-          backgroundColor: 'var(--bg-card, #2a2a2a)', border: '1px solid var(--border-color, #d3d3d3ff)',
-          borderRadius: '4px', zIndex: 1000, marginTop: '4px', padding: '8px',
-          boxShadow: '0 4px 6px rgba(157, 157, 157, 0.1)'
-        }}>
+        <div className="language-dropdown">
           <input
             type="text"
-            placeholder={t('lang.search') || "Search..."}
+            className="language-search"
+            placeholder={t('lang.search') === 'lang.search' ? "Search..." : (t('lang.search') || "Search...")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              width: '100%', padding: '6px', marginBottom: '8px',
-              boxSizing: 'border-box', backgroundColor: 'var(--bg-input, #333)',
-              color: 'var(--text-primary, #aeaaaaff)', border: '1px solid var(--border-color, #323030ff)',
-              borderRadius: '4px'
-            }}
           />
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, maxHeight: '150px', overflowY: 'auto' }}>
+          <ul className="language-list">
             {filteredLanguages.map(lang => (
               <li key={lang.code}>
                 <button
+                  className={`language-item-btn ${locale === lang.code ? 'active' : ''}`}
                   onClick={() => {
                     setLocale(lang.code);
                     setIsOpen(false);
                     setSearchTerm('');
                   }}
-                  style={{
-                    width: '100%', textAlign: 'left', padding: '8px',
-                    backgroundColor: locale === lang.code ? 'var(--accent-color, #007bff)' : 'transparent',
-                    color: 'var(--text-primary, #ffffffff)', border: 'none', cursor: 'pointer',
-                    borderRadius: '4px'
-                  }}
-                  onMouseOver={(e) => e.target.style.backgroundColor = 'var(--bg-hover, #444)'}
-                  onMouseOut={(e) => e.target.style.backgroundColor = locale === lang.code ? 'var(--accent-color, #007bff)' : 'transparent'}
                 >
                   {lang.name}
+                  {lang.flag}
                 </button>
               </li>
             ))}
             {filteredLanguages.length === 0 && (
-              <li style={{ padding: '8px', color: '#ffffffff', textAlign: 'center' }}>No results</li>
+              <li className="language-no-results">No results</li>
             )}
           </ul>
         </div>

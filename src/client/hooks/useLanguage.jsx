@@ -25,32 +25,46 @@ export const LanguageProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     const loadTranslations = async (lang) => {
       setIsLoading(true);
       try {
         const module = await import(`../locales/${lang}.json`);
-        setMessages(module.default);
-        localStorage.setItem('userLang', lang);
-        document.documentElement.lang = lang;
+        if (isMounted) {
+          setMessages(module.default);
+          localStorage.setItem('userLang', lang);
+          document.documentElement.lang = lang;
+        }
       } catch (error) {
         console.error(`Failed to load translations for ${lang}`, error);
-        // fallback to en
-        if (lang !== 'de') {
-          const fallback = await import('../locales/de.json');
-          setMessages(fallback.default);
+        // fallback to de
+        if (lang !== 'de' && isMounted) {
+          try {
+            const fallback = await import('../locales/de.json');
+            if (isMounted) setMessages(fallback.default);
+          } catch (fallbackError) {
+            console.error('Failed to load fallback translations', fallbackError);
+          }
         }
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
 
     loadTranslations(locale);
+    return () => { isMounted = false; };
   }, [locale]);
 
   const t = (id, values) => {
     if (!messages[id]) {
-      console.warn(`Missing translation: ${id} for ${locale}`);
-      return id; // fallback to showing the key
+      // Return empty string during initial load to avoid "key flash"
+      if (isLoading && Object.keys(messages).length === 0) {
+        return '';
+      }
+      if (!isLoading) {
+        console.warn(`Missing translation: ${id} for ${locale}`);
+      }
+      return id;
     }
     return formatMessage(messages[id], values);
   };

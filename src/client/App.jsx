@@ -61,6 +61,45 @@ const AdminRoute = ({ children, user }) => {
     return children;
 };
 
+import { useLanguage } from './hooks/useLanguage';
+
+const AppContent = ({ navItems, user, setUser, handleLogout }) => {
+    const { isLoading } = useLanguage();
+
+    if (isLoading) {
+        return (
+            <div className="initial-loading">
+                <div className="spinner"></div>
+                <p>Loading translations...</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="app-layout">
+            <Navbar items={navItems} user={user} onLogout={handleLogout} />
+            <main className="main-content">
+                <Routes>
+                    <Route path="/" element={<ProtectedRoute><HomePage user={user} /></ProtectedRoute>} />
+                    <Route path="/login" element={<LoginPage onLogin={setUser} />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
+                    <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
+                    <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
+                    <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
+                    <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
+                    <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
+                    <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
+                    <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+                    <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
+                    <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                </Routes>
+            </main>
+            <CookieConsent isAuthenticated={!!user} />
+        </div>
+    );
+};
+
 function App() {
     const [user, setUser] = useState(null);
     const [navItems, setNavItems] = useState(allNavItems);
@@ -105,28 +144,12 @@ function App() {
             <ThemeProvider>
                 <LanguageProvider>
                     <ToastProvider>
-                        <div style={{ display: 'flex' }}>
-                            <Navbar items={navItems} user={user} onLogout={handleLogout} />
-                            {/* Navbar must remain outside <main> to preserve the side-by-side flex layout */}
-                            <main style={{ padding: '20px', flex: 1 }}>
-                                <Routes>
-                                    <Route path="/" element={<ProtectedRoute><HomePage user={user} /></ProtectedRoute>} />
-                                    <Route path="/login" element={<LoginPage onLogin={setUser} />} />
-                                    <Route path="/register" element={<RegisterPage />} />
-                                    <Route path="/reports/new" element={<ProtectedRoute><NewReportPage /></ProtectedRoute>} />
-                                    <Route path="/reports/daily" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
-                                    <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
-                                    <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
-                                    <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-                                    <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
-                                    <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
-                                    <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-                                    <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
-                                    <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-                                </Routes>
-                            </main>
-                            <CookieConsent isAuthenticated={!!user} />
-                        </div>
+                        <AppContent 
+                            navItems={navItems} 
+                            user={user} 
+                            setUser={setUser}
+                            handleLogout={handleLogout} 
+                        />
                     </ToastProvider>
                 </LanguageProvider>
             </ThemeProvider>
