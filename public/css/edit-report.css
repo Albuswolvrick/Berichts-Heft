@@ -38,6 +38,7 @@
   border: 1px solid var(--input-border-color, #1a1818);
   background-color: var(--input-background-color, #000000);
   color: var(--input-text-color, #7d7777);
+  font-size: inherit;
 }
 
 .edit-report-form button {
