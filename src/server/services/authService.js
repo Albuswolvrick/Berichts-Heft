@@ -16,6 +16,7 @@ async function register({ name, email, password }) {
   // The 'TRAINEE' role was removed from the 'UserRole' enum in the Prisma schema,
   // causing an error when creating new users. This change ensures that new
   // users are assigned a valid role.
+  // needs some work 
   const role = userCount === 0 ? 'ADMIN' : 'USER';
   const passwordHash = await bcrypt.hash(password, env.BCRYPT_SALT_ROUNDS);
 
@@ -36,13 +37,13 @@ async function register({ name, email, password }) {
  * Authenticates a user with email and password.
  */
 async function login({ email, password, ip }) {
-  const user = await prisma.user.findFirst({ 
-    where: { 
+  const user = await prisma.user.findFirst({
+    where: {
       OR: [
         { email: email },
         { name: email }
       ]
-    } 
+    }
   });
 
   if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
