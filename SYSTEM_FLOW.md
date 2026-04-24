@@ -120,10 +120,7 @@ stateDiagram-v2
 ## 4. Entity Relationship Diagram (Detailed)
 The actual structure of the database tables and their foreign key constraints.
 
-```mermaid
-// Full schema DBML for https://dbdiagram.io
-
-
+```dbml
 Table User {
   id            integer     [pk, increment]
   email         varchar     [unique, not null]
@@ -336,7 +333,6 @@ Table Comment {
     yearlyReportId  [name: 'idx_comment_yearly']
   }
 }
-
 ---
 
 ## 5. Technical Stack Overview
