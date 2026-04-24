@@ -122,28 +122,25 @@ The actual structure of the database tables and their foreign key constraints.
 
 ```Mermaid
 erDiagram
-    USER ||--o{ DAILY-REPORT : "creates"
-    USER ||--o{ WEEKLY-REPORT : "creates"
-    USER ||--o{ MONTHLY-REPORT : "creates"
-    USER ||--o{ YEARLY-REPORT : "creates"
-    USER ||--o{ DAILY-TIME-ENTRY : "tracks"
+    USER ||--o{ DAILY_REPORT : "creates"
+    USER ||--o{ WEEKLY_REPORT : "creates"
+    USER ||--o{ MONTHLY_REPORT : "creates"
+    USER ||--o{ YEARLY_REPORT : "creates"
+    USER ||--o{ DAILY_TIME_ENTRY : "tracks"
     USER ||--o{ COMMENT : "writes"
-
-    YEARLY-REPORT ||--o{ MONTHLY-REPORT : "contains"
-    MONTHLY-REPORT ||--o{ WEEKLY-REPORT : "contains"
-    WEEKLY-REPORT ||--o{ DAILY-REPORT : "contains"
-    DAILY-REPORT ||--o{ DAILY-TIME-ENTRY : "contains"
-
-    DAILY-REPORT ||--o{ ATTACHMENT : "has"
-    WEEKLY-REPORT ||--o{ ATTACHMENT : "has"
-    MONTHLY-REPORT ||--o{ ATTACHMENT : "has"
-    YEARLY-REPORT ||--o{ ATTACHMENT : "has"
-    DAILY-TIME-ENTRY ||--o{ ATTACHMENT : "has"
-
-    DAILY-REPORT ||--o{ COMMENT : "has"
-    WEEKLY-REPORT ||--o{ COMMENT : "has"
-    MONTHLY-REPORT ||--o{ COMMENT : "has"
-    YEARLY-REPORT ||--o{ COMMENT : "has"
+    YEARLY_REPORT ||--o{ MONTHLY_REPORT : "contains"
+    MONTHLY_REPORT ||--o{ WEEKLY_REPORT : "contains"
+    WEEKLY_REPORT ||--o{ DAILY_REPORT : "contains"
+    DAILY_REPORT ||--o{ DAILY_TIME_ENTRY : "contains"
+    DAILY_REPORT ||--o{ ATTACHMENT : "has"
+    WEEKLY_REPORT ||--o{ ATTACHMENT : "has"
+    MONTHLY_REPORT ||--o{ ATTACHMENT : "has"
+    YEARLY_REPORT ||--o{ ATTACHMENT : "has"
+    DAILY_TIME_ENTRY ||--o{ ATTACHMENT : "has"
+    DAILY_REPORT ||--o{ COMMENT : "has"
+    WEEKLY_REPORT ||--o{ COMMENT : "has"
+    MONTHLY_REPORT ||--o{ COMMENT : "has"
+    YEARLY_REPORT ||--o{ COMMENT : "has"
 
     USER {
         int id PK
@@ -153,8 +150,7 @@ erDiagram
         string workplaceType
         datetime createdAt
     }
-
-    DAILY-REPORT {
+    DAILY_REPORT {
         int id PK
         int userId FK
         int weeklyReportId FK
@@ -162,8 +158,7 @@ erDiagram
         float hoursWorked
         string status
     }
-
-    DAILY-TIME-ENTRY {
+    DAILY_TIME_ENTRY {
         int id PK
         int dailyReportId FK
         int userId FK
@@ -172,8 +167,7 @@ erDiagram
         float hoursTotal
         string status
     }
-
-    WEEKLY-REPORT {
+    WEEKLY_REPORT {
         int id PK
         int userId FK
         int monthlyReportId FK
@@ -181,8 +175,7 @@ erDiagram
         float totalHours
         string status
     }
-
-    MONTHLY-REPORT {
+    MONTHLY_REPORT {
         int id PK
         int userId FK
         int yearlyReportId FK
@@ -190,15 +183,13 @@ erDiagram
         int year
         string status
     }
-
-    YEARLY-REPORT {
+    YEARLY_REPORT {
         int id PK
         int userId FK
         int year
         string trainingYear
         string status
     }
-
     ATTACHMENT {
         int id PK
         int dailyReportId FK
@@ -206,14 +197,12 @@ erDiagram
         string fileName
         string filePath
     }
-
     COMMENT {
         int id PK
         int userId FK
         string content
         datetime createdAt
     }
-
 ```
 
 ## 5. Technical Stack Overview
