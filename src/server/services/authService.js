@@ -12,11 +12,6 @@ async function register({ name, email, password }) {
   }
 
   const userCount = await prisma.user.count();
-  // BUGFIX: Changed role from 'TRAINEE' to 'USER'.
-  // The 'TRAINEE' role was removed from the 'UserRole' enum in the Prisma schema,
-  // causing an error when creating new users. This change ensures that new
-  // users are assigned a valid role.
-  // needs some work 
   const role = userCount === 0 ? 'ADMIN' : 'USER';
   const passwordHash = await bcrypt.hash(password, env.BCRYPT_SALT_ROUNDS);
 
@@ -66,7 +61,7 @@ async function login({ email, password, ip }) {
  * Retrieves a user by ID.
  */
 async function getUserById(id) {
-  const user = await prisma.user.findUnique({ where: { id } });
+  const user = await prisma.user.findUnique({ where: { id: parseInt(id) } });
   if (!user) {
     throw new NotFoundError('User not found');
   }

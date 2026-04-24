@@ -15,6 +15,7 @@ enum UserRole {
   MANAGER
   USER
   TEST
+  NOTLOGDIN
 }
 
 enum ReportStatus {
@@ -43,6 +44,7 @@ model User {
   comments       Comment[]
 
   @@index([email])
+  @@index([name])
 }
 
 model DailyReport {
@@ -67,6 +69,8 @@ model DailyReport {
   @@index([weeklyReportId])
   @@index([reportDate])
   @@index([status])
+  @@index([userId, status])
+  @@index([userId, reportDate])
 }
 
 model WeeklyReport {
@@ -97,6 +101,7 @@ model WeeklyReport {
   @@index([monthlyReportId])
   @@index([weekStart, weekEnd])
   @@index([status])
+  @@index([userId, status])
 }
 
 model MonthlyReport {
@@ -128,6 +133,7 @@ model MonthlyReport {
   @@index([yearlyReportId])
   @@index([month, year])
   @@index([status])
+  @@index([userId, status])
 }
 
 model YearlyReport {
@@ -153,6 +159,7 @@ model YearlyReport {
   @@index([userId])
   @@index([year])
   @@index([status])
+  @@index([userId, status])
 }
 
 model Attachment {
@@ -197,4 +204,5 @@ model Comment {
   @@index([weeklyReportId])
   @@index([monthlyReportId])
   @@index([yearlyReportId])
+  @@index([userId, createdAt])
 }

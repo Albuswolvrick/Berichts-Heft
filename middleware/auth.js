@@ -1,3 +1,16 @@
+/**
+ * Middleware to ensure req.user always exists.
+ * Unauthenticated users get the 'NOTLOGDIN' role.
+ */
+function attachUserRole(req, res, next) {
+    if (req.session.user) {
+        req.user = req.session.user;
+    } else {
+        req.user = { role: 'NOTLOGDIN' };
+    }
+    next();
+}
+
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         req.user = req.session.user;
@@ -15,4 +28,4 @@ function isAdminOrManager(req, res, next) {
     }
 }
 
-module.exports = { isAuthenticated, isAdminOrManager };
+module.exports = { attachUserRole, isAuthenticated, isAdminOrManager };
