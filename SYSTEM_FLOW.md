@@ -120,222 +120,99 @@ stateDiagram-v2
 ## 4. Entity Relationship Diagram (Detailed)
 The actual structure of the database tables and their foreign key constraints.
 
-```dbml
-// Full schema DBML for https://dbdiagram.io
+```Mermaid
+erDiagram
+    USER ||--o{ DAILY-REPORT : "creates"
+    USER ||--o{ WEEKLY-REPORT : "creates"
+    USER ||--o{ MONTHLY-REPORT : "creates"
+    USER ||--o{ YEARLY-REPORT : "creates"
+    USER ||--o{ DAILY-TIME-ENTRY : "tracks"
+    USER ||--o{ COMMENT : "writes"
 
+    YEARLY-REPORT ||--o{ MONTHLY-REPORT : "contains"
+    MONTHLY-REPORT ||--o{ WEEKLY-REPORT : "contains"
+    WEEKLY-REPORT ||--o{ DAILY-REPORT : "contains"
+    DAILY-REPORT ||--o{ DAILY-TIME-ENTRY : "contains"
 
-Table User {
-  id            integer     [pk, increment]
-  email         varchar     [unique, not null]
-  name          varchar     [not null]
-  role          varchar     [not null, default: 'USER', note: 'ADMIN | MANAGER | USER | TEST']
-  jobTitle      varchar     [null]
-  workplaceType varchar     [null, note: 'HOME | OFFICE | BAUSTELLE']
-  passwordHash  varchar     [not null]
-  lastLoginAt   datetime    [null]
-  lastLoginIp   varchar     [null]
-  createdAt     datetime    [not null, default: `now()`]
-  updatedAt     datetime    [not null]
+    DAILY-REPORT ||--o{ ATTACHMENT : "has"
+    WEEKLY-REPORT ||--o{ ATTACHMENT : "has"
+    MONTHLY-REPORT ||--o{ ATTACHMENT : "has"
+    YEARLY-REPORT ||--o{ ATTACHMENT : "has"
+    DAILY-TIME-ENTRY ||--o{ ATTACHMENT : "has"
 
-  indexes {
-    email [name: 'idx_user_email']
-  }
-}
+    DAILY-REPORT ||--o{ COMMENT : "has"
+    WEEKLY-REPORT ||--o{ COMMENT : "has"
+    MONTHLY-REPORT ||--o{ COMMENT : "has"
+    YEARLY-REPORT ||--o{ COMMENT : "has"
 
-Table DailyReport {
-  id             integer      [pk, increment]
-  userId         integer      [not null, ref: > User.id]
-  weeklyReportId integer      [null, ref: > WeeklyReport.id]
-  reportDate     datetime     [not null]
-  title          varchar      [not null]
-  activities     text         [null]
-  learnings      text         [null]
-  challenges     text         [null]
-  hoursWorked    float        [not null]
-  weather        varchar      [null, note: 'Sonne | Wind | Regen | Schnee | Frost']
-  weatherTemp    float        [null]
-  status         varchar      [not null, default: 'DRAFT', note: 'DRAFT | SUBMITTED | APPROVED | REJECTED | REVISION_REQUIRED']
-  createdAt      datetime     [not null, default: `now()`]
-  updatedAt      datetime     [not null]
+    USER {
+        int id PK
+        string email
+        string name
+        string role
+        string workplaceType
+        datetime createdAt
+    }
 
-  indexes {
-    userId       [name: 'idx_dailyreport_user']
-    weeklyReportId [name: 'idx_dailyreport_weekly']
-    reportDate   [name: 'idx_dailyreport_date']
-    status       [name: 'idx_dailyreport_status']
-  }
-}
+    DAILY-REPORT {
+        int id PK
+        int userId FK
+        int weeklyReportId FK
+        datetime reportDate
+        float hoursWorked
+        string status
+    }
 
-Table DailyTimeEntry {
-  id            integer   [pk, increment]
-  dailyReportId integer   [not null, ref: > DailyReport.id]
-  userId        integer   [not null, ref: > User.id]
+    DAILY-TIME-ENTRY {
+        int id PK
+        int dailyReportId FK
+        int userId FK
+        datetime workStart
+        datetime workEnd
+        float hoursTotal
+        string status
+    }
 
-  // What was done ( Deren Job Name)
-  jobTitle        varchar  [null]
-  workDescription text     [not null]
+    WEEKLY-REPORT {
+        int id PK
+        int userId FK
+        int monthlyReportId FK
+        int weekNumber
+        float totalHours
+        string status
+    }
 
-  // Travel to site (Anfahrt von-bis)
-  travelArrivalStart  datetime [null]
-  travelArrivalEnd    datetime [null]
+    MONTHLY-REPORT {
+        int id PK
+        int userId FK
+        int yearlyReportId FK
+        int month
+        int year
+        string status
+    }
 
-  // Work time (Arbeitszeit von-bis)
-  workStart  datetime [not null]
-  workEnd    datetime [not null]
+    YEARLY-REPORT {
+        int id PK
+        int userId FK
+        int year
+        string trainingYear
+        string status
+    }
 
-  // Travel from site (Abfahrt von-bis)
-  travelDepartureStart  datetime [null]
-  travelDepartureEnd    datetime [null]
+    ATTACHMENT {
+        int id PK
+        int dailyReportId FK
+        int weeklyReportId FK
+        string fileName
+        string filePath
+    }
 
-  // Break (abzgl. Pause)
-  pauseMinutes  integer [null]
-  hoursTotal    float   [not null]
-
-  // Location & driving
-  location      varchar [null]
-  driveRequired boolean [not null, default: false]
-  distanceKm    float   [null]
-
-  // Preparation
-  preparationRequired boolean [not null, default: false]
-  preparationNotes    text    [null]
-
-  // Site specifics (Bautagebericht)
-  liftingAids   varchar [null, note: 'JSON array: AUTOKRAN | SCHRAEGAUFZUG | TELESKOPSTAPLER | ARBEITSBUEHNE | GERUEST']
-  equipment     text    [null, note: 'Maschinen- und Geräteeinsatz']
-  obstacles     text    [null, note: 'Behinderungen / Erschwernisse']
-  materialUsed  text    [null, note: 'Materialverbrauch']
-
-  status    varchar  [not null, default: 'DRAFT', note: 'DRAFT | SUBMITTED | APPROVED | REJECTED | REVISION_REQUIRED']
-  createdAt datetime [not null, default: `now()`]
-  updatedAt datetime [not null]
-
-  indexes {
-    dailyReportId [name: 'idx_timeentry_report']
-    userId        [name: 'idx_timeentry_user']
-    workStart     [name: 'idx_timeentry_workstart']
-    status        [name: 'idx_timeentry_status']
-  }
-}
-
-Table WeeklyReport {
-  id              integer  [pk, increment]
-  userId          integer  [not null, ref: > User.id]
-  monthlyReportId integer  [null, ref: > MonthlyReport.id]
-  name            varchar  [null]
-  weekStart       datetime [null]
-  weekEnd         datetime [null]
-  weekNumber      integer  [null]
-  department      varchar  [null]
-  yearOfTraining  integer  [null]
-  summary         text     [null]
-  activities      text     [null]
-  school          varchar  [null]
-  totalHours      float    [null]
-  remarks         text     [null]
-  status          varchar  [not null, default: 'DRAFT', note: 'DRAFT | SUBMITTED | APPROVED | REJECTED | REVISION_REQUIRED']
-  createdAt       datetime [not null, default: `now()`]
-  updatedAt       datetime [not null]
-
-  indexes {
-    userId          [name: 'idx_weeklyreport_user']
-    monthlyReportId [name: 'idx_weeklyreport_monthly']
-    (weekStart, weekEnd) [name: 'idx_weeklyreport_range']
-    status          [name: 'idx_weeklyreport_status']
-  }
-}
-
-Table MonthlyReport {
-  id              integer  [pk, increment]
-  userId          integer  [not null, ref: > User.id]
-  yearlyReportId  integer  [null, ref: > YearlyReport.id]
-  month           integer  [not null]
-  year            integer  [not null]
-  monthStart      datetime [not null]
-  monthEnd        datetime [not null]
-  summary         text     [ null]
-  keyAchievements text     [ null]
-  goals           text     [ null]
-  totalHours      float    [ null]
-  yearOfTraining  integer  [null]
-  name            varchar  [not null]
-  instructions    text     [not null]
-  remarks         text     [not null]
-  status          varchar  [not null, default: 'DRAFT', note: 'DRAFT | SUBMITTED | APPROVED | REJECTED | REVISION_REQUIRED']
-  createdAt       datetime [not null, default: `now()`]
-  updatedAt       datetime [not null]
-
-  indexes {
-    userId         [name: 'idx_monthlyreport_user']
-    yearlyReportId [name: 'idx_monthlyreport_yearly']
-    (month, year)  [name: 'idx_monthlyreport_period']
-    status         [name: 'idx_monthlyreport_status']
-  }
-}
-
-Table YearlyReport {
-  id             integer  [pk, increment]
-  userId         integer  [not null, ref: > User.id]
-  year           integer  [not null]
-  trainingYear   varchar  [not null]
-  yearStart      datetime [not null]
-  yearEnd        datetime [not null]
-  summary        text     [ null]
-  achievements   text     [ null]
-  skillsImproved text     [ null]
-  goals          text     [ null]
-  totalHours     float    [ null]
-  status         varchar  [ null, default: 'DRAFT', note: 'DRAFT | SUBMITTED | APPROVED | REJECTED | REVISION_REQUIRED']
-  createdAt      datetime [ not null, default: `now()`]
-  updatedAt      datetime [ not null]
-
-  indexes {
-    userId [name: 'idx_yearlyreport_user']
-    year   [name: 'idx_yearlyreport_year']
-    status [name: 'idx_yearlyreport_status']
-  }
-}
-
-Table Attachment {
-  id               integer  [pk, increment]
-  dailyReportId    integer  [null, ref: > DailyReport.id]
-  weeklyReportId   integer  [null, ref: > WeeklyReport.id]
-  monthlyReportId  integer  [null, ref: > MonthlyReport.id]
-  yearlyReportId   integer  [null, ref: > YearlyReport.id]
-  dailyTimeEntryId integer  [null, ref: > DailyTimeEntry.id]
-  fileName         varchar  [not null]
-  filePath         varchar  [not null]
-  fileSize         integer  [null]
-  mimeType         varchar  [null]
-  uploadedAt       datetime [not null, default: `now()`]
-
-  indexes {
-    dailyReportId    [name: 'idx_attachment_daily']
-    weeklyReportId   [name: 'idx_attachment_weekly']
-    monthlyReportId  [name: 'idx_attachment_monthly']
-    yearlyReportId   [name: 'idx_attachment_yearly']
-    dailyTimeEntryId [name: 'idx_attachment_timeentry']
-  }
-}
-
-Table Comment {
-  id              integer  [pk, increment]
-  userId          integer  [not null, ref: > User.id]
-  dailyReportId   integer  [null, ref: > DailyReport.id]
-  weeklyReportId  integer  [null, ref: > WeeklyReport.id]
-  monthlyReportId integer  [null, ref: > MonthlyReport.id]
-  yearlyReportId  integer  [null, ref: > YearlyReport.id]
-  content         text     [not null]
-  createdAt       datetime [not null, default: `now()`]
-
-  indexes {
-    userId          [name: 'idx_comment_user']
-    dailyReportId   [name: 'idx_comment_daily']
-    weeklyReportId  [name: 'idx_comment_weekly']
-    monthlyReportId [name: 'idx_comment_monthly']
-    yearlyReportId  [name: 'idx_comment_yearly']
-  }
-}
+    COMMENT {
+        int id PK
+        int userId FK
+        string content
+        datetime createdAt
+    }
 
 ```
 
