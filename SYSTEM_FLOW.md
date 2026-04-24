@@ -121,6 +121,9 @@ stateDiagram-v2
 The actual structure of the database tables and their foreign key constraints.
 
 ```dbml
+// Full schema DBML for https://dbdiagram.io
+
+
 Table User {
   id            integer     [pk, increment]
   email         varchar     [unique, not null]
@@ -333,7 +336,8 @@ Table Comment {
     yearlyReportId  [name: 'idx_comment_yearly']
   }
 }
----
+
+```
 
 ## 5. Technical Stack Overview
 
