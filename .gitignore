@@ -38,4 +38,4 @@ yarn-error.log*
 /generated/prisma
 sessions.db
 dev.db
-.env.example
+
