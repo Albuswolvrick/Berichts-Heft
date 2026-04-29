@@ -9,7 +9,7 @@ WORKDIR /app
 
 #copy the manifest first so npm install is cached if no dependencies change 
 COPY package*.json ./
-RUN npm ci
+RUN npm run ci
 
 #now the frontend should have been preped so next step in stage 1 is to copy everithing and build the frontend the user can see it from this point onward
 COPY . .
@@ -24,7 +24,7 @@ WORKDIR /app
 
 COPY package*.json ./
 #install all dependencies to make it work I hope if it did not hapen already in which case it should already have crashed so yea I do not know what I did when ading this 30 min ago
-RUN npm ci
+RUN npm run ci
 
 # db stuf
 COPY prisma ./prisma
@@ -35,7 +35,7 @@ RUN npx prisma generate
 # ___________________________________
 #stage 3 Lean Production Image
 #___________________________________
-FROM node :20-alpine AS production
+FROM node:20-alpine AS production
 
 #Install dumb-init to handle signal handling inside Docker
 RUN apk add --no-cache dumb-init
