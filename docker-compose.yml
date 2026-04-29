@@ -1,38 +1,53 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: production
-    image: berichts-heft:latest
-    container_name: berichts-heft
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: production
+  #   image: berichts-heft:latest
+  #   container_name: berichts-heft
+  #   restart: unless-stopped
+
+  #   ports:
+  #     - "3000:3000"
+
+  #   # Put secrets in a .env file (see .env.example) – never commit real values!
+  #   env_file:
+  #     - .env
+
+  #   # Override / supply required variables here if you don't use an env file
+  #   environment:
+  #     NODE_ENV: production
+  #     PORT: 3000
+  #     # DATABASE_URL and SESSION_SECRET come from .env
+
+  #   volumes:
+  #     # Named volume keeps the SQLite DB + session DB alive across restarts
+  #     - berichts_data:/app/data
+
+  #   healthcheck:
+  #     test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 15s
+
+  postgres:
+    image: postgres:15
+    container_name: berichts-heft-postgres
     restart: unless-stopped
-
-    ports:
-      - "3000:3000"
-
-    # Put secrets in a .env file (see .env.example) – never commit real values!
-    env_file:
-      - .env
-
-    # Override / supply required variables here if you don't use an env file
     environment:
-      NODE_ENV: production
-      PORT: 3000
-      # DATABASE_URL and SESSION_SECRET come from .env
-
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: berichts-heft
     volumes:
-      # Named volume keeps the SQLite DB + session DB alive across restarts
-      - berichts_data:/app/data
-
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 15s
+      - berichts_db:/var/lib/postgresql/data
+    ports: 
+      - "5432:5432"
 
 # Declare the named volume so Docker manages it properly
 volumes:
   berichts_data:
+    driver: local
+  berichts_db:
     driver: local

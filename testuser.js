@@ -1,5 +1,6 @@
 const { prisma } = require('./src/server/config/database');
 const bcrypt = require('bcrypt');
+require('dotenv/config');
 
 async function createTestUsers() {
     try {
