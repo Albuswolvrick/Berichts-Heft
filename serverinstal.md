@@ -27,8 +27,24 @@ bashcp .env.example .env
 # WICHTIG: .env bearbeiten und SESSION_SECRET setzen!
 nano .env
 Stelle sicher, dass die .env folgendes enthält:
-envDATABASE_URL="file:./dev.db"
-SESSION_SECRET="dein-sehr-langer-zufälliger-schlüssel-hier"
+```bash
+# Database
+# DATABASE_URL="file:./dev.db"
+DATABASE_URL = "postgresql://user:password@127.0.0.1:5432/berichts-heft"
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Session
+SESSION_SECRET="your-secure-session-secret-here-plausible-and optimal-is-a-long-random-string-of-numbers-and-othersighnes"
+
+# CORS
+CORS_ORIGIN="http://localhost:5173"
+
+# Bcrypt
+BCRYPT_SALT_ROUNDS=10
+
+```
 Danach:
 bashnpm run prisma:generate
 npm run prisma:push
