@@ -315,7 +315,7 @@ graph TD
     end
     
     subgraph Identity_Layer["Identity & Auth Middleware"]
-        RateLimit --> Session[Express Session - SQLite Store]
+        RateLimit --> Session[Express Session - Postgresql Store]
         Session --> RoleAttach[attachUserRole - Assign NOTLOGDIN if guest]
         RoleAttach --> AuthGuard{Route Guard}
     end
@@ -331,7 +331,7 @@ graph TD
     end
     
     subgraph Data_Layer["Persistence"]
-        Prisma --> DB[(SQLite Database - dev.db)]
+        Prisma --> DB[(Postgresql Database - dev.db)]
     end
     
     DB -.->|Data| Prisma
@@ -351,7 +351,7 @@ sequenceDiagram
     participant A as Auth Controller
     participant S as AuthService (Node.js)
     participant B as bcrypt (Security)
-    participant D as Database (Prisma/SQLite)
+    participant D as Database (Prisma/Postgresql)
 
     Note over C, D: User Registration Flow
     C->>A: POST /api/auth/register (name, email, pass)
@@ -512,7 +512,7 @@ erDiagram
 | **Web Server** | Express.js v5 | For RESTful API Endpoints |
 | **Frontend** | React v19 | With functional components and hooks |
 | **Build Tool** | Vite | For fast HMR and optimized builds |
-| **Database** | SQLite | Local relational storage (Zero-config) |
+| **Database** | Postgresql | Local relational storage (Zero-config) |
 | **ORM** | Prisma v7 | Type-safe database management |
 | **Styling** | Vanilla CSS | Custom design system |
 | **Testing** | Vitest | Fast unit testing |
