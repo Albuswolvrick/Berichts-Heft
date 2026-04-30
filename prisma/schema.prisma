@@ -55,10 +55,10 @@ model DailyReport {
   weeklyReport   WeeklyReport? @relation(fields: [weeklyReportId], references: [id], onDelete: SetNull)
   reportDate     DateTime
   title          String
-  activities     String
-  learnings      String
-  challenges     String
-  hoursWorked    Float
+  activities     String?
+  learnings      String?
+  challenges     String?
+  hoursWorked    Float?
   status         ReportStatus  @default(DRAFT)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
@@ -79,10 +79,10 @@ model WeeklyReport {
   user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   monthlyReportId Int?
   monthlyReport   MonthlyReport? @relation(fields: [monthlyReportId], references: [id], onDelete: SetNull)
-  name            String?
-  weekStart       DateTime?
-  weekEnd         DateTime?
-  weekNumber      Int?
+  name            String
+  weekStart       DateTime
+  weekEnd         DateTime
+  weekNumber      Int
   department      String?
   yearOfTraining  Int?
   summary         String?
@@ -114,14 +114,14 @@ model MonthlyReport {
   year            Int
   monthStart      DateTime
   monthEnd        DateTime
-  summary         String
-  keyAchievements String
-  goals           String
-  totalHours      Float
+  summary         String?
+  keyAchievements String?
+  goals           String?
+  totalHours      Float?
   yearOfTraining  Int?
   name            String
-  instructions    String
-  remarks         String
+  instructions    String?
+  remarks         String?
   status          ReportStatus   @default(DRAFT)
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -144,11 +144,11 @@ model YearlyReport {
   trainingYear   String
   yearStart      DateTime
   yearEnd        DateTime
-  summary        String
-  achievements   String
-  skillsImproved String
-  goals          String
-  totalHours     Float
+  summary        String?
+  achievements   String?
+  skillsImproved String?
+  goals          String?
+  totalHours     Float?
   status         ReportStatus    @default(DRAFT)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
