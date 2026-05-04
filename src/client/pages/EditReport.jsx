@@ -12,7 +12,7 @@ import { useFavicon } from '../hooks/useFavicon';
 const EditReportPage = () => {
   const { reportType, id } = useParams();
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const { addToast } = useToast();
   const [report, setReport] = useState(null);
   const [formData, setFormData] = useState({});
   const [user, setUser] = useState(null);
@@ -36,10 +36,10 @@ const EditReportPage = () => {
           });
           setFormData(formattedData);
         } else {
-          showToast('Error loading report', 'error');
+          addToast('Error loading report', 'error');
         }
       } catch (error) {
-        showToast('Error: ' + error.message, 'error');
+        addToast('Error: ' + error.message, 'error');
       } finally {
         setLoading(false);
       }
@@ -57,7 +57,7 @@ const EditReportPage = () => {
     };
     fetchReport();
     fetchUser();
-  }, [reportType, id, showToast]);
+  }, [reportType, id, addToast]);
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -77,13 +77,13 @@ const EditReportPage = () => {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        showToast(t('reports.saved.success.toast'), 'success');
+        addToast(t('reports.saved.success.toast'), 'success');
         navigate('/');
       } else {
-        showToast(t('reports.saved.failed.toast'), 'error');
+        addToast(t('reports.saved.failed.toast'), 'error');
       }
     } catch (error) {
-      showToast(`${t('reports.saved.failed.toast')}: ${error.message}`, 'error');
+      addToast(`${t('reports.saved.failed.toast')}: ${error.message}`, 'error');
     }
   };
 

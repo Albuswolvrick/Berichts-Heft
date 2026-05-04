@@ -7,7 +7,7 @@ const CommentSection = ({ reportType, reportId, user }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
-  const { showToast } = useToast();
+  const { addToast } = useToast();
   const { t } = useLanguage();
 
   const isAdminOrManager = user && (user.role === 'ADMIN' || user.role === 'MANAGER');
@@ -38,9 +38,9 @@ const CommentSection = ({ reportType, reportId, user }) => {
       });
       setComments([...comments, comment]);
       setNewComment('');
-      showToast(t('comment.success'), 'success');
+      addToast(t('reports.saved.success.toast'), 'success');
     } catch (err) {
-      showToast(t('comment.failed'), 'error');
+      addToast(t('comment.failed'), 'error');
     }
   };
 

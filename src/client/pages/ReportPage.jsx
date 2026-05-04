@@ -10,7 +10,7 @@ const ReportPage = () => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const { addToast } = useToast();
   const { t } = useLanguage();
   useFavicon('/imgs/icons/opened_book/128x128.png');
 
@@ -25,10 +25,10 @@ const ReportPage = () => {
         const data = await response.json();
         setReport(data);
       } else {
-        showToast(`Failed to fetch report with id ${id}`, 'error');
+        addToast(`Failed to fetch report with id ${id}`, 'error');
       }
     } catch (error) {
-      showToast('Error: ' + error.message, 'error');
+      addToast('Error: ' + error.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -38,13 +38,13 @@ const ReportPage = () => {
     try {
       const response = await fetch(`/api/reports/${id}`, { method: 'DELETE' });
       if (response.ok) {
-        showToast('Report deleted successfully', 'success');
+        addToast('Report deleted successfully', 'success');
         navigate('/');
       } else {
-        showToast('Failed to delete report', 'error');
+        addToast('Failed to delete report', 'error');
       }
     } catch (error) {
-      showToast('Error deleting report: ' + error.message, 'error');
+      addToast('Error deleting report: ' + error.message, 'error');
     }
   };
 
