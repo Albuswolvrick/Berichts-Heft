@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Modifier",
   "admin_menu.action_change_password": "Changer le mot de passe",
   "admin_menu.action_delete": "Supprimer",
-  "admin_menu.action_save_password": "Enregistrer le mot de passe"
+  "admin_menu.action_save_password": "Enregistrer le mot de passe",
+  "admin_menu.user_created": "Utilisateur créé avec succès !",
+  "admin_menu.user_updated": "Utilisateur mis à jour avec succès !",
+  "admin_menu.user_deleted": "Utilisateur supprimé avec succès !",
+  "admin_menu.password_updated": "Mot de passe mis à jour avec succès !"
 }

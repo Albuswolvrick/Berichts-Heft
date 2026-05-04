@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Redigera",
   "admin_menu.action_change_password": "Byt lösenord",
   "admin_menu.action_delete": "Ta bort",
-  "admin_menu.action_save_password": "Spara lösenord"
+  "admin_menu.action_save_password": "Spara lösenord",
+  "admin_menu.user_created": "Användaren har skapats!",
+  "admin_menu.user_updated": "Användaren har uppdaterats!",
+  "admin_menu.user_deleted": "Användaren har tagits bort!",
+  "admin_menu.password_updated": "Lösenordet har uppdaterats!"
 }

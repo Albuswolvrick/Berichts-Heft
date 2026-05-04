@@ -140,5 +140,9 @@
   "admin_menu.action_edit": "Редагувати",
   "admin_menu.action_change_password": "Змінити пароль",
   "admin_menu.action_delete": "Видалити",
-  "admin_menu.action_save_password": "Зберегти пароль"
+  "admin_menu.action_save_password": "Зберегти пароль",
+  "admin_menu.user_created": "Користувача успішно створено!",
+  "admin_menu.user_updated": "Користувача успішно оновлено!",
+  "admin_menu.user_deleted": "Користувача успішно видалено!",
+  "admin_menu.password_updated": "Пароль успішно оновлено!"
 }

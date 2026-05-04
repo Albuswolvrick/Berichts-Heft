@@ -5,7 +5,7 @@
   "nav.new_report": "Tuarascáil Nua",
   "nav.admin_dashboard": "Painéal Riaracháin",
   "nav.admin_reports": "Tuarascálacha Riaracháin",
-  "nav.admin_menu": "Roghchlár Dev",
+  "nav.admin_menu": "Roghchlár Admin",
   "nav.welcome": "Fáilte, {username}",
   "nav.profile": "Próifíl",
   "nav.logout": "Logáil amach",
@@ -129,7 +129,7 @@
   "report.edit": "Eagraigh",
   "report.delete": "Scrios",
   "edit.save": "Sábháil Athruithe",
-  "admin_menu.title": "Roghchlár Dev",
+  "admin_menu.title": "Roghchlár Admin",
   "admin_menu.user_management": "Bainistíocht Úsáideoirí",
   "admin_menu.create_user": "Cruthaigh Úsáideoir Nua",
   "admin_menu.existing_users": "Úsáideoirí Atá Ann",
@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Eagraigh",
   "admin_menu.action_change_password": "Athraigh Pasfhocal",
   "admin_menu.action_delete": "Scrios",
-  "admin_menu.action_save_password": "Sábháil Pasfhocal"
+  "admin_menu.action_save_password": "Sábháil Pasfhocal",
+  "admin_menu.user_created": "A new lad's joined us, so he has!",
+  "admin_menu.user_updated": "Fixed the fellow's details grand!",
+  "admin_menu.user_deleted": "He's gone now, poor soul!",
+  "admin_menu.password_updated": "Password's sorted now, to be sure!"
 }

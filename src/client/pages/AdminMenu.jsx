@@ -79,7 +79,7 @@ const AdminMenu = () => {
     const [role, setRole] = useState('USER');
     const [error, setError] = useState('');
     const [creationStatus, setCreationStatus] = useState('idle');
-    const showToast = useToast();
+    const { addToast } = useToast();
     const { t } = useLanguage();
 
     useEffect(() => {
@@ -118,7 +118,7 @@ const AdminMenu = () => {
                 setPassword('');
                 setRole('USER');
                 await fetchUsers();
-                showToast('User created successfully!', { type: 'success' });
+                addToast(t('admin_menu.user_created'), 'success');
             } else {
                 const err = await response.json();
                 setError(`Failed to create user: ${err.error}`);
@@ -143,6 +143,7 @@ const AdminMenu = () => {
 
             if (response.ok) {
                 await fetchUsers(); // Refresh the user list
+                addToast(t('admin_menu.user_updated'), 'success');
             } else {
                 const err = await response.json();
                 setError(`Failed to update user: ${err.error}`);
@@ -165,7 +166,7 @@ const AdminMenu = () => {
 
             if (response.ok) {
                 await fetchUsers(); // Refresh the user list
-                showToast('Password updated successfully!', { type: 'success' });
+                addToast(t('admin_menu.password_updated'), 'success');
             } else {
                 const err = await response.json();
                 setError(`Failed to update password: ${err.error}`);
@@ -187,7 +188,7 @@ const AdminMenu = () => {
 
                 if (response.ok) {
                     await fetchUsers(); // Refresh the list
-                    showToast('User deleted successfully!', { type: 'success' });
+                    addToast(t('admin_menu.user_deleted'), 'success');
                 } else {
                     const err = await response.json();
                     setError(`Failed to delete user: ${err.error}`);

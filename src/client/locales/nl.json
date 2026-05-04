@@ -5,7 +5,7 @@
   "nav.new_report": "Nieuw rapport",
   "nav.admin_dashboard": "Admin-dashboard",
   "nav.admin_reports": "Admin-rapporten",
-  "nav.admin_menu": "Dev-menu",
+  "nav.admin_menu": "Admin-menu",
   "nav.welcome": "Welkom, {username}",
   "nav.profile": "Profiel",
   "nav.logout": "Uitloggen",
@@ -129,7 +129,7 @@
   "report.edit": "Bewerken",
   "report.delete": "Verwijderen",
   "edit.save": "Wijzigingen opslaan",
-  "admin_menu.title": "Dev Menu",
+  "admin_menu.title": "Admin Menu",
   "admin_menu.user_management": "Gebruikersbeheer",
   "admin_menu.create_user": "Nieuwe gebruiker maken",
   "admin_menu.existing_users": "Bestaande gebruikers",
@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Bewerken",
   "admin_menu.action_change_password": "Wachtwoord wijzigen",
   "admin_menu.action_delete": "Verwijderen",
-  "admin_menu.action_save_password": "Wachtwoord opslaan"
+  "admin_menu.action_save_password": "Wachtwoord opslaan",
+  "admin_menu.user_created": "Gebruiker succesvol aangemaakt!",
+  "admin_menu.user_updated": "Gebruiker succesvol bijgewerkt!",
+  "admin_menu.user_deleted": "Gebruiker succesvol verwijderd!",
+  "admin_menu.password_updated": "Wachtwoord succesvol bijgewerkt!"
 }

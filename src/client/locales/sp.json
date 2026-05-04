@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Editar",
   "admin_menu.action_change_password": "Cambiar contraseña",
   "admin_menu.action_delete": "Eliminar",
-  "admin_menu.action_save_password": "Guardar contraseña"
+  "admin_menu.action_save_password": "Guardar contraseña",
+  "admin_menu.user_created": "¡Usuario creado con éxito!",
+  "admin_menu.user_updated": "¡Usuario actualizado con éxito!",
+  "admin_menu.user_deleted": "¡Usuario eliminado con éxito!",
+  "admin_menu.password_updated": "¡Contraseña actualizada con éxito!"
 }
