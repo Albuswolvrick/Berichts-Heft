@@ -1,4 +1,6 @@
 {
+  "reports.saved.success.toast": "Report saved successfully",
+  "reports.saved.failed.toast": "Failed to save report",
   "nav.home": "Home",
   "nav.new_report": "New Report",
   "nav.admin_dashboard": "Admin Dashboard",
@@ -128,7 +130,7 @@
   "report.edit": "Edit",
   "report.delete": "Delete",
   "edit.save": "Save Changes",
-  "dev.title": "Dev Menu",
+  "dev.title": "Admin Menu",
   "dev.user_management": "User Management",
   "dev.create_user": "Create New User",
   "dev.existing_users": "Existing Users",
