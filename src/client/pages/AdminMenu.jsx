@@ -199,7 +199,7 @@ const AdminMenu = () => {
     };
 
     return (
-        <div className="dev-menu">
+        <div className="admin-menu">
             <h2>{t('admin_menu.title')}</h2>
             {error && <p className="error-message">{error}</p>}
 
