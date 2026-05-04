@@ -4,6 +4,7 @@ import '../../../public/css/report.css';
 import { handleReportDownload } from '../utils/reportPdfHelper';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFavicon } from '../hooks/useFavicon';
+import { useToast } from '../hooks/useToast';
 
 const YearlyReportPage = () => {
   const [year, setYear] = useState('');
@@ -17,6 +18,7 @@ const YearlyReportPage = () => {
   const [totalHours, setTotalHours] = useState('');
   const [status, setStatus] = useState('DRAFT');
   const { t } = useLanguage();
+  const { addToast } = useToast();
   useFavicon('/imgs/icons/opened_book/128x128.png');
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const YearlyReportPage = () => {
     e.preventDefault();
 
     if (!year || !trainingYear || !yearStart || !yearEnd || !summary || !achievements || !skillsImproved || !goals || !totalHours) {
-        alert(t('report.fill_all'));
+        addToast(t('report.fill_all'), 'error');
         return;
     }
 
@@ -58,7 +60,7 @@ const YearlyReportPage = () => {
       });
 
       if (response.ok) {
-        alert(t('report.save_success'));
+        addToast(t('reports.saved.success.toast'), 'success');
         // Optionally, clear the form
         setYear('');
         setTrainingYear('');
@@ -72,11 +74,11 @@ const YearlyReportPage = () => {
         setStatus('DRAFT');
       } else {
         const errorData = await response.json();
-        alert(`${t('report.save_failed')}: ${errorData.error}`);
+        addToast(`${t('reports.saved.failed.toast')}: ${errorData.error}`, 'error');
       }
     } catch (error) {
       console.error('Failed to save yearly report:', error);
-      alert(t('report.save_error_generic'));
+      addToast(t('reports.saved.failed.toast'), 'error');
     }
   };
 

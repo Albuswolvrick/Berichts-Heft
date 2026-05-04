@@ -77,13 +77,13 @@ const EditReportPage = () => {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        showToast('Report updated successfully', 'success');
+        showToast(t('reports.saved.success.toast'), 'success');
         navigate('/');
       } else {
-        showToast('Error updating report', 'error');
+        showToast(t('reports.saved.failed.toast'), 'error');
       }
     } catch (error) {
-      showToast('Error: ' + error.message, 'error');
+      showToast(`${t('reports.saved.failed.toast')}: ${error.message}`, 'error');
     }
   };
 
@@ -97,8 +97,8 @@ const EditReportPage = () => {
 
   const renderFormFields = () => {
     const allStatusOptions = ["DRAFT", "SUBMITTED", "APPROVED", "REJECTED", "REVISION_REQUIRED"];
-    const statusOptions = user?.role === 'ADMIN' 
-      ? allStatusOptions 
+    const statusOptions = user?.role === 'ADMIN'
+      ? allStatusOptions
       : ["DRAFT", "SUBMITTED"];
     switch (reportType) {
       case 'daily':

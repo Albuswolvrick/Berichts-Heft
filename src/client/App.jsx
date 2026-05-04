@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import DevMenu from './pages/DevMenu';
+import AdminMenu from './pages/AdminMenu';
 import ReportPage from './pages/ReportPage';
 import EditReportPage from './pages/EditReport';
 import ProfilePage from './pages/ProfilePage';
@@ -29,7 +29,7 @@ import CookieConsent from './components/CookieConsent';
 const allNavItems = [
     { label: 'nav.home', path: '/' },
     { label: 'nav.new_report', path: '/reports/new' },
-    { label: 'nav.dev_menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
+    { label: 'nav.admin_menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
     { label: 'nav.admin_reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
 ];
 
@@ -90,7 +90,7 @@ const AppContent = ({ navItems, user, setUser, handleLogout }) => {
                     <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
                     <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
                     <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
-                    <Route path="/dev" element={<AdminRoute user={user}><DevMenu /></AdminRoute>} />
+                    <Route path="/dev" element={<AdminRoute user={user}><AdminMenu /></AdminRoute>} />
                     <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
                     <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
                     <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
@@ -146,11 +146,11 @@ function App() {
                 <LanguageProvider>
                     <TextSizeProvider>
                         <ToastProvider>
-                            <AppContent 
-                                navItems={navItems} 
-                                user={user} 
+                            <AppContent
+                                navItems={navItems}
+                                user={user}
                                 setUser={setUser}
-                                handleLogout={handleLogout} 
+                                handleLogout={handleLogout}
                             />
                         </ToastProvider>
                     </TextSizeProvider>

@@ -120,8 +120,8 @@ const AdminReportsPage = () => {
                             <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
                                 <div className="report-card-header">
                                     <h3>{getReportTitle(report)}</h3>
-                                    <button 
-                                        className="card-download-btn" 
+                                    <button
+                                        className="card-download-btn"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             e.stopPropagation();

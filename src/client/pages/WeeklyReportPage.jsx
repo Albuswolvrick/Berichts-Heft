@@ -111,11 +111,11 @@ const WeeklyReportPage = () => {
         yearOfTraining: parseInt(yearOfTraining, 10),
         status,
       });
-
-      addToast(`Weekly report saved (ID: ${report.id})`, 'success');
+      //importent have to ad in the json in future to make the translation working
+      addToast(t('reports.saved.success.toast'), 'success');
       setFormData(initialState);
     } catch (error) {
-      addToast(`Save failed: ${error.message}`, 'error');
+      addToast(`${t('reports.saved.failed.toast')}: ${error.message}`, 'error');
     }
   };
 

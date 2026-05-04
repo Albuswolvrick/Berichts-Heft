@@ -1,9 +1,11 @@
 {
+  "reports.saved.success.toast": "Bericht erfolgreich gespeichert",
+  "reports.saved.failed.toast": "Fehler beim Speichern des Berichts",
   "nav.home": "Startseite",
   "nav.new_report": "Neuer Bericht",
   "nav.admin_dashboard": "Admin-Dashboard",
   "nav.admin_reports": "Admin-Berichte",
-  "nav.dev_menu": "Entwickler-Menü",
+  "nav.admin_menu": "Admin-Menü",
   "nav.welcome": "Willkommen, {username}",
   "nav.profile": "Profil",
   "nav.logout": "Abmelden",

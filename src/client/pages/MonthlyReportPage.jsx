@@ -3,6 +3,7 @@ import { toInputDate, toDisplayDate } from '../utils/dateUtils';
 import { handleReportDownload } from '../utils/reportPdfHelper';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFavicon } from '../hooks/useFavicon';
+import { useToast } from '../hooks/useToast';
 
 const MonthlyReportPage = () => {
   const [name, setName] = useState('');
@@ -19,6 +20,7 @@ const MonthlyReportPage = () => {
   const [remarks, setRemarks] = useState('');
   const [yearOfTraining, setYearOfTraining] = useState('');
   const { t } = useLanguage();
+  const { addToast } = useToast();
   useFavicon('/imgs/icons/opened_book/128x128.png');
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const MonthlyReportPage = () => {
     e.preventDefault();
 
     if (!name || !month || !year || !monthStart || !monthEnd || !summary || !keyAchievements || !goals || !totalHours || !instructions || !remarks || !yearOfTraining) {
-        alert(t('report.fill_all'));
+        addToast(t('report.fill_all'), 'error');
         return;
     }
 
@@ -66,7 +68,7 @@ const MonthlyReportPage = () => {
       });
 
       if (response.ok) {
-        alert(t('report.save_success'));
+        addToast(t('reports.saved.success.toast'), 'success');
         // Optionally, clear the form
         setName('');
         setMonth('');
@@ -83,11 +85,11 @@ const MonthlyReportPage = () => {
         setYearOfTraining('');
       } else {
         const errorData = await response.json();
-        alert(`${t('report.save_failed')}: ${errorData.error}`);
+        addToast(`${t('reports.saved.failed.toast')}: ${errorData.error}`, 'error');
       }
     } catch (error) {
       console.error('Failed to save monthly report:', error);
-      alert(t('report.save_error_generic'));
+      addToast(t('reports.saved.failed.toast'), 'error');
     }
   };
 
