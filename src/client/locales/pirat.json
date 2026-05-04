@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Mend",
   "admin_menu.action_change_password": "Change Word",
   "admin_menu.action_delete": "Maroon",
-  "admin_menu.action_save_password": "Stow Word"
+  "admin_menu.action_save_password": "Stow Word",
+  "admin_menu.user_created": "A new matey has joined the crew!",
+  "admin_menu.user_updated": "The matey's papers be in order now!",
+  "admin_menu.user_deleted": "Walk the plank! The matey be gone!",
+  "admin_menu.password_updated": "The secret code be changed, arr!"
 }

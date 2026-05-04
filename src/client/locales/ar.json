@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "تعديل",
   "admin_menu.action_change_password": "تغيير كلمة المرور",
   "admin_menu.action_delete": "حذف",
-  "admin_menu.action_save_password": "حفظ كلمة المرور"
+  "admin_menu.action_save_password": "حفظ كلمة المرور",
+  "admin_menu.user_created": "تم إنشاء المستخدم بنجاح!",
+  "admin_menu.user_updated": "تم تحديث المستخدم بنجاح!",
+  "admin_menu.user_deleted": "تم حذف المستخدم بنجاح!",
+  "admin_menu.password_updated": "تم تحديث كلمة المرor بنجاح!"
 }

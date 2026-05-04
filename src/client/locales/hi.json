@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "संपादित करें",
   "admin_menu.action_change_password": "पासवर्ड बदलें",
   "admin_menu.action_delete": "हटाएँ",
-  "admin_menu.action_save_password": "पासवर्ड सहेजें"
+  "admin_menu.action_save_password": "पासवर्ड सहेजें",
+  "admin_menu.user_created": "उपयोगकर्ता सफलतापूर्वक बनाया गया!",
+  "admin_menu.user_updated": "उपयोगकर्ता सफलतापूर्वक अपडेट किया गया!",
+  "admin_menu.user_deleted": "उपयोगकर्ता सफलतापूर्वक हटा दिया गया!",
+  "admin_menu.password_updated": "पासवर्ड सफलतापूर्वक अपडेट किया गया!"
 }

@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "编辑",
   "admin_menu.action_change_password": "修改密码",
   "admin_menu.action_delete": "删除",
-  "admin_menu.action_save_password": "保存密码"
+  "admin_menu.action_save_password": "保存密码",
+  "admin_menu.user_created": "E neue Kolleg isch debii!",
+  "admin_menu.user_updated": "Mir hend de Kolleg aktualisiert!",
+  "admin_menu.user_deleted": "Adieu Messie! De User isch weg!",
+  "admin_menu.password_updated": "S Passwort isch neu gsetzt!"
 }

@@ -5,7 +5,7 @@
   "nav.new_report": "Neier Bericht",
   "nav.admin_dashboard": "Chef-Ibasicht",
   "nav.admin_reports": "Admin-Berichte",
-  "nav.admin_menu": "Entwickler-Menü",
+  "nav.admin_menu": "Admin-Menü",
   "nav.welcome": "Griasdi, {username}",
   "nav.profile": "Mei Profil",
   "nav.logout": "Pfiadi (Abmelden)",
@@ -129,7 +129,7 @@
   "report.edit": "Bearbeiten",
   "report.delete": "Löschen",
   "edit.save": "Änderungen speichern",
-  "admin_menu.title": "Entwickler-Menü",
+  "admin_menu.title": "Admin-Menü",
   "admin_menu.user_management": "Leit verwalten",
   "admin_menu.create_user": "Neien Benutzer olegen",
   "admin_menu.existing_users": "Leit, de scho do sand",
@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Bearbeiten",
   "admin_menu.action_change_password": "Passwort ändern",
   "admin_menu.action_delete": "Löschen",
-  "admin_menu.action_save_password": "Passwort speichern"
+  "admin_menu.action_save_password": "Passwort speichern",
+  "admin_menu.user_created": "A neia Spezi is do!",
+  "admin_menu.user_updated": "Hamma an Spezi aktualisiert!",
+  "admin_menu.user_deleted": "Pfiat di! Da Spezi is weg!",
+  "admin_menu.password_updated": "Da Geheimcode basst wieder!"
 }

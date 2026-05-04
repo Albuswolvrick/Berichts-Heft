@@ -5,7 +5,7 @@
   "nav.new_report": "Neier Bericht",
   "nav.admin_dashboard": "Baas-Dashboard",
   "nav.admin_reports": "Baas-Berichten",
-  "nav.admin_menu": "Entwickler-Menü",
+  "nav.admin_menu": "Admin-Menü",
   "nav.welcome": "Moin, {username}",
   "nav.profile": "Mien Profil",
   "nav.logout": "Utloggen",
@@ -129,7 +129,7 @@
   "report.edit": "Bearbeiden",
   "report.delete": "Löschen",
   "edit.save": "Ännerungen spiekern",
-  "admin_menu.title": "Entwickler-Menü",
+  "admin_menu.title": "Admin-Menü",
   "admin_menu.user_management": "Lüüd verwalten",
   "admin_menu.create_user": "Neier Benutzer anleggen",
   "admin_menu.existing_users": "Lüüd de dor sünd",
@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Bearbeiden",
   "admin_menu.action_change_password": "Passwoort ännern",
   "admin_menu.action_delete": "Löschen",
-  "admin_menu.action_save_password": "Passwoort spiekern"
+  "admin_menu.action_save_password": "Passwoort spiekern",
+  "admin_menu.user_created": "Nije brûker suksesfol oanmakke!",
+  "admin_menu.user_updated": "Brûker suksesfol bywurke!",
+  "admin_menu.user_deleted": "Brûker suksesfol wiske!",
+  "admin_menu.password_updated": "Wachtwurd suksesfol bywurke!"
 }

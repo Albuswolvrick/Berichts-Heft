@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Mend",
   "admin_menu.action_change_password": "Change Word",
   "admin_menu.action_delete": "Banish",
-  "admin_menu.action_save_password": "Seal Word"
+  "admin_menu.action_save_password": "Seal Word",
+  "admin_menu.user_created": "New chap's registered, jolly good!",
+  "admin_menu.user_updated": "Updated the fellow's details, brilliant!",
+  "admin_menu.user_deleted": "He's been sacked! User deleted!",
+  "admin_menu.password_updated": "Password's changed, top notch!"
 }

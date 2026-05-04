@@ -139,5 +139,9 @@
   "admin_menu.action_edit": "Recensere",
   "admin_menu.action_change_password": "Mutare Tesseram",
   "admin_menu.action_delete": "Delere",
-  "admin_menu.action_save_password": "Servare Tesseram"
+  "admin_menu.action_save_password": "Servare Tesseram",
+  "admin_menu.user_created": "Usor prospere creatus est!",
+  "admin_menu.user_updated": "Usor prospere renovatus est!",
+  "admin_menu.user_deleted": "Usor prospere deletus est!",
+  "admin_menu.password_updated": "Tessera prospere renovata est!"
 }
