@@ -21,22 +21,22 @@
 }
 
 .report-card.approved {
-  background-color: #4dd4e3 !important;
+  background-color: #6a0973 !important;
   color: #000;
 }
 
 .report-card.denied {
-  background-color: #ff6f61 !important;
+  background-color: #df4f42 !important;
   color: #000;
 }
 
 .report-card.rejected {
-  background-color: #ff6f61 !important;
+  background-color: #df23aa !important;
   color: #000;
 }
 
 .report-card.revision_required {
-  background-color: #ffb74d !important;
+  background-color: #f09104 !important;
   color: #000;
 }
 
