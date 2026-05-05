@@ -23,7 +23,7 @@
     "prisma:pull": "npx prisma db pull",
     "prisma:reset": "npx prisma migrate reset",
     "prisma:seed": "node prisma/seed.js",
-    "ci": "npm run client:build && npm run prisma:generate && npm run prisma:push && npm run prisma:seed && npm run"
+    "ci": "npm run client:build && npm run prisma:generate && npm run prisma:push && npm run prisma:seed && npm run prisma:migrate"
   },
   "repository": {
     "type": "git",
