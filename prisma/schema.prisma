@@ -23,6 +23,7 @@ enum ReportStatus {
   SUBMITTED
   APPROVED
   REJECTED
+  DENIED
   REVISION_REQUIRED
 }
 

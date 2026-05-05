@@ -112,7 +112,7 @@ const HomePage = ({ user }) => {
             const editUrl = `/reports/${report.type.toLowerCase()}/${report.id}/edit`;
 
             return (
-              <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
+              <Link to={editUrl} key={`${report.type}-${report.id}`} className={`report-card ${report.status.toLowerCase()}`}>
                 <div className="report-card-header">
                   <h3>{getReportTitle(report)}</h3>
                   <button 

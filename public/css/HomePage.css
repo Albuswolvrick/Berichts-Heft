@@ -20,6 +20,26 @@
   transform: translateY(-5px);
 }
 
+.report-card.approved {
+  background-color: #4dd4e3 !important;
+  color: #000;
+}
+
+.report-card.denied {
+  background-color: #ff6f61 !important;
+  color: #000;
+}
+
+.report-card.rejected {
+  background-color: #ff6f61 !important;
+  color: #000;
+}
+
+.report-card.revision_required {
+  background-color: #ffb74d !important;
+  color: #000;
+}
+
 @media (max-width: 768px) {
   .report-card {
     flex: 1 1 100%;
