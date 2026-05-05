@@ -407,6 +407,7 @@ stateDiagram-v2
     Approved --> APPROVED
     Revision --> REVISION_REQUIRED
     Rejected --> REJECTED
+    REJECTED --> DELEATE
     
     REVISION_REQUIRED --> DRAFT: "User Corrects"
     
