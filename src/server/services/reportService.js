@@ -42,6 +42,12 @@ function createReportService(modelName, options) {
     async create(userId, body) {
       const data = parseCreateData(body);
       data.userId = userId;
+
+      // Automatic deletion/prevention if status is REJECTED or DENIED
+      if (data.status === 'REJECTED' || data.status === 'DENIED') {
+        return { deleted: true, message: 'Report rejected/denied and not saved' };
+      }
+
       return model.create({ data });
     },
 
@@ -114,6 +120,13 @@ function createReportService(modelName, options) {
       checkReportAuthorization(report, user, 'edit');
 
       const data = parseUpdateData(body, report);
+
+      // Automatic deletion if status is REJECTED or DENIED
+      if (data.status === 'REJECTED' || data.status === 'DENIED') {
+        const deletedReport = await model.delete({ where: { id: parseInt(id) } });
+        return { ...deletedReport, deleted: true };
+      }
+
       return model.update({
         where: { id: parseInt(id) },
         data,
