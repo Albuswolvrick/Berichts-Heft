@@ -50,6 +50,13 @@ export function getWeekRangeFromDate(inputDate) {
 }
 
 export function formatDate(dateString) {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(date);
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(date);
+}
+export function getDefaultHoursForDate(dateString) {
+  if (!dateString) return '8';
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return '8';
+  const day = date.getDay(); // 0 (Sun) to 6 (Sat)
+  return day === 5 ? '6' : '8';
 }

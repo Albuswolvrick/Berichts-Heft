@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { toInputDate, toDisplayDate } from '../utils/dateUtils';
+import { toInputDate, toDisplayDate, getDefaultHoursForDate } from '../utils/dateUtils';
 import '../../../public/css/report.css';
 import { handleReportDownload } from '../utils/reportPdfHelper';
 import { useLanguage } from '../hooks/useLanguage';
@@ -12,7 +12,7 @@ const DailyReportPage = () => {
   const [activities, setActivities] = useState('');
   const [learnings, setLearnings] = useState('');
   const [challenges, setChallenges] = useState('');
-  const [hoursWorked, setHoursWorked] = useState('');
+  const [hoursWorked, setHoursWorked] = useState(getDefaultHoursForDate(toInputDate(new Date())));
   const [status, setStatus] = useState('DRAFT');
   const { t } = useLanguage();
   const { addToast } = useToast();
@@ -51,7 +51,7 @@ const DailyReportPage = () => {
         setActivities('');
         setLearnings('');
         setChallenges('');
-        setHoursWorked('');
+        setHoursWorked(getDefaultHoursForDate(toInputDate(new Date())));
         setStatus('DRAFT');
       } else {
         const errorData = await response.json();
@@ -83,7 +83,11 @@ const DailyReportPage = () => {
         <div className="form-row">
           <div className="form-group">
             <label>{t('daily.report_date')}</label>
-            <input type="date" value={reportDate} onChange={(e) => setReportDate(e.target.value)} required />
+            <input type="date" value={reportDate} onChange={(e) => {
+              const newDate = e.target.value;
+              setReportDate(newDate);
+              setHoursWorked(getDefaultHoursForDate(newDate));
+            }} required />
           </div>
           <div className="form-group">
             <label>{t('daily.hours_worked')}</label>

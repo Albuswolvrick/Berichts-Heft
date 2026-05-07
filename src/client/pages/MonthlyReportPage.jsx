@@ -14,7 +14,7 @@ const MonthlyReportPage = () => {
   const [summary, setSummary] = useState('');
   const [keyAchievements, setKeyAchievements] = useState('');
   const [goals, setGoals] = useState('');
-  const [totalHours, setTotalHours] = useState('');
+  const [totalHours, setTotalHours] = useState('160');
   const [status, setStatus] = useState('DRAFT');
   const [instructions, setInstructions] = useState('');
   const [remarks, setRemarks] = useState('');
@@ -78,7 +78,7 @@ const MonthlyReportPage = () => {
         setSummary('');
         setKeyAchievements('');
         setGoals('');
-        setTotalHours('');
+        setTotalHours('160');
         setStatus('DRAFT');
         setInstructions('');
         setRemarks('');

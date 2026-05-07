@@ -16,7 +16,7 @@ const initialState = {
   activities: '',
   school: '',
   department: '',
-  totalHours: '',
+  totalHours: '40',
   yearOfTraining: '',
   remarks: '',
   status: 'DRAFT',
