@@ -1,6 +1,7 @@
 // HomePage: The main landing page, displaying a grid of the user's reports.
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { reportsApi } from '../services/api';
 import Spinner from '../components/Spinner';
 import { useToast } from '../hooks/useToast';
 import { useLanguage } from '../hooks/useLanguage';
@@ -37,6 +38,21 @@ const HomePage = ({ user }) => {
     };
     fetchReports();
   }, [addToast]);
+  // handleReportDelete: Handles the deletion of a report with confirmation.
+  const handleReportDelete = async (report) => {                                                             // has to be added to the lang pool in local storage
+    const confirmDelete = window.confirm(t('report.delete_confirm', { title: getReportTitle(report) }) || `Are you sure you want to delete ${getReportTitle(report)}?`);
+
+    if (!confirmDelete) return;
+
+    try {
+      await reportsApi.remove(report.type, report.id);
+      setReports(prevReports => prevReports.filter(r => !(r.id === report.id && r.type === report.type)));
+      addToast(t('report.delete_success') || 'Report deleted successfully', 'success');
+    } catch (err) {
+      console.error('Failed to delete report:', err);
+      addToast(t('report.delete_failed') || 'Failed to delete report', 'error');
+    }
+  };
 
   // Filter reports whenever they are loaded or the search term changes.
   useEffect(() => {
@@ -44,7 +60,7 @@ const HomePage = ({ user }) => {
 
     // RULE: Only show user's own reports on the home page.
     if (user && user.id) {
-        filtered = filtered.filter((r) => r.userId === user.id);
+      filtered = filtered.filter((r) => r.userId === user.id);
     }
 
     if (search) {
@@ -93,9 +109,9 @@ const HomePage = ({ user }) => {
           className="search-input"
         />
         {search && (
-            <button onClick={() => setSearch('')} className="search-clear">
-                {t('home.clear')}
-            </button>
+          <button onClick={() => setSearch('')} className="search-clear">
+            {t('home.clear')}
+          </button>
         )}
       </div>
 
@@ -115,8 +131,8 @@ const HomePage = ({ user }) => {
               <Link to={editUrl} key={`${report.type}-${report.id}`} className={`report-card ${report.status.toLowerCase()}`}>
                 <div className="report-card-header">
                   <h3>{getReportTitle(report)}</h3>
-                  <button 
-                    className="card-download-btn" 
+                  <button
+                    className="card-download-btn"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -125,6 +141,20 @@ const HomePage = ({ user }) => {
                     title={t('report.download_pdf')}
                   >
                     ⬇️
+                  </button>
+                  {/* TODO: create a delete button like in AdminReportsPage.jsx
+                      done added Buton 
+                      Todo: test if it works or throws errors on real db - currently it works on test db */}
+                  <button
+                    className="card-delete-btn"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleReportDelete(report);
+                    }}
+                    title={t('report.delete')}
+                  >
+                    🗑️
                   </button>
                 </div>
                 <p>{t('home.type', { type: report.type })}</p>
