@@ -83,8 +83,15 @@ const updateReportById = async (req, res) => {
     res.status(200).json(report);
 };
 
+const deleteReportById = async (req, res) => {
+    const { id } = req.params;
+    await req.service.remove(parseInt(id, 10), req.session.user);
+    res.status(204).send();
+};
+
 router.get('/all-types', asyncHandler(getAllReports));
 router.get('/:reportType/:id', [getReportService, asyncHandler(getReportById)]);
 router.put('/:reportType/:id', [getReportService, asyncHandler(updateReportById)]);
+router.delete('/:reportType/:id', [getReportService, asyncHandler(deleteReportById)]);
 
 module.exports = router;

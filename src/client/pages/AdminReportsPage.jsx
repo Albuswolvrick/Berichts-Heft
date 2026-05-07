@@ -1,9 +1,10 @@
 // AdminReportsPage: A component for administrators to view and filter all user reports. 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { userApi } from '../services/api';
+import { reportsApi, userApi } from '../services/api';
 import { formatDate } from '../utils/dateUtils';
 import { handleReportDownload } from '../utils/reportPdfHelper';
+import { useToast } from '../hooks/useToast';
 import '../../../public/css/AdminReportsPage.css';
 import '../../../public/css/HomePage.css';
 import { useLanguage } from '../hooks/useLanguage';
@@ -17,6 +18,7 @@ const AdminReportsPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { t } = useLanguage();
+    const { addToast } = useToast();
 
     // On component mount, fetch all reports and users from the API.
     useEffect(() => {
@@ -46,6 +48,22 @@ const AdminReportsPage = () => {
         };
         fetchInitialData();
     }, []);
+
+    // handleReportDelete: Handles the deletion of a report with confirmation.
+    const handleReportDelete = async (report) => {                                                             // has to be added to the lang pool in local storage
+        const confirmDelete = window.confirm(t('report.delete_confirm', { title: getReportTitle(report) }) || `Are you sure you want to delete ${getReportTitle(report)}?`);
+
+        if (!confirmDelete) return;
+
+        try {
+            await reportsApi.remove(report.type, report.id);
+            setReports(prevReports => prevReports.filter(r => !(r.id === report.id && r.type === report.type)));
+            addToast(t('report.delete_success') || 'Report deleted successfully', 'success');
+        } catch (err) {
+            console.error('Failed to delete report:', err);
+            addToast(t('report.delete_failed') || 'Failed to delete report', 'error');
+        }
+    };
 
     // getReportTitle: A helper function to get the correct title for a report based on its type.
     const getReportTitle = (report) => {
@@ -132,15 +150,15 @@ const AdminReportsPage = () => {
                                     >
                                         ⬇️
                                     </button>
-                                    {/* the buton to deleate the report */}
+                                    {/* the button to delete the report */}
                                     <button
-                                        className="card-deleate-btn"
+                                        className="card-delete-btn"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             e.stopPropagation();
-                                            handleReportDelete(report.id, t);
+                                            handleReportDelete(report, t);
                                         }}
-                                        title={t('report.deleate')}
+                                        title={t('report.delete')}
                                     >
                                         🗑️
                                     </button>
