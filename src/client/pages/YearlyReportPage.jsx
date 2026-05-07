@@ -15,7 +15,7 @@ const YearlyReportPage = () => {
   const [achievements, setAchievements] = useState('');
   const [skillsImproved, setSkillsImproved] = useState('');
   const [goals, setGoals] = useState('');
-  const [totalHours, setTotalHours] = useState('');
+  const [totalHours, setTotalHours] = useState('2080');
   const [status, setStatus] = useState('DRAFT');
   const { t } = useLanguage();
   const { addToast } = useToast();
@@ -70,7 +70,7 @@ const YearlyReportPage = () => {
         setAchievements('');
         setSkillsImproved('');
         setGoals('');
-        setTotalHours('');
+        setTotalHours('2080');
         setStatus('DRAFT');
       } else {
         const errorData = await response.json();
