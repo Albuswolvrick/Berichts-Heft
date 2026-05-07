@@ -74,3 +74,18 @@
     color: var(--primary-color);
     margin-top: 0;
 }
+.card-delete-btn {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s, transform 0.2s;
+    line-height: 1;
+}
+
+.card-delete-btn:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+    transform: scale(1.1);
+}

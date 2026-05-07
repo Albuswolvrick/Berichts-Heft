@@ -86,6 +86,7 @@ const reportsApi = {
         const query = new URLSearchParams(params).toString();
         return api.get(`/reports/all-types${query ? `?${query}` : ''}`);
     },
+    remove: (type, id) => api.delete(`/reports/${type.toLowerCase()}/${id}`),
 };
 
 export {
