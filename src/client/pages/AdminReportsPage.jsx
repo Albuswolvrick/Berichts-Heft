@@ -1,4 +1,4 @@
-// AdminReportsPage: A component for administrators to view and filter all user reports.
+// AdminReportsPage: A component for administrators to view and filter all user reports. 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { userApi } from '../services/api';
@@ -101,7 +101,7 @@ const AdminReportsPage = () => {
                     <option value="">{t('admin.all_users')}</option>
                     {users.map(user => (
                         <option key={user.id} value={user.id}>
-                            {user.name} ({user.username})
+                            {user.name} ({user.role})
                         </option>
                     ))}
                 </select>
@@ -120,6 +120,7 @@ const AdminReportsPage = () => {
                             <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
                                 <div className="report-card-header">
                                     <h3>{getReportTitle(report)}</h3>
+                                    {/* the buton to download the report */}
                                     <button
                                         className="card-download-btn"
                                         onClick={(e) => {
@@ -130,6 +131,18 @@ const AdminReportsPage = () => {
                                         title={t('report.download_pdf')}
                                     >
                                         ⬇️
+                                    </button>
+                                    {/* the buton to deleate the report */}
+                                    <button
+                                        className="card-deleate-btn"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleReportDelete(report.id, t);
+                                        }}
+                                        title={t('report.deleate')}
+                                    >
+                                        🗑️
                                     </button>
                                 </div>
                                 <p><strong>{t('common.user')}</strong> {user ? `${user.name} (${user.username})` : 'N/A'}</p>
