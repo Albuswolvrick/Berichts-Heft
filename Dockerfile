@@ -58,7 +58,7 @@ COPY --from=frontend-builder /app/dist ./dist
 COPY src/server ./src/server
 COPY public ./public
 
-# Create a persistent data directory for the SQLite DB and sessions.
+# Create a persistent data directory for the  DB and sessions.
 # Mount a Docker volume here so data survives container restarts.
 RUN mkdir -p /app/data && chown -R appuser:appgroup /app/data
 
