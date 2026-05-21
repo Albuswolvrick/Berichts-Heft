@@ -1,16 +1,12 @@
 # Präsentation: Das Digitale Berichts-Heft
 
-Hier ist ein strukturierter Text, den Sie direkt für Ihre PowerPoint-Präsentation verwenden können. Sie können die Struktur in Ihre Folien (Slides) übernehmen und die "Sprechernotizen" als Text für Ihren Vortrag nutzen.
-
----
-
 ## Folie 1: Titelfolie
 **Titel:** Das Digitale Berichts-Heft
-**Untertitel:** Die Zukunft der Ausbildungsdokumentation
-**Bild:** (Optional: Ein schönes Mockup oder das Logo)
+**Untertitel:** Die Mögliche Zukunft der Ausbildungsdokumentation
+**Bild:** wen Logo verhanden nutze Logo
 
 **Sprechernotiz:**
-> "Herzlich willkommen zu meiner Präsentation. Ich möchte Ihnen heute das Projekt 'Digitales Berichts-Heft' vorstellen. Unser Ziel mit diesem Projekt war es, den oft lästigen Papierkram in der Ausbildung abzuschaffen und durch eine moderne, digitale und effiziente Lösung zu ersetzen."
+> "Herzlich willkommen zu meiner Präsentation. Ich möchte Ihnen heute das Projekt 'Digitales Berichts-Heft' vorstellen. Unser Ziel mit diesem Projekt war es, den oft lästigen Papierkram in der Ausbildung abzuschaffen nachdem die IHK ihr Digitales berichts heft abgescchaft haben ist dies eine der Optionen die eine zukumft haben könten  und durch eine moderne, digitale und effiziente Lösung zu ersetzen." 
 
 ---
 
