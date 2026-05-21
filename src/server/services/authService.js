@@ -3,12 +3,18 @@ const { prisma } = require('../config/database');
 const { env } = require('../config/env');
 const { BadRequestError, ConflictError, UnauthorizedError, NotFoundError } = require('../utils/errors');
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
 /**
  * Registers a new user. First user becomes ADMIN.
  */
 async function register({ name, email, password }) {
   if (!name || !email || !password) {
     throw new BadRequestError('Name, email, and password are required');
+  }
+  
+  if (!passwordRegex.test(password)) {
+    throw new BadRequestError('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.');
   }
 
   const userCount = await prisma.user.count();
@@ -85,6 +91,10 @@ async function createUser({ name, email, password, role }) {
     throw new BadRequestError('Name, email, password, and role are required');
   }
 
+  //if (!passwordRegex.test(password)) {
+  //  throw new BadRequestError('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.');
+  //}
+
   const passwordHash = await bcrypt.hash(password, env.BCRYPT_SALT_ROUNDS);
 
   try {
@@ -119,6 +129,11 @@ async function updatePassword(id, password) {
   if (!password) {
     throw new BadRequestError('Password is required');
   }
+
+  if (!passwordRegex.test(password)) {
+    throw new BadRequestError('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.');
+  }
+
   const passwordHash = await bcrypt.hash(password, env.BCRYPT_SALT_ROUNDS);
   await prisma.user.update({
     where: { id: parseInt(id) },
