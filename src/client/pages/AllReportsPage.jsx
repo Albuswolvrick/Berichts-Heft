@@ -135,7 +135,7 @@ const AllReportsPage = () => {
                         // The edit link is specific to the report type, matching the unified route.
                         const editUrl = `/reports/${report.type.toLowerCase()}/${report.id}/edit`;
                         return (
-                            <Link to={editUrl} key={`${report.type}-${report.id}`} className="report-card">
+                            <Link to={editUrl} key={`${report.type}-${report.id}`} className={`report-card ${report.status ? report.status.toLowerCase() : ''}`}>
                                 <div className="report-card-header">
                                     <h3>{getReportTitle(report)}</h3>
                                     {/* the buton to download the report */}
@@ -165,6 +165,7 @@ const AllReportsPage = () => {
                                 </div>
                                 <p><strong>{t('common.user')}</strong> {user ? `${user.name} (${user.username})` : 'N/A'}</p>
                                 <p><strong>{t('common.date')}</strong> {report.reportDate ? formatDate(report.reportDate) : 'N/A'}</p>
+                                <p>{t('home.status', { status: report.status || 'N/A' })}</p>
                             </Link>
                         );
                     })

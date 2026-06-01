@@ -20,9 +20,33 @@
   transform: translateY(-5px);
 }
 
-.report-card.approved {
-  background-color: #6a0973 !important;
+.report-card.submitted {
+  background-color: #b6b81d !important;
   color: #000;
+}
+
+.report-card.submitted h3 {
+
+  color: #070505 !important;
+}
+
+
+.report-card.draft {
+  background-color: #751db8 !important;
+  color: #000;
+}
+
+.report-card.approved {
+  background-color: #8cfeba !important;
+  color: #000;
+  color: #000 !important;
+
+}
+
+.report-card.approved h3 {
+
+  color: #090b08 !important;
+
 }
 
 .report-card.denied {
