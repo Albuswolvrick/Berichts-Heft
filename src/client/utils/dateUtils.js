@@ -19,7 +19,7 @@ export function getIsoWeekNumber(inputDate) {
   const date = new Date(inputDate);
   date.setHours(0, 0, 0, 0);
 
-  // Shift date to nearest Thursday for ISO week calculation.
+  // Shift date to nearest Thursday for ISO week calculation.my understanding I need to show all of the week
   date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
   const firstThursday = new Date(date.getFullYear(), 0, 4);
   firstThursday.setDate(firstThursday.getDate() + 3 - ((firstThursday.getDay() + 6) % 7));
