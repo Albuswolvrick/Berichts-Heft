@@ -142,10 +142,11 @@ const HomePage = ({ user }) => {
                   >
                     ⬇️
                   </button>
-                  {/* TODO: create a delete button like in AdminReportsPage.jsx
+                  {/* TODO: create a delete button like in AllReportsPage.jsx
                       done added Buton 
                       Todo: test if it works or throws errors on real db - currently it works on test db
                       done
+                      it works realy good! :)
                        */}
                   <button
                     className="card-delete-btn"

@@ -1,15 +1,15 @@
-// AdminReportsPage: A component for administrators to view and filter all user reports. 
+// AllReportsPage: A component for users with appropriate roles to view and filter all user reports. 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { reportsApi, userApi } from '../services/api';
 import { formatDate } from '../utils/dateUtils';
 import { handleReportDownload } from '../utils/reportPdfHelper';
 import { useToast } from '../hooks/useToast';
-import '../../../public/css/AdminReportsPage.css';
+import '../../../public/css/AllReportsPage.css';
 import '../../../public/css/HomePage.css';
 import { useLanguage } from '../hooks/useLanguage';
 
-const AdminReportsPage = () => {
+const AllReportsPage = () => {
     // State management for reports, users, search term, selected user, loading status, and errors.
     const [reports, setReports] = useState([]);
     const [users, setUsers] = useState([]);
@@ -101,8 +101,8 @@ const AdminReportsPage = () => {
         );
 
     return (
-        <div className="admin-reports-page">
-            <h1>{t('admin.title')}</h1>
+        <div className="all-reports-page">
+            <h1>{t('all_reports.title')}</h1>
             <div className="filters">
                 <input
                     type="text"
@@ -116,7 +116,7 @@ const AdminReportsPage = () => {
                     value={selectedUserId}
                     onChange={(e) => setSelectedUserId(e.target.value)}
                 >
-                    <option value="">{t('admin.all_users')}</option>
+                    <option value="">{t('all_reports.all_users')}</option>
                     {users.map(user => (
                         <option key={user.id} value={user.id}>
                             {user.name} ({user.role})
@@ -125,7 +125,7 @@ const AdminReportsPage = () => {
                 </select>
             </div>
 
-            {loading && <p>{t('admin.loading')}</p>}
+            {loading && <p>{t('all_reports.loading')}</p>}
             {error && <p className="error-message">{error}</p>}
 
             <div className="report-grid">
@@ -169,11 +169,11 @@ const AdminReportsPage = () => {
                         );
                     })
                 ) : (
-                    !loading && !error && <p>{t('admin.no_reports')}</p>
+                    !loading && !error && <p>{t('all_reports.no_reports')}</p>
                 )}
             </div>
         </div>
     );
 };
 
-export default AdminReportsPage;
+export default AllReportsPage;

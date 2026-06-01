@@ -14,7 +14,7 @@ import WeeklyReportPage from './pages/WeeklyReportPage';
 import MonthlyReportPage from './pages/MonthlyReportPage';
 import YearlyReportPage from './pages/YearlyReportPage';
 import NewReportPage from './pages/NewReportPage';
-import AdminReportsPage from './pages/AdminReportsPage';
+import AllReportsPage from './pages/AllReportsPage';
 import { ToastProvider } from './hooks/useToast';
 import { ThemeProvider } from './hooks/useTheme';
 import { LanguageProvider } from './hooks/useLanguage';
@@ -29,8 +29,8 @@ import CookieConsent from './components/CookieConsent';
 const allNavItems = [
     { label: 'nav.home', path: '/' },
     { label: 'nav.new_report', path: '/reports/new' },
-    { label: 'nav.admin_menu', path: '/dev', roles: ['MANAGER', 'ADMIN'] },
-    { label: 'nav.admin_reports', path: '/admin/reports', roles: ['ADMIN', 'MANAGER'] },
+    { label: 'nav.admin_menu', path: '/dev', roles: ['ADMIN'] },
+    { label: 'nav.all_reports', path: '/all-reports', roles: ['ADMIN', 'MANAGER'] },
 ];
 
 const ProtectedRoute = ({ children }) => {
@@ -57,6 +57,13 @@ const ProtectedRoute = ({ children }) => {
 
 const AdminRoute = ({ children, user }) => {
     if (!user || !['ADMIN', 'MANAGER'].includes(user.role)) {
+        return <Navigate to="/" />;
+    }
+    return children;
+};
+
+const SuperAdminRoute = ({ children, user }) => {
+    if (!user || user.role !== 'ADMIN') {
         return <Navigate to="/" />;
     }
     return children;
@@ -89,8 +96,8 @@ const AppContent = ({ navItems, user, setUser, handleLogout }) => {
                     <Route path="/reports/weekly" element={<ProtectedRoute><WeeklyReportPage /></ProtectedRoute>} />
                     <Route path="/reports/monthly" element={<ProtectedRoute><MonthlyReportPage /></ProtectedRoute>} />
                     <Route path="/reports/yearly" element={<ProtectedRoute><YearlyReportPage /></ProtectedRoute>} />
-                    <Route path="/admin/reports" element={<AdminRoute user={user}><AdminReportsPage /></AdminRoute>} />
-                    <Route path="/dev" element={<AdminRoute user={user}><AdminMenu /></AdminRoute>} />
+                    <Route path="/all-reports" element={<AdminRoute user={user}><AllReportsPage /></AdminRoute>} />
+                    <Route path="/dev" element={<SuperAdminRoute user={user}><AdminMenu /></SuperAdminRoute>} />
                     <Route path="/reports/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
                     <Route path="/reports/:reportType/:id/edit" element={<ProtectedRoute><EditReportPage /></ProtectedRoute>} />
                     <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
