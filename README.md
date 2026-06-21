@@ -107,7 +107,11 @@ sudo docker compose up -d --build
  
 - `-d` runs the containers in the background (detached mode).
 - `--build` forces Docker to build the production image before starting.
-This spins up two containers: the Node.js app on port 3000 and a PostgreSQL database. The database data is stored in the persistent `berichts_db` volume and survives restarts and rebuilds.
+This spins up two containers: the Node.js app on port 3000 and a PostgreSQL database. 
+
+**Persistent Volumes:**
+- `berichts_db`: Stores your PostgreSQL database safely across restarts.
+- `berichts_model_cache`: Stores the offline machine learning translation model (~500MB). *Note: The very first time you translate a report, it may take a few minutes for the server to download this model into the cache.*
  
 ### Initialize the Database (first start only)
  
@@ -276,7 +280,7 @@ When new changes are pushed to your Git repository, follow these steps on your s
    ```bash
    sudo docker compose up -d --build
    ```
-   *(This command checks for any changed files, rebuilds the Node.js production image, and restarts the container safely. Note: Your database and session files are safely stored inside the `berichts_data` volume, so no data will be lost during a rebuild).*
+   *(This command checks for any changed files, rebuilds the Node.js production image, and restarts the container safely. Note: Your database and ML cache files are safely stored inside the `berichts_db` and `berichts_model_cache` volumes, so no data will be lost during a rebuild).*
 
 ### Changing or Updating the Database Schema
 If you have made changes to the database (modifying `prisma/schema.prisma`), run the Prisma migration or push command **inside** the running container right after updating the code:
