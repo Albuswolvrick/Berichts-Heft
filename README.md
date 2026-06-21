@@ -311,7 +311,7 @@ This flow shows every security and logic layer a request passes through before r
 ```mermaid
 graph TD
     User([Browser/Client]) -->|HTTP Request| LoadBalancer[Nginx/Docker Proxy]
-    LoadBalancer -->|Port 3001| Express[Express.js Server]
+    LoadBalancer -->|Port 3000| Express[Express.js Server]
     
     subgraph Security_Layer["Security Middleware"]
         Express --> Helmet[Helmet.js - Security Headers]
@@ -407,12 +407,15 @@ stateDiagram-v2
         Pending --> Approved: "Approves"
         Pending --> Revision: "Requests Changes"
         Pending --> Rejected: "Hard Denial"
+        Pending --> Denied: "Denied"
     }
     
     Approved --> APPROVED
     Revision --> REVISION_REQUIRED
     Rejected --> REJECTED
-    REJECTED --> DELEATE
+    Denied --> DENIED
+    REJECTED --> DELETE
+    DENIED --> DELETE
     
     REVISION_REQUIRED --> DRAFT: "User Corrects"
     
@@ -432,32 +435,39 @@ erDiagram
         string email
         string name
         string role
-        string workplaceType
+        string passwordHash
+        datetime lastLoginAt
+        string lastLoginIp
         datetime createdAt
+        datetime updatedAt
     }
     DAILY_REPORT {
         int id PK
         int userId FK
         int weeklyReportId FK
         datetime reportDate
+        string title
+        string activities
+        string learnings
+        string challenges
         float hoursWorked
-        string status
-    }
-    DAILY_TIME_ENTRY {
-        int id PK
-        int dailyReportId FK
-        int userId FK
-        datetime workStart
-        datetime workEnd
-        float hoursTotal
         string status
     }
     WEEKLY_REPORT {
         int id PK
         int userId FK
         int monthlyReportId FK
+        string name
+        datetime weekStart
+        datetime weekEnd
         int weekNumber
+        string department
+        int yearOfTraining
+        string summary
+        string activities
+        string school
         float totalHours
+        string remarks
         string status
     }
     MONTHLY_REPORT {
@@ -466,6 +476,16 @@ erDiagram
         int yearlyReportId FK
         int month
         int year
+        datetime monthStart
+        datetime monthEnd
+        string summary
+        string keyAchievements
+        string goals
+        float totalHours
+        int yearOfTraining
+        string name
+        string instructions
+        string remarks
         string status
     }
     YEARLY_REPORT {
@@ -473,18 +493,34 @@ erDiagram
         int userId FK
         int year
         string trainingYear
+        datetime yearStart
+        datetime yearEnd
+        string summary
+        string achievements
+        string skillsImproved
+        string goals
+        float totalHours
         string status
     }
     ATTACHMENT {
         int id PK
         int dailyReportId FK
         int weeklyReportId FK
+        int monthlyReportId FK
+        int yearlyReportId FK
         string fileName
         string filePath
+        int fileSize
+        string mimeType
+        datetime uploadedAt
     }
     COMMENT {
         int id PK
         int userId FK
+        int dailyReportId FK
+        int weeklyReportId FK
+        int monthlyReportId FK
+        int yearlyReportId FK
         string content
         datetime createdAt
     }
@@ -492,17 +528,14 @@ erDiagram
     USER ||--o{ WEEKLY_REPORT : "creates"
     USER ||--o{ MONTHLY_REPORT : "creates"
     USER ||--o{ YEARLY_REPORT : "creates"
-    USER ||--o{ DAILY_TIME_ENTRY : "tracks"
     USER ||--o{ COMMENT : "writes"
     YEARLY_REPORT ||--o{ MONTHLY_REPORT : "contains"
     MONTHLY_REPORT ||--o{ WEEKLY_REPORT : "contains"
     WEEKLY_REPORT ||--o{ DAILY_REPORT : "contains"
-    DAILY_REPORT ||--o{ DAILY_TIME_ENTRY : "contains"
     DAILY_REPORT ||--o{ ATTACHMENT : "has"
     WEEKLY_REPORT ||--o{ ATTACHMENT : "has"
     MONTHLY_REPORT ||--o{ ATTACHMENT : "has"
     YEARLY_REPORT ||--o{ ATTACHMENT : "has"
-    DAILY_TIME_ENTRY ||--o{ ATTACHMENT : "has"
     DAILY_REPORT ||--o{ COMMENT : "has"
     WEEKLY_REPORT ||--o{ COMMENT : "has"
     MONTHLY_REPORT ||--o{ COMMENT : "has"
