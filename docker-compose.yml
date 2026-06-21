@@ -24,6 +24,8 @@ services:
   #   volumes:
   #     # Named volume keeps the SQLite DB + session DB alive across restarts
   #     - berichts_data:/app/data
+  #     # Cache volume for HuggingFace ML models so they persist across restarts
+  #     - berichts_model_cache:/app/.cache
 
   #   healthcheck:
   #     test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
@@ -50,4 +52,6 @@ volumes:
   berichts_data:
     driver: local
   berichts_db:
+    driver: local
+  berichts_model_cache:
     driver: local

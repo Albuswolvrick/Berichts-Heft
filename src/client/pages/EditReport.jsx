@@ -17,8 +17,33 @@ const EditReportPage = () => {
   const [formData, setFormData] = useState({});
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { t } = useLanguage();
+  const [translating, setTranslating] = useState(false);
+  const [translationProgress, setTranslationProgress] = useState(0);
+  const [hasAutoTranslated, setHasAutoTranslated] = useState(false);
+  const { t, locale } = useLanguage();
+  const [targetLanguage, setTargetLanguage] = useState(locale || 'de');
   useFavicon('/imgs/icons/opened_book/128x128.png');
+
+  /**
+   * Array defining all languages supported by the local M2M100 model.
+   * This is used to populate the language selection dropdown and validate user choices.
+   * @type {Array<{code: string, label: string}>}
+   */
+  const SUPPORTED_LANGS = [
+    { code: 'de', label: 'German' },
+    { code: 'en', label: 'English' },
+    { code: 'fr', label: 'French' },
+    { code: 'zh', label: 'Chinese' },
+    { code: 'ar', label: 'Arabic' },
+    { code: 'hi', label: 'Hindi' },
+    { code: 'nl', label: 'Dutch' },
+    { code: 'la', label: 'Latin' },
+    { code: 'ru', label: 'Russian' },
+    { code: 'uk', label: 'Ukrainian' },
+    { code: 'sv', label: 'Swedish' },
+    { code: 'es', label: 'Spanish' },
+    { code: 'ga', label: 'Irish' }
+  ];
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -58,6 +83,112 @@ const EditReportPage = () => {
     fetchReport();
     fetchUser();
   }, [reportType, id, addToast]);
+
+  /**
+   * Initiates the translation process for the current report's text fields.
+   * This function interacts with the backend SSE endpoint to receive real-time progress updates.
+   * If the requested language is not natively supported, it defaults to German.
+   *
+   * @param {string} targetLangParam - The 2-letter ISO language code for translation.
+   * @returns {Promise<void>}
+   */
+  const handleTranslate = async (targetLangParam) => {
+    if (!formData || translating) return;
+    
+    let targetLang = targetLangParam;
+    const isSupported = SUPPORTED_LANGS.some(lang => lang.code === targetLang);
+    
+    if (!isSupported) {
+      addToast('nicht suportete Sprache, Auto translate to german', 'warning');
+      targetLang = 'de';
+      setTargetLanguage('de');
+    }
+
+    // Extract applicable text properties to be sent to the translation API
+    const textFields = {};
+    const fieldsToTranslate = ['title', 'activities', 'learnings', 'challenges', 'summary', 'keyAchievements', 'goals', 'instructions', 'remarks', 'achievements', 'skillsImproved'];
+    
+    fieldsToTranslate.forEach(field => {
+      if (formData[field] && typeof formData[field] === 'string') {
+        textFields[field] = formData[field];
+      }
+    });
+
+    // Explicitly ensure no sensitive data is passed to the local LLM.
+    // Note: The translation model (M2M100) runs completely locally on the server.
+    // No data is ever sent to external APIs or third-party cloud providers.
+    // never the les I do not want any API problems in the future I am not good enough to ensure 100 % securety nore can I ever do that 
+    if (textFields.password) delete textFields.password;
+    if (Object.keys(textFields).length === 0) return;
+
+    setTranslating(true);
+    setTranslationProgress(0);
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texts: textFields, targetLang })
+      });
+
+      if (!response.ok) {
+        throw new Error(t('report.translation_failed') || 'Translation failed');
+      }
+
+      // Establish a connection to the SSE endpoint to stream the translation results
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+
+      let done = false;
+      let buffer = '';
+      
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        if (value) {
+          buffer += decoder.decode(value, { stream: true });
+          const parts = buffer.split('\n\n');
+          buffer = parts.pop(); // retain the last incomplete chunk in the buffer
+
+          for (const part of parts) {
+            const lines = part.split('\n');
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                try {
+                  const data = JSON.parse(line.substring(6));
+                  
+                  // Process Server-Sent Events based on their declared type
+                  if (data.type === 'progress') {
+                    setTranslationProgress(data.progress);
+                  } else if (data.type === 'complete') {
+                    setFormData(prev => ({ ...prev, ...data.translatedTexts }));
+                    addToast(t('report.translated') || 'Report translated successfully', 'success');
+                  }
+                } catch (err) {
+                  console.error('Error parsing stream chunk', err);
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      addToast(error.message, 'error');
+    } finally {
+      setTranslating(false);
+      setTranslationProgress(0);
+    }
+  
+  };
+  /*
+  // to try to make this work it stoped working again I do not like that probleme pls fix it
+    useEffect(() => {
+    // Fully automated translation on first load to the currently chosen language
+    if (!loading && report && !hasAutoTranslated) {
+      setHasAutoTranslated(true);
+      handleTranslate(targetLanguage);
+    }
+  }, [loading, report, targetLanguage, hasAutoTranslated]);*/
+ 
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -185,12 +316,49 @@ const EditReportPage = () => {
   };
 
   return (
-    <div className="edit-report-page">
+    <div className="edit-report-page" style={{ position: 'relative' }}>
+      {translating && (
+        <div style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          width: '200px',
+          backgroundColor: 'rgba(0,0,0,0.7)',
+          padding: '10px',
+          borderRadius: '8px',
+          zIndex: 9999,
+          color: 'white',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+        }}>
+          <div style={{ fontSize: '0.8rem', marginBottom: '5px', textAlign: 'center' }}>
+            {t('report.translating') || 'Translating...'} {translationProgress}%
+          </div>
+          <div style={{ width: '100%', height: '8px', backgroundColor: '#444', borderRadius: '4px', overflow: 'hidden' }}>
+            <div style={{ width: `${translationProgress}%`, height: '100%', backgroundColor: '#4caf50', transition: 'width 0.3s ease' }}></div>
+          </div>
+        </div>
+      )}
       <div className="edit-report-main">
         <h2>{t('report.edit')} {reportType.charAt(0).toUpperCase() + reportType.slice(1)}</h2>
         <form onSubmit={handleSubmit} className="edit-report-form">
           {renderFormFields()}
           <div className="button-group">
+            <div className="translate-controls" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <select 
+                value={targetLanguage} 
+                onChange={(e) => setTargetLanguage(e.target.value)}
+                disabled={translating}
+                className="translate-lang-select"
+                style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+              >
+                {SUPPORTED_LANGS.map(lang => (
+                  <option key={lang.code} value={lang.code}>{lang.label}</option>
+                ))}
+              </select>
+              <button type="button" className="translate-btn" onClick={() => handleTranslate(targetLanguage)} disabled={translating}>
+                {translating ? (t('report.translating') || 'Translating...') : (t('report.translate') || 'Translate')}
+              </button>
+            </div>
             <button type="submit">{t('edit.save')}</button>
             <button type="button" className="download-btn" onClick={handleDownloadPDF}>
               {t('report.download_pdf')}

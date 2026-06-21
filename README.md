@@ -231,6 +231,7 @@ npm run prisma:reset
 - Speicherung der Reports in der Datenbank
 - Professionell formatierter PDF-Export pro Berichtstyp
 - Kommentarsystem für Admin-Feedback
+- Automatische Mehrsprachigkeit (Lokaler ML-Übersetzer)
 - Design-System (Light, Dark)
 - Suche und Filter für Berichte
 - Benutzer-Self-Service (Passwortänderung)
@@ -516,6 +517,7 @@ erDiagram
 | **Database** | Postgresql | Local relational storage (Zero-config) |
 | **ORM** | Prisma v7 | Type-safe database management |
 | **Styling** | Vanilla CSS | Custom design system |
+| **Machine Learning** | Transformers.js | Local offline translation (M2M100) |
 | **Testing** | Vitest | Fast unit testing |
 | **Tooling** | ESLint + Prettier | Code quality and formatting |
 

@@ -58,19 +58,24 @@ COPY --from=frontend-builder /app/dist ./dist
 COPY src/server ./src/server
 COPY public ./public
 
-# Create a persistent data directory for the  DB and sessions.
+# Create a persistent data directory for the DB and sessions.
 # Mount a Docker volume here so data survives container restarts.
 RUN mkdir -p /app/data && chown -R appuser:appgroup /app/data
+
+# Create a cache directory for HuggingFace models
+RUN mkdir -p /app/.cache && chown -R appuser:appgroup /app/.cache
 
 # Switch to non-root user
 USER appuser
 
 # Runtime environment defaults
 # DATABASE_URL and SESSION_SECRET should be provided via docker-compose / -e flags
+#hugiface is nice
 ENV NODE_ENV=production \
     PORT=3000 \
     DATABASE_URL=file:/app/data/berichtsheft.db \
-    BCRYPT_SALT_ROUNDS=10
+    BCRYPT_SALT_ROUNDS=10 \
+    TRANSFORMERS_CACHE=/app/.cache/huggingface
 
 EXPOSE 3000
 

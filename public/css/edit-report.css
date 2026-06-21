@@ -88,6 +88,14 @@
   background-color: var(--button-hover-background-color);
 }
 
+.button-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
 .edit-report-page {
   display: flex;
   gap: 30px;
